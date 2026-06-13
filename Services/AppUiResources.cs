@@ -116,6 +116,16 @@ public static class AppUiResources
         resources["InvalidExchangeRateMessage"] = isEnglish
             ? "Enter a valid exchange rate greater than zero."
             : "أدخل سعر صرف صحيحاً أكبر من صفر.";
+        resources["DailyTabText"] = isEnglish ? "Daily" : "يومي";
+        resources["CalendarTabText"] = isEnglish ? "Calendar" : "تقويم";
+        resources["MonthlyTabText"] = isEnglish ? "Monthly" : "شهري";
+        resources["TotalTabText"] = isEnglish ? "Total" : "الإجمالي";
+        resources["IncomeLabel"] = isEnglish ? "Income" : "الدخل";
+        resources["ExpensesLabel"] = isEnglish ? "Expenses" : "المصروفات";
+        resources["NetLabel"] = isEnglish ? "Net" : "الصافي";
+        resources["NoTransactionsForDayText"] = isEnglish
+            ? "No transactions for this day"
+            : "لا توجد معاملات لهذا اليوم";
     }
 
     private static void ApplyModeLabels(bool isEnglish, bool isDarkMode)

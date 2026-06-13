@@ -52,6 +52,14 @@
         <sys:String x:Key="ExchangeRateTitle">سعر الصرف</sys:String>
         <sys:String x:Key="ExchangeRateSubtitle">حدد قيمة 1 دولار أمريكي بالليرة السورية</sys:String>
         <sys:String x:Key="UsdToSypRateLabel">1 USD = SYP</sys:String>
+        <sys:String x:Key="DailyTabText">يومي</sys:String>
+        <sys:String x:Key="CalendarTabText">تقويم</sys:String>
+        <sys:String x:Key="MonthlyTabText">شهري</sys:String>
+        <sys:String x:Key="TotalTabText">الإجمالي</sys:String>
+        <sys:String x:Key="IncomeLabel">الدخل</sys:String>
+        <sys:String x:Key="ExpensesLabel">المصروفات</sys:String>
+        <sys:String x:Key="NetLabel">الصافي</sys:String>
+        <sys:String x:Key="NoTransactionsForDayText">لا توجد معاملات لهذا اليوم</sys:String>
 
         <SolidColorBrush x:Key="AppBackgroundBrush" Color="#F8FAFC"/>
         <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF"/>
