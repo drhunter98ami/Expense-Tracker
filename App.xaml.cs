@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Threading;
 using System.Windows;
 using ExpenseTracker.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker;
 
