@@ -2,7 +2,6 @@ using System.Globalization;
 using System.Threading;
 using System.Windows;
 using ExpenseTracker.Services;
-using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker;
 
@@ -14,9 +13,24 @@ public partial class App : Application
         Thread.CurrentThread.CurrentCulture = arabicCulture;
         Thread.CurrentThread.CurrentUICulture = arabicCulture;
 
-        using AppDbContext dbContext = new();
-        dbContext.Database.Migrate();
+        EnsureDatabase();
 
         base.OnStartup(e);
+    }
+
+    private static void EnsureDatabase()
+    {
+        using AppDbContext dbContext = new();
+
+        dbContext.Database.ExecuteSqlRaw("""
+            CREATE TABLE IF NOT EXISTS AppSettings (
+                Id INTEGER NOT NULL CONSTRAINT PK_AppSettings PRIMARY KEY,
+                UsdToSypRate TEXT NOT NULL DEFAULT '15000'
+            )
+            """);
+
+        dbContext.Database.ExecuteSqlRaw("""
+            INSERT OR IGNORE INTO AppSettings (Id, UsdToSypRate) VALUES (1, '15000')
+            """);
     }
 }
