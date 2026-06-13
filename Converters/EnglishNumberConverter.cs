@@ -15,7 +15,7 @@ public class EnglishNumberConverter : IValueConverter
             decimal decimalValue => NumberFormatting.Format(decimalValue, format),
             double doubleValue => NumberFormatting.Format(doubleValue, format),
             float floatValue => NumberFormatting.Format((decimal)floatValue, format),
-            int intValue => NumberFormatting.Format(intValue, format),
+            int intValue => NumberFormatting.Format((decimal)intValue, format),
             _ => value?.ToString() ?? string.Empty
         };
     }

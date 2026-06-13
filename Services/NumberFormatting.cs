@@ -76,7 +76,7 @@ public static class NumberFormatting
     {
         CultureInfo culture = new("ar-SA");
         culture.NumberFormat.NativeDigits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-        culture.NumberFormat.DigitSubstitution = DigitSubstitution.None;
+        culture.NumberFormat.DigitSubstitution = DigitShapes.None;
         return culture;
     }
 }
