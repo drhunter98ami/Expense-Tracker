@@ -1,0 +1,20 @@
+<UserControl x:Class="ExpenseTracker.Views.StatsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Background="{DynamicResource AppBackgroundBrush}">
+        <Border Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="18"
+                Padding="28"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
+            <TextBlock Text="{DynamicResource StatsPlaceholderText}"
+                       Foreground="{DynamicResource TextBrush}"
+                       FontSize="28"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,178 @@
+<UserControl x:Class="ExpenseTracker.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:ExpenseTracker.Converters">
+    <UserControl.Resources>
+        <converters:EnglishNumberConverter x:Key="EnglishNumberConverter"/>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+        <Grid Background="{DynamicResource AppBackgroundBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Margin="0,0,0,22">
+                <TextBlock Text="{DynamicResource SettingsTitle}"
+                           Foreground="{DynamicResource TextBrush}"
+                           FontSize="28"
+                           FontWeight="Bold"/>
+                <TextBlock Text="{DynamicResource SettingsSubtitle}"
+                           Foreground="{DynamicResource MutedTextBrush}"
+                           FontSize="14"
+                           Margin="0,6,0,0"/>
+            </StackPanel>
+
+            <Border Grid.Row="1"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="16"
+                    Padding="20"
+                    Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource IncomeCategoriesTitle}"
+                               Foreground="{DynamicResource TextBrush}"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,12"/>
+
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Text="{Binding NewIncomeCategoryName, UpdateSourceTrigger=PropertyChanged}"
+                                 Padding="11,9"
+                                 FontSize="14"
+                                 Background="{DynamicResource SurfaceAltBrush}"
+                                 Foreground="{DynamicResource TextBrush}"
+                                 BorderBrush="{DynamicResource BorderBrush}"/>
+
+                        <Button Grid.Column="1"
+                                Content="{DynamicResource AddCategoryText}"
+                                Command="{Binding AddIncomeCategoryCommand}"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Margin="10,0,0,0"/>
+                    </Grid>
+
+                    <ItemsControl ItemsSource="{Binding IncomeCategories}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{DynamicResource SurfaceAltBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="10"
+                                        Padding="12,10"
+                                        Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Name}"
+                                               Foreground="{DynamicResource TextBrush}"
+                                               FontSize="14"/>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Row="2"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="16"
+                    Padding="20"
+                    Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource ExpenseCategoriesTitle}"
+                               Foreground="{DynamicResource TextBrush}"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,12"/>
+
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Text="{Binding NewExpenseCategoryName, UpdateSourceTrigger=PropertyChanged}"
+                                 Padding="11,9"
+                                 FontSize="14"
+                                 Background="{DynamicResource SurfaceAltBrush}"
+                                 Foreground="{DynamicResource TextBrush}"
+                                 BorderBrush="{DynamicResource BorderBrush}"/>
+
+                        <Button Grid.Column="1"
+                                Content="{DynamicResource AddCategoryText}"
+                                Command="{Binding AddExpenseCategoryCommand}"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Margin="10,0,0,0"/>
+                    </Grid>
+
+                    <ItemsControl ItemsSource="{Binding ExpenseCategories}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{DynamicResource SurfaceAltBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="10"
+                                        Padding="12,10"
+                                        Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Name}"
+                                               Foreground="{DynamicResource TextBrush}"
+                                               FontSize="14"/>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Row="3"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="16"
+                    Padding="20">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource ExchangeRateTitle}"
+                               Foreground="{DynamicResource TextBrush}"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,6"/>
+                    <TextBlock Text="{DynamicResource ExchangeRateSubtitle}"
+                               Foreground="{DynamicResource MutedTextBrush}"
+                               FontSize="13"
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,14"/>
+
+                    <TextBlock Text="{DynamicResource UsdToSypRateLabel}"
+                               Foreground="{DynamicResource TextBrush}"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,6"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Text="{Binding UsdToSypRateText, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource NumberTextBoxStyle}"/>
+
+                        <Button Grid.Column="1"
+                                Content="{DynamicResource SaveText}"
+                                Command="{Binding SaveExchangeRateCommand}"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Margin="10,0,0,0"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

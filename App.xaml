@@ -1,0 +1,160 @@
+﻿<Application x:Class="ExpenseTracker.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ExpenseTracker"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:converters="clr-namespace:ExpenseTracker.Converters"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <converters:EnglishNumberConverter x:Key="EnglishNumberConverter"/>
+
+        <sys:String x:Key="AppTitle">متتبع المصروفات</sys:String>
+        <sys:String x:Key="AppSubtitle">نظرة واضحة على أموالك</sys:String>
+        <sys:String x:Key="TransactionsNavText">المعاملات</sys:String>
+        <sys:String x:Key="StatsNavText">الإحصائيات</sys:String>
+        <sys:String x:Key="AccountsNavText">الحسابات</sys:String>
+        <sys:String x:Key="SettingsNavText">الإعدادات</sys:String>
+        <sys:String x:Key="LanguageLabel">اللغة</sys:String>
+        <sys:String x:Key="LanguageOptionText">العربية</sys:String>
+        <sys:String x:Key="ThemeLabel">المظهر</sys:String>
+        <sys:String x:Key="ThemeOptionText">فاتح</sys:String>
+        <sys:String x:Key="TransactionsTitle">المعاملات</sys:String>
+        <sys:String x:Key="TransactionsSubtitle">راجع المصروفات والدخل حسب اليوم</sys:String>
+        <sys:String x:Key="AddTransactionText">+ إضافة معاملة</sys:String>
+        <sys:String x:Key="NoDescriptionText">بدون وصف</sys:String>
+        <sys:String x:Key="UncategorizedText">غير مصنف</sys:String>
+        <sys:String x:Key="NoAccountText">بدون حساب</sys:String>
+        <sys:String x:Key="AddTransactionDialogTitle">إضافة معاملة</sys:String>
+        <sys:String x:Key="AmountLabel">المبلغ</sys:String>
+        <sys:String x:Key="DateLabel">التاريخ</sys:String>
+        <sys:String x:Key="AccountLabel">الحساب</sys:String>
+        <sys:String x:Key="CategoryLabel">التصنيف</sys:String>
+        <sys:String x:Key="DescriptionLabel">الوصف</sys:String>
+        <sys:String x:Key="SaveText">حفظ</sys:String>
+        <sys:String x:Key="CancelText">إلغاء</sys:String>
+        <sys:String x:Key="StatsPlaceholderText">الإحصائيات</sys:String>
+        <sys:String x:Key="AccountsPlaceholderText">الحسابات</sys:String>
+        <sys:String x:Key="AccountsTitle">الحسابات</sys:String>
+        <sys:String x:Key="AccountsSubtitle">تابع أرصدة الحسابات وصافي الرصيد</sys:String>
+        <sys:String x:Key="TotalNetWorthLabel">الرصيد الإجمالي</sys:String>
+        <sys:String x:Key="CurrentBalanceLabel">الرصيد الحالي</sys:String>
+        <sys:String x:Key="AddAccountText">+ إضافة حساب</sys:String>
+        <sys:String x:Key="AddAccountDialogTitle">إضافة حساب</sys:String>
+        <sys:String x:Key="AccountNameLabel">اسم الحساب</sys:String>
+        <sys:String x:Key="InitialBalanceLabel">الرصيد الافتتاحي</sys:String>
+        <sys:String x:Key="InitialBalanceCategoryHint">اختر تصنيف دخل عند إدخال رصيد افتتاحي أكبر من صفر.</sys:String>
+        <sys:String x:Key="InitialBalanceDescription">رصيد افتتاحي</sys:String>
+        <sys:String x:Key="SettingsTitle">الإعدادات</sys:String>
+        <sys:String x:Key="SettingsSubtitle">أدر التصنيفات وسعر صرف الدولار مقابل الليرة السورية</sys:String>
+        <sys:String x:Key="IncomeCategoriesTitle">تصنيفات الدخل</sys:String>
+        <sys:String x:Key="ExpenseCategoriesTitle">تصنيفات المصروف</sys:String>
+        <sys:String x:Key="AddCategoryText">إضافة</sys:String>
+        <sys:String x:Key="ExchangeRateTitle">سعر الصرف</sys:String>
+        <sys:String x:Key="ExchangeRateSubtitle">حدد قيمة 1 دولار أمريكي بالليرة السورية</sys:String>
+        <sys:String x:Key="UsdToSypRateLabel">1 USD = SYP</sys:String>
+
+        <SolidColorBrush x:Key="AppBackgroundBrush" Color="#F8FAFC"/>
+        <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="SurfaceAltBrush" Color="#F1F5F9"/>
+        <SolidColorBrush x:Key="BorderBrush" Color="#DDE5F0"/>
+        <SolidColorBrush x:Key="TextBrush" Color="#0F172A"/>
+        <SolidColorBrush x:Key="MutedTextBrush" Color="#64748B"/>
+        <SolidColorBrush x:Key="PrimaryBrush" Color="#2563EB"/>
+        <SolidColorBrush x:Key="PrimaryHoverBrush" Color="#1D4ED8"/>
+        <SolidColorBrush x:Key="ActiveBrush" Color="#DBEAFE"/>
+        <SolidColorBrush x:Key="GroupHeaderBrush" Color="#E0F2FE"/>
+        <SolidColorBrush x:Key="SuccessBrush" Color="#0F766E"/>
+        <SolidColorBrush x:Key="OnPrimaryBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="ShadowBrush" Color="#0F172A"/>
+
+        <Style x:Key="NavButtonStyle" TargetType="Button">
+            <Setter Property="Padding" Value="14,12"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                            </Trigger>
+                            <Trigger Property="Tag" Value="Active">
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource ActiveBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ToggleSwitchStyle" TargetType="CheckBox">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <Border x:Name="Track"
+                                Width="48"
+                                Height="26"
+                                Background="{DynamicResource SurfaceAltBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="13">
+                            <Ellipse x:Name="Thumb"
+                                     Width="20"
+                                     Height="20"
+                                     Margin="3"
+                                     HorizontalAlignment="Left"
+                                     Fill="{DynamicResource MutedTextBrush}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Track" Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+                                <Setter TargetName="Track" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                                <Setter TargetName="Thumb" Property="Fill" Value="{DynamicResource OnPrimaryBrush}"/>
+                                <Setter TargetName="Thumb" Property="HorizontalAlignment" Value="Right"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style x:Key="NumberTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Padding" Value="11,9"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Language" Value="en-US"/>
+            <Setter Property="FlowDirection" Value="LeftToRight"/>
+            <Setter Property="TextAlignment" Value="Left"/>
+        </Style>
+    </Application.Resources>
+</Application>
