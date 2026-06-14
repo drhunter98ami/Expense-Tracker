@@ -12,10 +12,10 @@ namespace ExpenseTracker.ViewModels;
 public partial class AccountsViewModel : ObservableObject
 {
     [ObservableProperty]
-    private ObservableCollection<AccountItemViewModel> accounts = [];
+    private ObservableCollection<AccountGroupViewModel> accountGroups = [];
 
     [ObservableProperty]
-    private decimal totalNetWorth;
+    private decimal totalAssets;
 
     public AccountsViewModel()
     {
@@ -25,7 +25,8 @@ public partial class AccountsViewModel : ObservableObject
     [RelayCommand]
     private void AddAccount()
     {
-        AddAccountWindow dialog = new();
+        List<string> existingGroups = LoadExistingGroups();
+        AddAccountWindow dialog = new(existingGroups);
 
         if (Application.Current.MainWindow is Window owner)
         {
@@ -41,7 +42,8 @@ public partial class AccountsViewModel : ObservableObject
 
         Account account = new()
         {
-            Name = dialog.AccountName
+            Name = dialog.AccountName,
+            Group = dialog.AccountGroup
         };
 
         if (dialog.InitialBalance > 0 && dialog.CategoryId is int categoryId)
@@ -62,8 +64,25 @@ public partial class AccountsViewModel : ObservableObject
 
     public void RefreshLanguage()
     {
-        OnPropertyChanged(nameof(Accounts));
-        OnPropertyChanged(nameof(TotalNetWorth));
+        OnPropertyChanged(nameof(AccountGroups));
+        OnPropertyChanged(nameof(TotalAssets));
+    }
+
+    private static List<string> LoadExistingGroups()
+    {
+        using AppDbContext dbContext = new();
+
+        List<string> dbGroups = dbContext.Accounts
+            .Select(a => a.Group)
+            .Distinct()
+            .OrderBy(g => g)
+            .ToList();
+
+        List<string> defaults = ["Cash", "Savings"];
+
+        return defaults
+            .Concat(dbGroups.Where(g => !defaults.Contains(g)))
+            .ToList();
     }
 
     private void LoadAccounts()
@@ -71,37 +90,59 @@ public partial class AccountsViewModel : ObservableObject
         using AppDbContext dbContext = new();
 
         List<AccountItemViewModel> accountItems = dbContext.Accounts
-            .Include(account => account.Transactions)
-            .ThenInclude(transaction => transaction.Category)
-            .OrderBy(account => account.Name)
+            .Include(a => a.Transactions)
+            .ThenInclude(t => t.Category)
+            .OrderBy(a => a.Group)
+            .ThenBy(a => a.Name)
             .AsEnumerable()
-            .Select(account => new AccountItemViewModel(
-                account.Name,
-                CalculateBalance(account.Transactions)))
+            .Select(a => new AccountItemViewModel(
+                a.Name,
+                CalculateBalance(a.Transactions),
+                a.Group))
             .ToList();
 
-        Accounts = new ObservableCollection<AccountItemViewModel>(accountItems);
-        TotalNetWorth = accountItems.Sum(account => account.Balance);
+        List<AccountGroupViewModel> groups = accountItems
+            .GroupBy(a => a.Group)
+            .Select(g => new AccountGroupViewModel(g.Key, g))
+            .ToList();
+
+        AccountGroups = new ObservableCollection<AccountGroupViewModel>(groups);
+        TotalAssets = accountItems.Sum(a => a.Balance);
     }
 
     private static decimal CalculateBalance(IEnumerable<Transaction> transactions)
     {
-        return transactions.Sum(transaction =>
-            transaction.Category.Type == CategoryType.Income
-                ? transaction.Amount
-                : -transaction.Amount);
+        return transactions.Sum(t =>
+            t.Category.Type == CategoryType.Income
+                ? t.Amount
+                : -t.Amount);
+    }
+}
+
+public class AccountGroupViewModel
+{
+    public string GroupName { get; }
+    public ObservableCollection<AccountItemViewModel> Accounts { get; }
+    public decimal GroupTotal { get; }
+
+    public AccountGroupViewModel(string groupName, IEnumerable<AccountItemViewModel> accounts)
+    {
+        GroupName = groupName;
+        Accounts = new ObservableCollection<AccountItemViewModel>(accounts);
+        GroupTotal = Accounts.Sum(a => a.Balance);
     }
 }
 
 public class AccountItemViewModel
 {
-    public AccountItemViewModel(string name, decimal balance)
+    public AccountItemViewModel(string name, decimal balance, string group)
     {
         Name = name;
         Balance = balance;
+        Group = group;
     }
 
     public string Name { get; }
-
     public decimal Balance { get; }
+    public string Group { get; }
 }

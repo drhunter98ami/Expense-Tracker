@@ -9,27 +9,37 @@ public partial class AddAccountWindow : Window
 {
     public string AccountName { get; private set; } = string.Empty;
 
+    public string AccountGroup { get; private set; } = "Cash";
+
     public decimal InitialBalance { get; private set; }
 
     public int? CategoryId { get; private set; }
 
-    public AddAccountWindow()
+    public AddAccountWindow(List<string> existingGroups)
     {
         InitializeComponent();
         AppUiResources.ApplyToWindow(this);
-        LoadCategories();
+
+        foreach (string group in existingGroups)
+        {
+            AccountGroupComboBox.Items.Add(group);
+        }
+
+        AccountGroupComboBox.SelectedIndex = 0;
+
+        LoadIncomeCategories();
         InitialBalanceTextBox.Text = "0";
         AccountNameTextBox.Focus();
         UpdateCategoryState();
     }
 
-    private void LoadCategories()
+    private void LoadIncomeCategories()
     {
         using AppDbContext dbContext = new();
 
         List<Category> categories = dbContext.Categories
-            .Where(category => category.Type == CategoryType.Income)
-            .OrderBy(category => category.Name)
+            .Where(c => c.Type == CategoryType.Income)
+            .OrderBy(c => c.Name)
             .ToList();
 
         CategoryComboBox.ItemsSource = categories;
@@ -62,17 +72,15 @@ public partial class AddAccountWindow : Window
         bool requiresCategory = NumberFormatting.TryParseDecimal(InitialBalanceTextBox.Text, out decimal amount)
             && amount > 0;
         CategoryComboBox.IsEnabled = requiresCategory;
-        CategoryComboBox.Opacity = requiresCategory ? 1 : 0.55;
+        CategoryComboBox.Opacity = requiresCategory ? 1 : 0.5;
     }
 
     private void SaveButton_Click(object sender, RoutedEventArgs e)
     {
-        if (!TryReadForm())
+        if (TryReadForm())
         {
-            return;
+            DialogResult = true;
         }
-
-        DialogResult = true;
     }
 
     private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -92,6 +100,19 @@ public partial class AddAccountWindow : Window
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning);
             AccountNameTextBox.Focus();
+            return false;
+        }
+
+        string accountGroup = (AccountGroupComboBox.Text ?? string.Empty).Trim();
+
+        if (string.IsNullOrWhiteSpace(accountGroup))
+        {
+            MessageBox.Show(
+                AppUiResources.GetString("InvalidAccountGroupMessage"),
+                AppUiResources.GetString("InvalidDataTitle"),
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+            AccountGroupComboBox.Focus();
             return false;
         }
 
@@ -135,6 +156,7 @@ public partial class AddAccountWindow : Window
         }
 
         AccountName = accountName;
+        AccountGroup = accountGroup;
         InitialBalance = initialBalance;
         CategoryId = categoryId;
 

@@ -33,5 +33,16 @@ public partial class App : Application
         dbContext.Database.ExecuteSqlRaw("""
             INSERT OR IGNORE INTO AppSettings (Id, UsdToSypRate) VALUES (1, '15000')
             """);
+
+        try
+        {
+            dbContext.Database.ExecuteSqlRaw("""
+                ALTER TABLE Accounts ADD COLUMN "Group" TEXT NOT NULL DEFAULT 'Cash'
+                """);
+        }
+        catch
+        {
+            // Column already exists — safe to ignore
+        }
     }
 }

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="{DynamicResource AddAccountDialogTitle}"
         Width="440"
-        Height="480"
+        Height="530"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         Background="{DynamicResource AppBackgroundBrush}"
@@ -33,8 +33,7 @@
         </Style>
     </Window.Resources>
 
-    <Border Background="{DynamicResource AppBackgroundBrush}"
-            Padding="22">
+    <Border Background="{DynamicResource AppBackgroundBrush}" Padding="22">
         <Border Background="{DynamicResource SurfaceBrush}"
                 BorderBrush="{DynamicResource BorderBrush}"
                 BorderThickness="1"
@@ -47,44 +46,62 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
+                <!-- Dialog Title -->
                 <StackPanel Margin="0,0,0,16">
                     <TextBlock Text="{DynamicResource AddAccountDialogTitle}"
                                Foreground="{DynamicResource TextBrush}"
                                FontSize="24"
                                FontWeight="Bold"/>
-                    <Border Width="52"
-                            Height="4"
+                    <Border Width="52" Height="4"
                             HorizontalAlignment="Right"
                             Background="{DynamicResource PrimaryBrush}"
                             CornerRadius="2"
                             Margin="0,10,0,0"/>
                 </StackPanel>
 
+                <!-- Form Fields -->
                 <ScrollViewer Grid.Row="1"
                               VerticalScrollBarVisibility="Auto"
                               HorizontalScrollBarVisibility="Disabled"
-                              Padding="0,0,6,0">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+                              Padding="0,0,4,0">
+                    <StackPanel>
 
+                        <!-- Account Name -->
                         <StackPanel>
-                            <TextBlock Text="{DynamicResource AccountNameLabel}" Style="{StaticResource DialogLabelStyle}"/>
-                            <TextBox x:Name="AccountNameTextBox" Style="{StaticResource DialogTextBoxStyle}"/>
+                            <TextBlock Text="{DynamicResource AccountNameLabel}"
+                                       Style="{StaticResource DialogLabelStyle}"/>
+                            <TextBox x:Name="AccountNameTextBox"
+                                     Style="{StaticResource DialogTextBoxStyle}"/>
                         </StackPanel>
 
-                        <StackPanel Grid.Row="1" Margin="0,13,0,0">
-                            <TextBlock Text="{DynamicResource InitialBalanceLabel}" Style="{StaticResource DialogLabelStyle}"/>
+                        <!-- Account Group -->
+                        <StackPanel Margin="0,13,0,0">
+                            <TextBlock Text="{DynamicResource AccountGroupLabel}"
+                                       Style="{StaticResource DialogLabelStyle}"/>
+                            <ComboBox x:Name="AccountGroupComboBox"
+                                      IsEditable="True"
+                                      Style="{StaticResource DialogComboBoxStyle}"
+                                      MinHeight="40"/>
+                            <TextBlock Text="{DynamicResource AccountGroupHint}"
+                                       Foreground="{DynamicResource MutedTextBrush}"
+                                       FontSize="12"
+                                       Margin="0,6,0,0"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+
+                        <!-- Initial Balance -->
+                        <StackPanel Margin="0,13,0,0">
+                            <TextBlock Text="{DynamicResource InitialBalanceLabel}"
+                                       Style="{StaticResource DialogLabelStyle}"/>
                             <TextBox x:Name="InitialBalanceTextBox"
                                      Style="{StaticResource NumberTextBoxStyle}"
                                      TextChanged="InitialBalanceTextBox_TextChanged"/>
                         </StackPanel>
 
-                        <StackPanel Grid.Row="2" Margin="0,13,0,0">
-                            <TextBlock Text="{DynamicResource CategoryLabel}" Style="{StaticResource DialogLabelStyle}"/>
+                        <!-- Income Category (only relevant when balance > 0) -->
+                        <StackPanel Margin="0,13,0,0">
+                            <TextBlock Text="{DynamicResource CategoryLabel}"
+                                       Style="{StaticResource DialogLabelStyle}"/>
                             <ComboBox x:Name="CategoryComboBox"
                                       DisplayMemberPath="Name"
                                       SelectedValuePath="Id"
@@ -93,12 +110,14 @@
                             <TextBlock Text="{DynamicResource InitialBalanceCategoryHint}"
                                        Foreground="{DynamicResource MutedTextBrush}"
                                        FontSize="12"
-                                       Margin="0,8,0,0"
+                                       Margin="0,6,0,0"
                                        TextWrapping="Wrap"/>
                         </StackPanel>
-                    </Grid>
+
+                    </StackPanel>
                 </ScrollViewer>
 
+                <!-- Buttons -->
                 <StackPanel Grid.Row="2"
                             Orientation="Horizontal"
                             HorizontalAlignment="Left"

@@ -60,6 +60,11 @@
         <sys:String x:Key="ExpensesLabel">المصروفات</sys:String>
         <sys:String x:Key="NetLabel">الصافي</sys:String>
         <sys:String x:Key="NoTransactionsForDayText">لا توجد معاملات لهذا اليوم</sys:String>
+        <sys:String x:Key="TotalAssetsLabel">إجمالي الأصول</sys:String>
+        <sys:String x:Key="AccountGroupLabel">تصنيف الحساب</sys:String>
+        <sys:String x:Key="AccountGroupHint">اختر نقدي أو مدخرات، أو اكتب اسماً لإنشاء تصنيف جديد.</sys:String>
+        <sys:String x:Key="GroupTotalLabel">الإجمالي:</sys:String>
+        <sys:String x:Key="InvalidAccountGroupMessage">أدخل تصنيف الحساب.</sys:String>
 
         <SolidColorBrush x:Key="AppBackgroundBrush" Color="#F8FAFC"/>
         <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF"/>

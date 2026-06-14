@@ -126,6 +126,15 @@ public static class AppUiResources
         resources["NoTransactionsForDayText"] = isEnglish
             ? "No transactions for this day"
             : "لا توجد معاملات لهذا اليوم";
+        resources["TotalAssetsLabel"] = isEnglish ? "Total Assets" : "إجمالي الأصول";
+        resources["AccountGroupLabel"] = isEnglish ? "Account Category" : "تصنيف الحساب";
+        resources["AccountGroupHint"] = isEnglish
+            ? "Choose Cash or Savings, or type a name to create a new category."
+            : "اختر نقدي أو مدخرات، أو اكتب اسماً لإنشاء تصنيف جديد.";
+        resources["GroupTotalLabel"] = isEnglish ? "Total:" : "الإجمالي:";
+        resources["InvalidAccountGroupMessage"] = isEnglish
+            ? "Enter an account category."
+            : "أدخل تصنيف الحساب.";
     }
 
     private static void ApplyModeLabels(bool isEnglish, bool isDarkMode)
