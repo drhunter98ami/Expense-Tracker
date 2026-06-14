@@ -19,8 +19,10 @@ public partial class SettingsViewModel : ObservableObject
     [ObservableProperty]
     private string usdToSypRateText = string.Empty;
 
-    public ObservableCollection<CategoryItemViewModel> IncomeCategories { get; } = [];
+    [ObservableProperty]
+    private bool isUsd;
 
+    public ObservableCollection<CategoryItemViewModel> IncomeCategories { get; } = [];
     public ObservableCollection<CategoryItemViewModel> ExpenseCategories { get; } = [];
 
     public SettingsViewModel()
@@ -28,13 +30,24 @@ public partial class SettingsViewModel : ObservableObject
         LoadSettings();
     }
 
+    partial void OnIsUsdChanged(bool value)
+    {
+        string code = value ? "USD" : "SYP";
+        AppSettingsService.SaveCurrencyCode(code);
+        AppUiResources.ApplyCurrencySymbol(code);
+    }
+
+    [RelayCommand]
+    private void SelectSyp() => IsUsd = false;
+
+    [RelayCommand]
+    private void SelectUsd() => IsUsd = true;
+
     [RelayCommand]
     private void AddIncomeCategory()
     {
         if (!TryCreateCategory(NewIncomeCategoryName, CategoryType.Income))
-        {
             return;
-        }
 
         NewIncomeCategoryName = string.Empty;
         LoadCategories();
@@ -44,9 +57,7 @@ public partial class SettingsViewModel : ObservableObject
     private void AddExpenseCategory()
     {
         if (!TryCreateCategory(NewExpenseCategoryName, CategoryType.Expense))
-        {
             return;
-        }
 
         NewExpenseCategoryName = string.Empty;
         LoadCategories();
@@ -79,6 +90,7 @@ public partial class SettingsViewModel : ObservableObject
     {
         AppSetting settings = AppSettingsService.GetOrCreate();
         UsdToSypRateText = NumberFormatting.Format(settings.UsdToSypRate, "N2");
+        IsUsd = settings.CurrencyCode == "USD";
         LoadCategories();
     }
 
@@ -87,7 +99,7 @@ public partial class SettingsViewModel : ObservableObject
         using AppDbContext dbContext = new();
 
         List<Category> categories = dbContext.Categories
-            .OrderBy(category => category.Name)
+            .OrderBy(c => c.Name)
             .ToList();
 
         IncomeCategories.Clear();
@@ -98,13 +110,9 @@ public partial class SettingsViewModel : ObservableObject
             CategoryItemViewModel item = new(category.Id, category.Name);
 
             if (category.Type == CategoryType.Income)
-            {
                 IncomeCategories.Add(item);
-            }
             else
-            {
                 ExpenseCategories.Add(item);
-            }
         }
     }
 
@@ -125,9 +133,7 @@ public partial class SettingsViewModel : ObservableObject
         using AppDbContext dbContext = new();
 
         bool alreadyExists = dbContext.Categories
-            .Any(category =>
-                category.Type == type &&
-                category.Name.ToLower() == trimmedName.ToLower());
+            .Any(c => c.Type == type && c.Name.ToLower() == trimmedName.ToLower());
 
         if (alreadyExists)
         {
@@ -139,12 +145,7 @@ public partial class SettingsViewModel : ObservableObject
             return false;
         }
 
-        dbContext.Categories.Add(new Category
-        {
-            Name = trimmedName,
-            Type = type
-        });
-
+        dbContext.Categories.Add(new Category { Name = trimmedName, Type = type });
         dbContext.SaveChanges();
         return true;
     }
@@ -159,6 +160,5 @@ public class CategoryItemViewModel
     }
 
     public int Id { get; }
-
     public string Name { get; }
 }

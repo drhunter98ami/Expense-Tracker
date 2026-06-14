@@ -42,13 +42,28 @@ public partial class AccountsViewModel : ObservableObject
             Group = dialog.AccountGroup
         };
 
-        if (dialog.InitialBalance > 0 && dialog.CategoryId is int categoryId)
+        if (dialog.InitialBalance > 0)
         {
+            Category? firstIncomeCategory = dbContext.Categories
+                .Where(c => c.Type == CategoryType.Income)
+                .OrderBy(c => c.Name)
+                .FirstOrDefault();
+
+            if (firstIncomeCategory is null)
+            {
+                MessageBox.Show(
+                    AppUiResources.GetString("MissingIncomeCategoryMessage"),
+                    AppUiResources.GetString("InvalidDataTitle"),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
             account.Transactions.Add(new Transaction
             {
                 Amount = dialog.InitialBalance,
                 Date = DateTime.Today,
-                CategoryId = categoryId,
+                CategoryId = firstIncomeCategory.Id,
                 Description = AppUiResources.GetString("InitialBalanceDescription")
             });
         }
@@ -63,10 +78,14 @@ public partial class AccountsViewModel : ObservableObject
         LoadAccounts();
     }
 
+    public void RefreshAmounts()
+    {
+        LoadAccounts();
+    }
+
     private static List<string> LoadCustomGroups()
     {
         using AppDbContext dbContext = new();
-
         string[] builtIn = ["Cash", "Savings"];
 
         return dbContext.Accounts
@@ -117,9 +136,7 @@ public partial class AccountsViewModel : ObservableObject
     private static decimal CalculateBalance(IEnumerable<Transaction> transactions)
     {
         return transactions.Sum(t =>
-            t.Category.Type == CategoryType.Income
-                ? t.Amount
-                : -t.Amount);
+            t.Category.Type == CategoryType.Income ? t.Amount : -t.Amount);
     }
 }
 

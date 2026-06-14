@@ -17,6 +17,7 @@ public partial class MainViewModel : ObservableObject
 
     public MainViewModel()
     {
+        AppUiResources.CurrencySymbolChanged += RefreshCurrentViewModelAmounts;
         AppUiResources.Apply(isEnglish, isDarkMode);
         currentViewModel = new TransactionsViewModel();
     }
@@ -59,18 +60,21 @@ public partial class MainViewModel : ObservableObject
     private void RefreshCurrentViewModelLanguage()
     {
         if (CurrentViewModel is TransactionsViewModel transactionsViewModel)
-        {
             transactionsViewModel.RefreshLanguage();
-        }
 
         if (CurrentViewModel is AccountsViewModel accountsViewModel)
-        {
             accountsViewModel.RefreshLanguage();
-        }
 
         if (CurrentViewModel is SettingsViewModel settingsViewModel)
-        {
             settingsViewModel.RefreshLanguage();
-        }
+    }
+
+    private void RefreshCurrentViewModelAmounts()
+    {
+        if (CurrentViewModel is TransactionsViewModel transactionsViewModel)
+            transactionsViewModel.RefreshAmounts();
+
+        if (CurrentViewModel is AccountsViewModel accountsViewModel)
+            accountsViewModel.RefreshAmounts();
     }
 }

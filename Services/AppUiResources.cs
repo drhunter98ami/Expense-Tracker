@@ -9,12 +9,24 @@ public static class AppUiResources
     private static FlowDirection currentFlowDirection = FlowDirection.RightToLeft;
     private static XmlLanguage currentXmlLanguage = XmlLanguage.GetLanguage("ar-SA");
 
+    public static event Action? CurrencySymbolChanged;
+
     public static void Apply(bool isEnglish, bool isDarkMode)
     {
         ApplyLanguage(isEnglish);
         ApplyTheme(isDarkMode);
         ApplyModeLabels(isEnglish, isDarkMode);
+
+        string currencyCode = AppSettingsService.GetOrCreate().CurrencyCode;
+        SetCurrencySymbol(currencyCode);
+
         ApplyToOpenWindows();
+    }
+
+    public static void ApplyCurrencySymbol(string currencyCode)
+    {
+        SetCurrencySymbol(currencyCode);
+        CurrencySymbolChanged?.Invoke();
     }
 
     public static string GetString(string key)
@@ -26,6 +38,11 @@ public static class AppUiResources
     {
         window.FlowDirection = currentFlowDirection;
         window.Language = currentXmlLanguage;
+    }
+
+    private static void SetCurrencySymbol(string currencyCode)
+    {
+        Application.Current.Resources["CurrencySymbol"] = currencyCode == "USD" ? "$" : "ل.س";
     }
 
     private static void ApplyLanguage(bool isEnglish)
@@ -97,8 +114,8 @@ public static class AppUiResources
             : "أدخل اسم الحساب.";
         resources["SettingsTitle"] = isEnglish ? "Settings" : "الإعدادات";
         resources["SettingsSubtitle"] = isEnglish
-            ? "Manage categories and the USD to SYP exchange rate"
-            : "أدر التصنيفات وسعر صرف الدولار مقابل الليرة السورية";
+            ? "Manage categories, currency and exchange rate"
+            : "أدر التصنيفات والعملة وسعر الصرف";
         resources["IncomeCategoriesTitle"] = isEnglish ? "Income categories" : "تصنيفات الدخل";
         resources["ExpenseCategoriesTitle"] = isEnglish ? "Expense categories" : "تصنيفات المصروف";
         resources["AddCategoryText"] = isEnglish ? "Add" : "إضافة";
@@ -129,12 +146,12 @@ public static class AppUiResources
         resources["TotalAssetsLabel"] = isEnglish ? "Total Assets" : "إجمالي الأصول";
         resources["AccountGroupLabel"] = isEnglish ? "Account Category" : "تصنيف الحساب";
         resources["AccountGroupHint"] = isEnglish
-            ? "Choose Cash or Savings, or type a name to create a new category."
-            : "اختر نقدي أو مدخرات، أو اكتب اسماً لإنشاء تصنيف جديد.";
+            ? "Choose Cash or Savings, or add a new category below."
+            : "اختر نقدي أو مدخرات، أو أضف تصنيفاً جديداً أدناه.";
         resources["GroupTotalLabel"] = isEnglish ? "Total:" : "الإجمالي:";
         resources["InvalidAccountGroupMessage"] = isEnglish
-            ? "Enter an account category."
-            : "أدخل تصنيف الحساب.";
+            ? "Choose an account category."
+            : "اختر تصنيف الحساب.";
         resources["CashGroupName"] = isEnglish ? "Cash" : "نقدي";
         resources["SavingsGroupName"] = isEnglish ? "Savings" : "مدخرات";
         resources["NewCategoryPlaceholder"] = isEnglish ? "New category name…" : "اسم التصنيف الجديد…";
@@ -143,6 +160,12 @@ public static class AppUiResources
         resources["DeleteAllDataConfirmMessage"] = isEnglish
             ? "This will permanently delete all transactions, accounts, and categories. This cannot be undone. Continue?"
             : "سيتم حذف جميع المعاملات والحسابات والتصنيفات بشكل نهائي. لا يمكن التراجع عن هذا الإجراء. هل تريد المتابعة؟";
+        resources["CurrencySectionTitle"] = isEnglish ? "Currency" : "العملة";
+        resources["CurrencySectionSubtitle"] = isEnglish
+            ? "Choose the currency shown next to all amounts"
+            : "اختر العملة التي تظهر بجانب جميع المبالغ";
+        resources["SypCurrencyLabel"] = isEnglish ? "ل.س  SYP" : "ل.س  ليرة سورية";
+        resources["UsdCurrencyLabel"] = isEnglish ? "$  USD" : "$  دولار";
     }
 
     private static void ApplyModeLabels(bool isEnglish, bool isDarkMode)

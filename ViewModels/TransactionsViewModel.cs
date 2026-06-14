@@ -166,6 +166,20 @@ public partial class TransactionsViewModel : ObservableObject
         GroupedTransactions.Refresh();
         MonthlyGroupedTransactions.Refresh();
     }
+
+    public void RefreshAmounts()
+    {
+        foreach (TransactionItemViewModel item in _items)
+            item.RefreshAmount();
+
+        GroupedTransactions.Refresh();
+        MonthlyGroupedTransactions.Refresh();
+        FilterCalendarTransactions();
+
+        OnPropertyChanged(nameof(TotalIncome));
+        OnPropertyChanged(nameof(TotalExpenses));
+        OnPropertyChanged(nameof(NetTotal));
+    }
 }
 
 public partial class TransactionItemViewModel : ObservableObject
@@ -205,5 +219,10 @@ public partial class TransactionItemViewModel : ObservableObject
         OnPropertyChanged(nameof(CategoryName));
         OnPropertyChanged(nameof(AccountName));
         OnPropertyChanged(nameof(MonthGroup));
+    }
+
+    public void RefreshAmount()
+    {
+        OnPropertyChanged(nameof(Amount));
     }
 }
