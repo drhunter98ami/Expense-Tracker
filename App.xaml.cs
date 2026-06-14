@@ -40,9 +40,14 @@ public partial class App : Application
                 ALTER TABLE Accounts ADD COLUMN "Group" TEXT NOT NULL DEFAULT 'Cash'
                 """);
         }
-        catch
+        catch { }
+
+        try
         {
-            // Column already exists — safe to ignore
+            dbContext.Database.ExecuteSqlRaw("""
+                ALTER TABLE AppSettings ADD COLUMN CurrencyCode TEXT NOT NULL DEFAULT 'SYP'
+                """);
         }
+        catch { }
     }
 }

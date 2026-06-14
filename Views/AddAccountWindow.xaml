@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="{DynamicResource AddAccountDialogTitle}"
         Width="440"
-        Height="560"
+        Height="440"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         Background="{DynamicResource AppBackgroundBrush}"
@@ -74,14 +74,11 @@
                         <StackPanel Margin="0,14,0,0">
                             <TextBlock Text="{DynamicResource AccountGroupLabel}"
                                        Style="{StaticResource DialogLabelStyle}"/>
-
-                            <!-- Fixed categories: Cash, Savings + custom -->
                             <ComboBox x:Name="AccountGroupComboBox"
                                       DisplayMemberPath="DisplayName"
                                       SelectedValuePath="Key"
                                       Style="{StaticResource DialogComboBoxStyle}"
                                       MinHeight="40"/>
-
                             <!-- Add new custom category -->
                             <Border Background="{DynamicResource SurfaceAltBrush}"
                                     BorderBrush="{DynamicResource BorderBrush}"
@@ -102,13 +99,7 @@
                                              Background="{DynamicResource SurfaceBrush}"
                                              Foreground="{DynamicResource TextBrush}"
                                              BorderBrush="{DynamicResource BorderBrush}"
-                                             BorderThickness="1">
-                                        <TextBox.Style>
-                                            <Style TargetType="TextBox">
-                                                <Setter Property="Tag" Value="{DynamicResource NewCategoryPlaceholder}"/>
-                                            </Style>
-                                        </TextBox.Style>
-                                    </TextBox>
+                                             BorderThickness="1"/>
                                     <Button Grid.Column="2"
                                             Content="{DynamicResource AddCategoryText}"
                                             Click="AddCategoryButton_Click"
@@ -130,22 +121,6 @@
                             <TextBox x:Name="InitialBalanceTextBox"
                                      Style="{StaticResource NumberTextBoxStyle}"
                                      TextChanged="InitialBalanceTextBox_TextChanged"/>
-                        </StackPanel>
-
-                        <!-- Income Category (only for opening balance > 0) -->
-                        <StackPanel Margin="0,14,0,0">
-                            <TextBlock Text="{DynamicResource CategoryLabel}"
-                                       Style="{StaticResource DialogLabelStyle}"/>
-                            <ComboBox x:Name="CategoryComboBox"
-                                      DisplayMemberPath="Name"
-                                      SelectedValuePath="Id"
-                                      Style="{StaticResource DialogComboBoxStyle}"
-                                      MinHeight="40"/>
-                            <TextBlock Text="{DynamicResource InitialBalanceCategoryHint}"
-                                       Foreground="{DynamicResource MutedTextBrush}"
-                                       FontSize="12"
-                                       Margin="0,6,0,0"
-                                       TextWrapping="Wrap"/>
                         </StackPanel>
 
                     </StackPanel>

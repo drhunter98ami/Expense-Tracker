@@ -1,6 +1,5 @@
 using System.Windows;
 using System.Windows.Controls;
-using ExpenseTracker.Models;
 using ExpenseTracker.Services;
 
 namespace ExpenseTracker.Views;
@@ -22,19 +21,14 @@ public partial class AddAccountWindow : Window
     public string AccountName { get; private set; } = string.Empty;
     public string AccountGroup { get; private set; } = "Cash";
     public decimal InitialBalance { get; private set; }
-    public int? CategoryId { get; private set; }
 
     public AddAccountWindow(List<string> existingCustomGroups)
     {
         InitializeComponent();
         AppUiResources.ApplyToWindow(this);
-
         PopulateGroupComboBox(existingCustomGroups);
-        LoadIncomeCategories();
-
         InitialBalanceTextBox.Text = "0";
         AccountNameTextBox.Focus();
-        UpdateCategoryState();
     }
 
     private void PopulateGroupComboBox(List<string> existingCustomGroups)
@@ -46,34 +40,15 @@ public partial class AddAccountWindow : Window
         AccountGroupComboBox.Items.Add(new AccountGroupOption("Savings", savingsLabel));
 
         foreach (string custom in existingCustomGroups)
-        {
             AccountGroupComboBox.Items.Add(new AccountGroupOption(custom, custom));
-        }
 
         AccountGroupComboBox.SelectedIndex = 0;
-    }
-
-    private void LoadIncomeCategories()
-    {
-        using AppDbContext dbContext = new();
-
-        List<Category> categories = dbContext.Categories
-            .Where(c => c.Type == CategoryType.Income)
-            .OrderBy(c => c.Name)
-            .ToList();
-
-        CategoryComboBox.ItemsSource = categories;
-
-        if (categories.Count > 0)
-            CategoryComboBox.SelectedIndex = 0;
     }
 
     private void AddCategoryButton_Click(object sender, RoutedEventArgs e)
     {
         string newName = NewCategoryTextBox.Text.Trim();
-
-        if (string.IsNullOrWhiteSpace(newName))
-            return;
+        if (string.IsNullOrWhiteSpace(newName)) return;
 
         foreach (AccountGroupOption existing in AccountGroupComboBox.Items)
         {
@@ -96,7 +71,6 @@ public partial class AddAccountWindow : Window
         if (sender is TextBox textBox)
         {
             string normalized = NumberFormatting.NormalizeDigits(textBox.Text);
-
             if (normalized != textBox.Text)
             {
                 int caretIndex = textBox.CaretIndex;
@@ -104,22 +78,11 @@ public partial class AddAccountWindow : Window
                 textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length);
             }
         }
-
-        UpdateCategoryState();
-    }
-
-    private void UpdateCategoryState()
-    {
-        bool requiresCategory = NumberFormatting.TryParseDecimal(InitialBalanceTextBox.Text, out decimal amount)
-            && amount > 0;
-        CategoryComboBox.IsEnabled = requiresCategory;
-        CategoryComboBox.Opacity = requiresCategory ? 1 : 0.5;
     }
 
     private void SaveButton_Click(object sender, RoutedEventArgs e)
     {
-        if (TryReadForm())
-            DialogResult = true;
+        if (TryReadForm()) DialogResult = true;
     }
 
     private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -136,8 +99,7 @@ public partial class AddAccountWindow : Window
             MessageBox.Show(
                 AppUiResources.GetString("InvalidAccountNameMessage"),
                 AppUiResources.GetString("InvalidDataTitle"),
-                MessageBoxButton.OK,
-                MessageBoxImage.Warning);
+                MessageBoxButton.OK, MessageBoxImage.Warning);
             AccountNameTextBox.Focus();
             return false;
         }
@@ -147,8 +109,7 @@ public partial class AddAccountWindow : Window
             MessageBox.Show(
                 AppUiResources.GetString("InvalidAccountGroupMessage"),
                 AppUiResources.GetString("InvalidDataTitle"),
-                MessageBoxButton.OK,
-                MessageBoxImage.Warning);
+                MessageBoxButton.OK, MessageBoxImage.Warning);
             return false;
         }
 
@@ -157,45 +118,14 @@ public partial class AddAccountWindow : Window
             MessageBox.Show(
                 AppUiResources.GetString("InvalidInitialBalanceMessage"),
                 AppUiResources.GetString("InvalidDataTitle"),
-                MessageBoxButton.OK,
-                MessageBoxImage.Warning);
+                MessageBoxButton.OK, MessageBoxImage.Warning);
             InitialBalanceTextBox.Focus();
             return false;
-        }
-
-        int? categoryId = null;
-
-        if (initialBalance > 0)
-        {
-            if (CategoryComboBox.Items.Count == 0)
-            {
-                MessageBox.Show(
-                    AppUiResources.GetString("MissingIncomeCategoryMessage"),
-                    AppUiResources.GetString("InvalidDataTitle"),
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-                return false;
-            }
-
-            if (CategoryComboBox.SelectedValue is not int selectedCategoryId)
-            {
-                MessageBox.Show(
-                    AppUiResources.GetString("MissingCategoryMessage"),
-                    AppUiResources.GetString("InvalidDataTitle"),
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-                CategoryComboBox.Focus();
-                return false;
-            }
-
-            categoryId = selectedCategoryId;
         }
 
         AccountName = accountName;
         AccountGroup = selectedGroup.Key;
         InitialBalance = initialBalance;
-        CategoryId = categoryId;
-
         return true;
     }
 }
