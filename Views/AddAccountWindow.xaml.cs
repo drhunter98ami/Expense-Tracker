@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using ExpenseTracker.Services;
 
 namespace ExpenseTracker.Views;
@@ -18,8 +19,11 @@ public class AccountGroupOption
 
 public partial class AddAccountWindow : Window
 {
+    private string _accountCurrency = "SYP";
+
     public string AccountName { get; private set; } = string.Empty;
     public string AccountGroup { get; private set; } = "Cash";
+    public string AccountCurrency { get; private set; } = "SYP";
     public decimal InitialBalance { get; private set; }
 
     public AddAccountWindow(List<string> existingCustomGroups)
@@ -29,6 +33,7 @@ public partial class AddAccountWindow : Window
         PopulateGroupComboBox(existingCustomGroups);
         InitialBalanceTextBox.Text = "0";
         AccountNameTextBox.Focus();
+        UpdateCurrencyButtons();
     }
 
     private void PopulateGroupComboBox(List<string> existingCustomGroups)
@@ -43,6 +48,32 @@ public partial class AddAccountWindow : Window
             AccountGroupComboBox.Items.Add(new AccountGroupOption(custom, custom));
 
         AccountGroupComboBox.SelectedIndex = 0;
+    }
+
+    private void SypButton_Click(object sender, RoutedEventArgs e)
+    {
+        _accountCurrency = "SYP";
+        UpdateCurrencyButtons();
+    }
+
+    private void UsdButton_Click(object sender, RoutedEventArgs e)
+    {
+        _accountCurrency = "USD";
+        UpdateCurrencyButtons();
+    }
+
+    private void UpdateCurrencyButtons()
+    {
+        Brush primary = Application.Current.Resources["PrimaryBrush"] as Brush ?? Brushes.Blue;
+        Brush surfaceAlt = Application.Current.Resources["SurfaceAltBrush"] as Brush ?? Brushes.LightGray;
+        Brush mutedText = Application.Current.Resources["MutedTextBrush"] as Brush ?? Brushes.Gray;
+
+        bool isSyp = _accountCurrency == "SYP";
+
+        SypButton.Background = isSyp ? primary : surfaceAlt;
+        SypButton.Foreground = isSyp ? Brushes.White : mutedText;
+        UsdButton.Background = isSyp ? surfaceAlt : primary;
+        UsdButton.Foreground = isSyp ? mutedText : Brushes.White;
     }
 
     private void AddCategoryButton_Click(object sender, RoutedEventArgs e)
@@ -125,6 +156,7 @@ public partial class AddAccountWindow : Window
 
         AccountName = accountName;
         AccountGroup = selectedGroup.Key;
+        AccountCurrency = _accountCurrency;
         InitialBalance = initialBalance;
         return true;
     }

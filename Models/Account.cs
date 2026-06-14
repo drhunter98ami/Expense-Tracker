@@ -8,5 +8,7 @@ public class Account
 
     public string Group { get; set; } = "Cash";
 
+    public string Currency { get; set; } = "SYP";
+
     public ICollection<Transaction> Transactions { get; set; } = [];
 }

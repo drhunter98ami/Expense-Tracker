@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="{DynamicResource AddAccountDialogTitle}"
         Width="440"
-        Height="440"
+        Height="510"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         Background="{DynamicResource AppBackgroundBrush}"
@@ -13,21 +13,6 @@
             <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Margin" Value="0,0,0,6"/>
-        </Style>
-        <Style x:Key="DialogTextBoxStyle" TargetType="TextBox">
-            <Setter Property="Padding" Value="11,9"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-        </Style>
-        <Style x:Key="DialogComboBoxStyle" TargetType="ComboBox">
-            <Setter Property="Padding" Value="9"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
         </Style>
     </Window.Resources>
 
@@ -63,21 +48,28 @@
                     <StackPanel>
 
                         <!-- Account Name -->
-                        <StackPanel>
+                        <StackPanel Margin="0,0,0,14">
                             <TextBlock Text="{DynamicResource AccountNameLabel}"
                                        Style="{StaticResource DialogLabelStyle}"/>
                             <TextBox x:Name="AccountNameTextBox"
-                                     Style="{StaticResource DialogTextBoxStyle}"/>
+                                     Padding="11,9" FontSize="14"
+                                     Background="{DynamicResource SurfaceBrush}"
+                                     Foreground="{DynamicResource TextBrush}"
+                                     BorderBrush="{DynamicResource BorderBrush}"
+                                     BorderThickness="1"/>
                         </StackPanel>
 
-                        <!-- Account Category -->
-                        <StackPanel Margin="0,14,0,0">
+                        <!-- Account Group -->
+                        <StackPanel Margin="0,0,0,14">
                             <TextBlock Text="{DynamicResource AccountGroupLabel}"
                                        Style="{StaticResource DialogLabelStyle}"/>
                             <ComboBox x:Name="AccountGroupComboBox"
                                       DisplayMemberPath="DisplayName"
                                       SelectedValuePath="Key"
-                                      Style="{StaticResource DialogComboBoxStyle}"
+                                      Padding="9" FontSize="14"
+                                      Background="{DynamicResource SurfaceBrush}"
+                                      Foreground="{DynamicResource TextBrush}"
+                                      BorderBrush="{DynamicResource BorderBrush}"
                                       MinHeight="40"/>
                             <!-- Add new custom category -->
                             <Border Background="{DynamicResource SurfaceAltBrush}"
@@ -94,8 +86,7 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBox x:Name="NewCategoryTextBox"
                                              Grid.Column="0"
-                                             Padding="8,7"
-                                             FontSize="13"
+                                             Padding="8,7" FontSize="13"
                                              Background="{DynamicResource SurfaceBrush}"
                                              Foreground="{DynamicResource TextBrush}"
                                              BorderBrush="{DynamicResource BorderBrush}"
@@ -103,8 +94,7 @@
                                     <Button Grid.Column="2"
                                             Content="{DynamicResource AddCategoryText}"
                                             Click="AddCategoryButton_Click"
-                                            Padding="14,7"
-                                            FontSize="13"
+                                            Padding="14,7" FontSize="13"
                                             FontWeight="SemiBold"
                                             Cursor="Hand"
                                             Background="{DynamicResource PrimaryBrush}"
@@ -114,8 +104,66 @@
                             </Border>
                         </StackPanel>
 
-                        <!-- Initial Balance -->
-                        <StackPanel Margin="0,14,0,0">
+                        <!-- Account Currency -->
+                        <StackPanel Margin="0,0,0,14">
+                            <TextBlock Text="{DynamicResource AccountCurrencyLabel}"
+                                       Style="{StaticResource DialogLabelStyle}"/>
+                            <Border Background="{DynamicResource SurfaceAltBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="12"
+                                    Padding="4">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button x:Name="SypButton"
+                                            Grid.Column="0"
+                                            Content="ل.س  SYP"
+                                            Click="SypButton_Click"
+                                            FontSize="13" FontWeight="SemiBold"
+                                            Padding="0,9"
+                                            BorderThickness="0"
+                                            Cursor="Hand">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="Bg"
+                                                        Background="{TemplateBinding Background}"
+                                                        CornerRadius="9"
+                                                        Padding="{TemplateBinding Padding}">
+                                                    <ContentPresenter HorizontalAlignment="Center"
+                                                                      VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                    <Button x:Name="UsdButton"
+                                            Grid.Column="1"
+                                            Content="$  USD"
+                                            Click="UsdButton_Click"
+                                            FontSize="13" FontWeight="SemiBold"
+                                            Padding="0,9"
+                                            BorderThickness="0"
+                                            Cursor="Hand">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="Bg"
+                                                        Background="{TemplateBinding Background}"
+                                                        CornerRadius="9"
+                                                        Padding="{TemplateBinding Padding}">
+                                                    <ContentPresenter HorizontalAlignment="Center"
+                                                                      VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- Opening Balance -->
+                        <StackPanel>
                             <TextBlock Text="{DynamicResource InitialBalanceLabel}"
                                        Style="{StaticResource DialogLabelStyle}"/>
                             <TextBox x:Name="InitialBalanceTextBox"

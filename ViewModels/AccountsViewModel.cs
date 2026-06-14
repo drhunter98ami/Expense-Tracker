@@ -39,31 +39,33 @@ public partial class AccountsViewModel : ObservableObject
         Account account = new()
         {
             Name = dialog.AccountName,
-            Group = dialog.AccountGroup
+            Group = dialog.AccountGroup,
+            Currency = dialog.AccountCurrency
         };
 
         if (dialog.InitialBalance > 0)
         {
-            Category? firstIncomeCategory = dbContext.Categories
+            Category? incomeCategory = dbContext.Categories
                 .Where(c => c.Type == CategoryType.Income)
                 .OrderBy(c => c.Name)
                 .FirstOrDefault();
 
-            if (firstIncomeCategory is null)
+            if (incomeCategory is null)
             {
-                MessageBox.Show(
-                    AppUiResources.GetString("MissingIncomeCategoryMessage"),
-                    AppUiResources.GetString("InvalidDataTitle"),
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-                return;
+                incomeCategory = new Category
+                {
+                    Name = AppUiResources.GetString("InitialBalanceDescription"),
+                    Type = CategoryType.Income
+                };
+                dbContext.Categories.Add(incomeCategory);
+                dbContext.SaveChanges();
             }
 
             account.Transactions.Add(new Transaction
             {
                 Amount = dialog.InitialBalance,
                 Date = DateTime.Today,
-                CategoryId = firstIncomeCategory.Id,
+                CategoryId = incomeCategory.Id,
                 Description = AppUiResources.GetString("InitialBalanceDescription")
             });
         }
@@ -117,7 +119,8 @@ public partial class AccountsViewModel : ObservableObject
             .Select(a => new AccountItemViewModel(
                 a.Name,
                 CalculateBalance(a.Transactions),
-                a.Group))
+                a.Group,
+                a.Currency))
             .ToList();
 
         string[] groupOrder = ["Cash", "Savings"];
@@ -158,14 +161,20 @@ public class AccountGroupViewModel
 
 public class AccountItemViewModel
 {
-    public AccountItemViewModel(string name, decimal balance, string group)
+    public AccountItemViewModel(string name, decimal balance, string group, string currency)
     {
         Name = name;
         Balance = balance;
         Group = group;
+        Currency = currency;
     }
 
     public string Name { get; }
     public decimal Balance { get; }
     public string Group { get; }
+    public string Currency { get; }
+    public string CurrencySymbol => Currency == "USD" ? "$" : "ل.س";
+
+    public string FormattedBalance =>
+        $"{NumberFormatting.Format(Balance, "N2")} {CurrencySymbol}";
 }

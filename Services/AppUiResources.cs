@@ -166,6 +166,7 @@ public static class AppUiResources
             : "اختر العملة التي تظهر بجانب جميع المبالغ";
         resources["SypCurrencyLabel"] = isEnglish ? "ل.س  SYP" : "ل.س  ليرة سورية";
         resources["UsdCurrencyLabel"] = isEnglish ? "$  USD" : "$  دولار";
+        resources["AccountCurrencyLabel"] = isEnglish ? "Account Currency" : "عملة الحساب";
     }
 
     private static void ApplyModeLabels(bool isEnglish, bool isDarkMode)

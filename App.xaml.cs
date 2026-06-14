@@ -49,5 +49,13 @@ public partial class App : Application
                 """);
         }
         catch { }
+
+        try
+        {
+            dbContext.Database.ExecuteSqlRaw("""
+                ALTER TABLE Accounts ADD COLUMN Currency TEXT NOT NULL DEFAULT 'SYP'
+                """);
+        }
+        catch { }
     }
 }
