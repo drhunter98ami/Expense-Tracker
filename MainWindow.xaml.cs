@@ -47,6 +47,27 @@ public partial class MainWindow : Window
         NavigateTo(_settingsView, viewModel.CurrentViewModel, SettingsButton);
     }
 
+    private void DeleteAllDataButton_Click(object sender, RoutedEventArgs e)
+    {
+        MessageBoxResult result = MessageBox.Show(
+            AppUiResources.GetString("DeleteAllDataConfirmMessage"),
+            AppUiResources.GetString("DeleteAllDataConfirmTitle"),
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Warning);
+
+        if (result != MessageBoxResult.Yes)
+            return;
+
+        using AppDbContext dbContext = new();
+        dbContext.Transactions.RemoveRange(dbContext.Transactions);
+        dbContext.Accounts.RemoveRange(dbContext.Accounts);
+        dbContext.Categories.RemoveRange(dbContext.Categories);
+        dbContext.SaveChanges();
+
+        viewModel.ShowTransactionsCommand.Execute(null);
+        NavigateTo(_transactionsView, viewModel.CurrentViewModel, TransactionsButton);
+    }
+
     private void NavigateTo(UserControl view, object currentViewModel, Button activeButton)
     {
         view.DataContext = currentViewModel;

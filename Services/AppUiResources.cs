@@ -135,6 +135,14 @@ public static class AppUiResources
         resources["InvalidAccountGroupMessage"] = isEnglish
             ? "Enter an account category."
             : "أدخل تصنيف الحساب.";
+        resources["CashGroupName"] = isEnglish ? "Cash" : "نقدي";
+        resources["SavingsGroupName"] = isEnglish ? "Savings" : "مدخرات";
+        resources["NewCategoryPlaceholder"] = isEnglish ? "New category name…" : "اسم التصنيف الجديد…";
+        resources["DeleteAllDataText"] = isEnglish ? "🗑  Delete All Data" : "🗑  حذف جميع البيانات";
+        resources["DeleteAllDataConfirmTitle"] = isEnglish ? "Delete All Data" : "حذف جميع البيانات";
+        resources["DeleteAllDataConfirmMessage"] = isEnglish
+            ? "This will permanently delete all transactions, accounts, and categories. This cannot be undone. Continue?"
+            : "سيتم حذف جميع المعاملات والحسابات والتصنيفات بشكل نهائي. لا يمكن التراجع عن هذا الإجراء. هل تريد المتابعة؟";
     }
 
     private static void ApplyModeLabels(bool isEnglish, bool isDarkMode)

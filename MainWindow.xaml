@@ -31,80 +31,74 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
+                <!-- App Logo + Title -->
                 <StackPanel>
-                    <Border Width="46"
-                            Height="46"
+                    <Border Width="46" Height="46"
                             HorizontalAlignment="Right"
                             Background="{DynamicResource PrimaryBrush}"
                             CornerRadius="14"
                             Margin="0,0,0,14">
                         <TextBlock Text="₪"
                                    Foreground="{DynamicResource OnPrimaryBrush}"
-                                   FontSize="24"
-                                   FontWeight="Bold"
+                                   FontSize="24" FontWeight="Bold"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
                     </Border>
-
                     <TextBlock Text="{DynamicResource AppTitle}"
                                Foreground="{DynamicResource TextBrush}"
-                               FontSize="21"
-                               FontWeight="Bold"/>
-
+                               FontSize="21" FontWeight="Bold"/>
                     <TextBlock Text="{DynamicResource AppSubtitle}"
                                Foreground="{DynamicResource MutedTextBrush}"
                                FontSize="13"
                                Margin="0,6,0,26"/>
                 </StackPanel>
 
+                <!-- Nav Buttons -->
                 <StackPanel Grid.Row="1">
                     <Button x:Name="TransactionsButton"
                             Content="{DynamicResource TransactionsNavText}"
                             Click="TransactionsButton_Click"
                             Style="{StaticResource NavButtonStyle}"
                             Margin="0,0,0,8"/>
-
                     <Button x:Name="StatsButton"
                             Content="{DynamicResource StatsNavText}"
                             Click="StatsButton_Click"
                             Style="{StaticResource NavButtonStyle}"
                             Margin="0,0,0,8"/>
-
                     <Button x:Name="AccountsButton"
                             Content="{DynamicResource AccountsNavText}"
                             Click="AccountsButton_Click"
                             Style="{StaticResource NavButtonStyle}"
                             Margin="0,0,0,8"/>
-
                     <Button x:Name="SettingsButton"
                             Content="{DynamicResource SettingsNavText}"
                             Click="SettingsButton_Click"
                             Style="{StaticResource NavButtonStyle}"/>
                 </StackPanel>
 
+                <!-- Bottom: Language, Theme, Delete All -->
                 <StackPanel Grid.Row="2">
+
+                    <!-- Language Toggle -->
                     <Border Background="{DynamicResource SurfaceAltBrush}"
                             BorderBrush="{DynamicResource BorderBrush}"
                             BorderThickness="1"
                             CornerRadius="14"
                             Padding="14"
-                            Margin="0,0,0,10">
+                            Margin="0,0,0,8">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-
                             <StackPanel>
                                 <TextBlock Text="{DynamicResource LanguageLabel}"
                                            Foreground="{DynamicResource TextBrush}"
                                            FontWeight="SemiBold"/>
                                 <TextBlock Text="{DynamicResource LanguageOptionText}"
                                            Foreground="{DynamicResource MutedTextBrush}"
-                                           FontSize="12"
-                                           Margin="0,3,0,0"/>
+                                           FontSize="12" Margin="0,3,0,0"/>
                             </StackPanel>
-
                             <CheckBox Grid.Column="1"
                                       IsChecked="{Binding IsEnglish, Mode=TwoWay}"
                                       Style="{StaticResource ToggleSwitchStyle}"
@@ -112,33 +106,60 @@
                         </Grid>
                     </Border>
 
+                    <!-- Theme Toggle -->
                     <Border Background="{DynamicResource SurfaceAltBrush}"
                             BorderBrush="{DynamicResource BorderBrush}"
                             BorderThickness="1"
                             CornerRadius="14"
-                            Padding="14">
+                            Padding="14"
+                            Margin="0,0,0,8">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-
                             <StackPanel>
                                 <TextBlock Text="{DynamicResource ThemeLabel}"
                                            Foreground="{DynamicResource TextBrush}"
                                            FontWeight="SemiBold"/>
                                 <TextBlock Text="{DynamicResource ThemeOptionText}"
                                            Foreground="{DynamicResource MutedTextBrush}"
-                                           FontSize="12"
-                                           Margin="0,3,0,0"/>
+                                           FontSize="12" Margin="0,3,0,0"/>
                             </StackPanel>
-
                             <CheckBox Grid.Column="1"
                                       IsChecked="{Binding IsDarkMode, Mode=TwoWay}"
                                       Style="{StaticResource ToggleSwitchStyle}"
                                       VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
+
+                    <!-- Delete All Data -->
+                    <Button Content="{DynamicResource DeleteAllDataText}"
+                            Click="DeleteAllDataButton_Click"
+                            Cursor="Hand"
+                            FontSize="13"
+                            FontWeight="SemiBold"
+                            Padding="14,10"
+                            BorderThickness="0"
+                            Background="#FEE2E2"
+                            Foreground="#DC2626">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="12"
+                                        Padding="{TemplateBinding Padding}">
+                                    <ContentPresenter HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#FECACA"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
                 </StackPanel>
             </Grid>
         </Border>

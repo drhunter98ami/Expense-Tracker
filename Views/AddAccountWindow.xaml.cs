@@ -5,32 +5,52 @@ using ExpenseTracker.Services;
 
 namespace ExpenseTracker.Views;
 
+public class AccountGroupOption
+{
+    public string Key { get; }
+    public string DisplayName { get; }
+
+    public AccountGroupOption(string key, string displayName)
+    {
+        Key = key;
+        DisplayName = displayName;
+    }
+}
+
 public partial class AddAccountWindow : Window
 {
     public string AccountName { get; private set; } = string.Empty;
-
     public string AccountGroup { get; private set; } = "Cash";
-
     public decimal InitialBalance { get; private set; }
-
     public int? CategoryId { get; private set; }
 
-    public AddAccountWindow(List<string> existingGroups)
+    public AddAccountWindow(List<string> existingCustomGroups)
     {
         InitializeComponent();
         AppUiResources.ApplyToWindow(this);
 
-        foreach (string group in existingGroups)
-        {
-            AccountGroupComboBox.Items.Add(group);
-        }
-
-        AccountGroupComboBox.SelectedIndex = 0;
-
+        PopulateGroupComboBox(existingCustomGroups);
         LoadIncomeCategories();
+
         InitialBalanceTextBox.Text = "0";
         AccountNameTextBox.Focus();
         UpdateCategoryState();
+    }
+
+    private void PopulateGroupComboBox(List<string> existingCustomGroups)
+    {
+        string cashLabel = AppUiResources.GetString("CashGroupName");
+        string savingsLabel = AppUiResources.GetString("SavingsGroupName");
+
+        AccountGroupComboBox.Items.Add(new AccountGroupOption("Cash", cashLabel));
+        AccountGroupComboBox.Items.Add(new AccountGroupOption("Savings", savingsLabel));
+
+        foreach (string custom in existingCustomGroups)
+        {
+            AccountGroupComboBox.Items.Add(new AccountGroupOption(custom, custom));
+        }
+
+        AccountGroupComboBox.SelectedIndex = 0;
     }
 
     private void LoadIncomeCategories()
@@ -45,9 +65,30 @@ public partial class AddAccountWindow : Window
         CategoryComboBox.ItemsSource = categories;
 
         if (categories.Count > 0)
-        {
             CategoryComboBox.SelectedIndex = 0;
+    }
+
+    private void AddCategoryButton_Click(object sender, RoutedEventArgs e)
+    {
+        string newName = NewCategoryTextBox.Text.Trim();
+
+        if (string.IsNullOrWhiteSpace(newName))
+            return;
+
+        foreach (AccountGroupOption existing in AccountGroupComboBox.Items)
+        {
+            if (existing.Key.Equals(newName, StringComparison.OrdinalIgnoreCase))
+            {
+                AccountGroupComboBox.SelectedItem = existing;
+                NewCategoryTextBox.Clear();
+                return;
+            }
         }
+
+        AccountGroupOption newOption = new(newName, newName);
+        AccountGroupComboBox.Items.Add(newOption);
+        AccountGroupComboBox.SelectedItem = newOption;
+        NewCategoryTextBox.Clear();
     }
 
     private void InitialBalanceTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -78,9 +119,7 @@ public partial class AddAccountWindow : Window
     private void SaveButton_Click(object sender, RoutedEventArgs e)
     {
         if (TryReadForm())
-        {
             DialogResult = true;
-        }
     }
 
     private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -103,16 +142,13 @@ public partial class AddAccountWindow : Window
             return false;
         }
 
-        string accountGroup = (AccountGroupComboBox.Text ?? string.Empty).Trim();
-
-        if (string.IsNullOrWhiteSpace(accountGroup))
+        if (AccountGroupComboBox.SelectedItem is not AccountGroupOption selectedGroup)
         {
             MessageBox.Show(
                 AppUiResources.GetString("InvalidAccountGroupMessage"),
                 AppUiResources.GetString("InvalidDataTitle"),
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning);
-            AccountGroupComboBox.Focus();
             return false;
         }
 
@@ -156,7 +192,7 @@ public partial class AddAccountWindow : Window
         }
 
         AccountName = accountName;
-        AccountGroup = accountGroup;
+        AccountGroup = selectedGroup.Key;
         InitialBalance = initialBalance;
         CategoryId = categoryId;
 

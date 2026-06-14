@@ -25,18 +25,14 @@ public partial class AccountsViewModel : ObservableObject
     [RelayCommand]
     private void AddAccount()
     {
-        List<string> existingGroups = LoadExistingGroups();
-        AddAccountWindow dialog = new(existingGroups);
+        List<string> customGroups = LoadCustomGroups();
+        AddAccountWindow dialog = new(customGroups);
 
         if (Application.Current.MainWindow is Window owner)
-        {
             dialog.Owner = owner;
-        }
 
         if (dialog.ShowDialog() != true)
-        {
             return;
-        }
 
         using AppDbContext dbContext = new();
 
@@ -64,26 +60,30 @@ public partial class AccountsViewModel : ObservableObject
 
     public void RefreshLanguage()
     {
-        OnPropertyChanged(nameof(AccountGroups));
-        OnPropertyChanged(nameof(TotalAssets));
+        LoadAccounts();
     }
 
-    private static List<string> LoadExistingGroups()
+    private static List<string> LoadCustomGroups()
     {
         using AppDbContext dbContext = new();
 
-        List<string> dbGroups = dbContext.Accounts
+        string[] builtIn = ["Cash", "Savings"];
+
+        return dbContext.Accounts
             .Select(a => a.Group)
             .Distinct()
+            .AsEnumerable()
+            .Where(g => !builtIn.Contains(g))
             .OrderBy(g => g)
             .ToList();
-
-        List<string> defaults = ["Cash", "Savings"];
-
-        return defaults
-            .Concat(dbGroups.Where(g => !defaults.Contains(g)))
-            .ToList();
     }
+
+    private static string GetGroupDisplayName(string key) => key switch
+    {
+        "Cash" => AppUiResources.GetString("CashGroupName"),
+        "Savings" => AppUiResources.GetString("SavingsGroupName"),
+        _ => key
+    };
 
     private void LoadAccounts()
     {
@@ -101,9 +101,13 @@ public partial class AccountsViewModel : ObservableObject
                 a.Group))
             .ToList();
 
+        string[] groupOrder = ["Cash", "Savings"];
+
         List<AccountGroupViewModel> groups = accountItems
             .GroupBy(a => a.Group)
-            .Select(g => new AccountGroupViewModel(g.Key, g))
+            .OrderBy(g => Array.IndexOf(groupOrder, g.Key) is int i && i >= 0 ? i : int.MaxValue)
+            .ThenBy(g => g.Key)
+            .Select(g => new AccountGroupViewModel(g.Key, GetGroupDisplayName(g.Key), g))
             .ToList();
 
         AccountGroups = new ObservableCollection<AccountGroupViewModel>(groups);
@@ -122,12 +126,14 @@ public partial class AccountsViewModel : ObservableObject
 public class AccountGroupViewModel
 {
     public string GroupName { get; }
+    public string GroupDisplayName { get; }
     public ObservableCollection<AccountItemViewModel> Accounts { get; }
     public decimal GroupTotal { get; }
 
-    public AccountGroupViewModel(string groupName, IEnumerable<AccountItemViewModel> accounts)
+    public AccountGroupViewModel(string groupName, string groupDisplayName, IEnumerable<AccountItemViewModel> accounts)
     {
         GroupName = groupName;
+        GroupDisplayName = groupDisplayName;
         Accounts = new ObservableCollection<AccountItemViewModel>(accounts);
         GroupTotal = Accounts.Sum(a => a.Balance);
     }

@@ -65,6 +65,12 @@
         <sys:String x:Key="AccountGroupHint">اختر نقدي أو مدخرات، أو اكتب اسماً لإنشاء تصنيف جديد.</sys:String>
         <sys:String x:Key="GroupTotalLabel">الإجمالي:</sys:String>
         <sys:String x:Key="InvalidAccountGroupMessage">أدخل تصنيف الحساب.</sys:String>
+        <sys:String x:Key="CashGroupName">نقدي</sys:String>
+        <sys:String x:Key="SavingsGroupName">مدخرات</sys:String>
+        <sys:String x:Key="NewCategoryPlaceholder">اسم التصنيف الجديد…</sys:String>
+        <sys:String x:Key="DeleteAllDataText">🗑  حذف جميع البيانات</sys:String>
+        <sys:String x:Key="DeleteAllDataConfirmTitle">حذف جميع البيانات</sys:String>
+        <sys:String x:Key="DeleteAllDataConfirmMessage">سيتم حذف جميع المعاملات والحسابات والتصنيفات بشكل نهائي. لا يمكن التراجع عن هذا الإجراء. هل تريد المتابعة؟</sys:String>
 
         <SolidColorBrush x:Key="AppBackgroundBrush" Color="#F8FAFC"/>
         <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF"/>
