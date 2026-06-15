@@ -77,6 +77,8 @@
         <sys:String x:Key="SypCurrencyLabel">ل.س  ليرة سورية</sys:String>
         <sys:String x:Key="UsdCurrencyLabel">$  دولار</sys:String>
         <sys:String x:Key="AccountCurrencyLabel">عملة الحساب</sys:String>
+        <sys:String x:Key="ExchangeRateSavedMessage">تم حفظ سعر الصرف بنجاح.</sys:String>
+        <sys:String x:Key="SuccessTitle">تم الحفظ</sys:String>
 
         <SolidColorBrush x:Key="AppBackgroundBrush" Color="#F8FAFC"/>
         <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF"/>

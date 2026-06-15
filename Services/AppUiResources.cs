@@ -167,6 +167,10 @@ public static class AppUiResources
         resources["SypCurrencyLabel"] = isEnglish ? "ل.س  SYP" : "ل.س  ليرة سورية";
         resources["UsdCurrencyLabel"] = isEnglish ? "$  USD" : "$  دولار";
         resources["AccountCurrencyLabel"] = isEnglish ? "Account Currency" : "عملة الحساب";
+        resources["ExchangeRateSavedMessage"] = isEnglish
+            ? "Exchange rate saved successfully."
+            : "تم حفظ سعر الصرف بنجاح.";
+        resources["SuccessTitle"] = isEnglish ? "Saved" : "تم الحفظ";
     }
 
     private static void ApplyModeLabels(bool isEnglish, bool isDarkMode)

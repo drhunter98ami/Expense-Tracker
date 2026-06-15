@@ -49,7 +49,7 @@
                                    Foreground="{DynamicResource TextBrush}"
                                    FontSize="15"
                                    FontWeight="SemiBold"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                             <TextBlock Text="{Binding CategoryName}"
                                        Foreground="{DynamicResource MutedTextBrush}"
                                        FontSize="13"/>
@@ -59,6 +59,15 @@
                             <TextBlock Text="{Binding AccountName}"
                                        Foreground="{DynamicResource MutedTextBrush}"
                                        FontSize="13"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+                            <TextBlock Text="🕐"
+                                       FontSize="11"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,4,0"/>
+                            <TextBlock Text="{Binding TimeText}"
+                                       Foreground="{DynamicResource MutedTextBrush}"
+                                       FontSize="12"/>
                         </StackPanel>
                     </StackPanel>
 

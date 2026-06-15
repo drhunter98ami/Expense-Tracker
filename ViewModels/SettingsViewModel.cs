@@ -78,6 +78,14 @@ public partial class SettingsViewModel : ObservableObject
 
         AppSettingsService.SaveUsdToSypRate(rate);
         UsdToSypRateText = NumberFormatting.Format(rate, "N2");
+
+        MessageBox.Show(
+            AppUiResources.GetString("ExchangeRateSavedMessage"),
+            AppUiResources.GetString("SuccessTitle"),
+            MessageBoxButton.OK,
+            MessageBoxImage.Information);
+
+        AppUiResources.ApplyCurrencySymbol(IsUsd ? "USD" : "SYP");
     }
 
     public void RefreshLanguage()

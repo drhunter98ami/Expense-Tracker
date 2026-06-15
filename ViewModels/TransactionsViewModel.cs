@@ -15,6 +15,8 @@ namespace ExpenseTracker.ViewModels;
 public partial class TransactionsViewModel : ObservableObject
 {
     private readonly ObservableCollection<TransactionItemViewModel> _items = [];
+    private decimal _usdRate = 15000;
+    private bool _globalIsUsd;
 
     [ObservableProperty]
     private int selectedTab;
@@ -78,11 +80,13 @@ public partial class TransactionsViewModel : ObservableObject
 
     private void LoadTransactions()
     {
+        AppSetting settings = AppSettingsService.GetOrCreate();
+        _usdRate = settings.UsdToSypRate > 0 ? settings.UsdToSypRate : 1;
+        _globalIsUsd = settings.CurrencyCode == "USD";
+
         _items.Clear();
 
         using AppDbContext dbContext = new();
-
-        decimal usdRate = AppSettingsService.GetOrCreate().UsdToSypRate;
 
         List<Transaction> transactions = dbContext.Transactions
             .Include(t => t.Account)
@@ -95,17 +99,13 @@ public partial class TransactionsViewModel : ObservableObject
 
         foreach (Transaction transaction in transactions)
         {
-            TransactionItemViewModel item = new(transaction);
+            TransactionItemViewModel item = new(transaction, _usdRate, _globalIsUsd);
             _items.Add(item);
 
-            decimal amountInSyp = transaction.Account?.Currency == "USD"
-                ? transaction.Amount * usdRate
-                : transaction.Amount;
-
             if (item.IsIncome)
-                income += amountInSyp;
+                income += item.DisplayAmount;
             else
-                expenses += amountInSyp;
+                expenses += item.DisplayAmount;
         }
 
         TotalIncome = income;
@@ -124,7 +124,7 @@ public partial class TransactionsViewModel : ObservableObject
         foreach (TransactionItemViewModel item in _items)
         {
             if (item.DateGroup == targetDate)
-                CalendarTransactions.Add(new TransactionItemViewModel(item.SourceTransaction));
+                CalendarTransactions.Add(new TransactionItemViewModel(item.SourceTransaction, _usdRate, _globalIsUsd));
         }
     }
 
@@ -175,34 +175,39 @@ public partial class TransactionsViewModel : ObservableObject
 
     public void RefreshAmounts()
     {
-        foreach (TransactionItemViewModel item in _items)
-            item.RefreshAmount();
-
-        GroupedTransactions.Refresh();
-        MonthlyGroupedTransactions.Refresh();
-        FilterCalendarTransactions();
-
-        OnPropertyChanged(nameof(TotalIncome));
-        OnPropertyChanged(nameof(TotalExpenses));
-        OnPropertyChanged(nameof(NetTotal));
+        LoadTransactions();
     }
 }
 
 public partial class TransactionItemViewModel : ObservableObject
 {
     private readonly Transaction transaction;
+    private readonly decimal _usdRate;
+    private readonly bool _globalIsUsd;
 
-    public TransactionItemViewModel(Transaction transaction)
+    public TransactionItemViewModel(Transaction transaction, decimal usdRate, bool globalIsUsd)
     {
         this.transaction = transaction;
+        _usdRate = usdRate;
+        _globalIsUsd = globalIsUsd;
+
+        bool isUsdAccount = transaction.Account?.Currency == "USD";
+
+        if (isUsdAccount)
+            DisplayAmount = globalIsUsd ? transaction.Amount : transaction.Amount * usdRate;
+        else
+            DisplayAmount = globalIsUsd ? transaction.Amount / usdRate : transaction.Amount;
     }
 
     public Transaction SourceTransaction => transaction;
+    public decimal DisplayAmount { get; }
 
     public DateTime DateGroup => transaction.Date.Date;
 
     public string MonthGroup =>
         transaction.Date.ToString("MMMM yyyy", CultureInfo.CurrentUICulture);
+
+    public string TimeText => transaction.Date.ToString("HH:mm");
 
     public string Description =>
         string.IsNullOrWhiteSpace(transaction.Description)
@@ -210,7 +215,6 @@ public partial class TransactionItemViewModel : ObservableObject
             : transaction.Description;
 
     public decimal Amount => transaction.Amount;
-
     public bool IsIncome => transaction.Category?.Type == CategoryType.Income;
 
     public string CategoryName =>
@@ -219,11 +223,10 @@ public partial class TransactionItemViewModel : ObservableObject
     public string AccountName =>
         transaction.Account?.Name ?? AppUiResources.GetString("NoAccountText");
 
-    public string AccountCurrencySymbol =>
-        transaction.Account?.Currency == "USD" ? "$" : "ل.س";
+    public string GlobalSymbol => _globalIsUsd ? "$" : "ل.س";
 
     public string FormattedAmount =>
-        $"{NumberFormatting.Format(transaction.Amount, "N2")} {AccountCurrencySymbol}";
+        $"{NumberFormatting.Format(DisplayAmount, "N2")} {GlobalSymbol}";
 
     public void RefreshLanguage()
     {
@@ -235,7 +238,6 @@ public partial class TransactionItemViewModel : ObservableObject
 
     public void RefreshAmount()
     {
-        OnPropertyChanged(nameof(Amount));
         OnPropertyChanged(nameof(FormattedAmount));
     }
 }

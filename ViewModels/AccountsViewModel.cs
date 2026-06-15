@@ -17,6 +17,9 @@ public partial class AccountsViewModel : ObservableObject
     [ObservableProperty]
     private decimal totalAssets;
 
+    [ObservableProperty]
+    private string totalAssetsSymbol = "ل.س";
+
     public AccountsViewModel()
     {
         LoadAccounts();
@@ -64,7 +67,7 @@ public partial class AccountsViewModel : ObservableObject
             account.Transactions.Add(new Transaction
             {
                 Amount = dialog.InitialBalance,
-                Date = DateTime.Today,
+                Date = DateTime.Now,
                 CategoryId = incomeCategory.Id,
                 Description = AppUiResources.GetString("InitialBalanceDescription")
             });
@@ -108,9 +111,12 @@ public partial class AccountsViewModel : ObservableObject
 
     private void LoadAccounts()
     {
-        using AppDbContext dbContext = new();
+        AppSetting settings = AppSettingsService.GetOrCreate();
+        decimal usdRate = settings.UsdToSypRate > 0 ? settings.UsdToSypRate : 1;
+        bool globalIsUsd = settings.CurrencyCode == "USD";
+        string globalSymbol = globalIsUsd ? "$" : "ل.س";
 
-        decimal usdRate = AppSettingsService.GetOrCreate().UsdToSypRate;
+        using AppDbContext dbContext = new();
 
         List<AccountItemViewModel> accountItems = dbContext.Accounts
             .Include(a => a.Transactions)
@@ -123,7 +129,8 @@ public partial class AccountsViewModel : ObservableObject
                 CalculateBalance(a.Transactions),
                 a.Group,
                 a.Currency,
-                usdRate))
+                usdRate,
+                globalIsUsd))
             .ToList();
 
         string[] groupOrder = ["Cash", "Savings"];
@@ -132,11 +139,12 @@ public partial class AccountsViewModel : ObservableObject
             .GroupBy(a => a.Group)
             .OrderBy(g => Array.IndexOf(groupOrder, g.Key) is int i && i >= 0 ? i : int.MaxValue)
             .ThenBy(g => g.Key)
-            .Select(g => new AccountGroupViewModel(g.Key, GetGroupDisplayName(g.Key), g))
+            .Select(g => new AccountGroupViewModel(g.Key, GetGroupDisplayName(g.Key), g, globalSymbol))
             .ToList();
 
         AccountGroups = new ObservableCollection<AccountGroupViewModel>(groups);
-        TotalAssets = accountItems.Sum(a => a.BalanceInSyp);
+        TotalAssets = accountItems.Sum(a => a.DisplayBalance);
+        TotalAssetsSymbol = globalSymbol;
     }
 
     private static decimal CalculateBalance(IEnumerable<Transaction> transactions)
@@ -152,38 +160,48 @@ public class AccountGroupViewModel
     public string GroupDisplayName { get; }
     public ObservableCollection<AccountItemViewModel> Accounts { get; }
     public decimal GroupTotal { get; }
+    public string GroupSymbol { get; }
 
-    public AccountGroupViewModel(string groupName, string groupDisplayName, IEnumerable<AccountItemViewModel> accounts)
+    public string FormattedGroupTotal =>
+        $"{NumberFormatting.Format(GroupTotal, "N2")} {GroupSymbol}";
+
+    public AccountGroupViewModel(string groupName, string groupDisplayName,
+        IEnumerable<AccountItemViewModel> accounts, string globalSymbol)
     {
         GroupName = groupName;
         GroupDisplayName = groupDisplayName;
         Accounts = new ObservableCollection<AccountItemViewModel>(accounts);
-        GroupTotal = Accounts.Sum(a => a.BalanceInSyp);
+        GroupTotal = Accounts.Sum(a => a.DisplayBalance);
+        GroupSymbol = globalSymbol;
     }
 }
 
 public class AccountItemViewModel
 {
-    private readonly decimal _usdRate;
-
-    public AccountItemViewModel(string name, decimal balance, string group, string currency, decimal usdRate)
+    public AccountItemViewModel(string name, decimal balance, string group,
+        string currency, decimal usdRate, bool globalIsUsd)
     {
         Name = name;
         Balance = balance;
         Group = group;
         Currency = currency;
-        _usdRate = usdRate;
+
+        GlobalSymbol = globalIsUsd ? "$" : "ل.س";
+
+        bool isUsdAccount = currency == "USD";
+        if (isUsdAccount)
+            DisplayBalance = globalIsUsd ? balance : balance * usdRate;
+        else
+            DisplayBalance = globalIsUsd ? balance / usdRate : balance;
     }
 
     public string Name { get; }
     public decimal Balance { get; }
     public string Group { get; }
     public string Currency { get; }
-
-    public string CurrencySymbol => Currency == "USD" ? "$" : "ل.س";
-
-    public decimal BalanceInSyp => Currency == "USD" ? Balance * _usdRate : Balance;
+    public string GlobalSymbol { get; }
+    public decimal DisplayBalance { get; }
 
     public string FormattedBalance =>
-        $"{NumberFormatting.Format(Balance, "N2")} {CurrencySymbol}";
+        $"{NumberFormatting.Format(DisplayBalance, "N2")} {GlobalSymbol}";
 }

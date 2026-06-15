@@ -128,7 +128,7 @@ public partial class AddTransactionWindow : Window
         }
 
         Amount = amount;
-        TransactionDate = selectedDate;
+        TransactionDate = selectedDate.Date.Add(DateTime.Now.TimeOfDay);
         Description = string.IsNullOrWhiteSpace(DescriptionTextBox.Text)
             ? null
             : DescriptionTextBox.Text.Trim();

@@ -98,7 +98,7 @@
                                                        FontSize="13"
                                                        VerticalAlignment="Center"
                                                        Margin="0,0,8,0"/>
-                                            <TextBlock Text="{Binding GroupTotal, Converter={StaticResource EnglishNumberConverter}, ConverterParameter=N2}"
+                                            <TextBlock Text="{Binding FormattedGroupTotal}"
                                                        Foreground="{DynamicResource PrimaryBrush}"
                                                        FontSize="15" FontWeight="Bold"
                                                        VerticalAlignment="Center"/>
