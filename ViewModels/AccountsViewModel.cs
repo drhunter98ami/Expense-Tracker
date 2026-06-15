@@ -110,6 +110,8 @@ public partial class AccountsViewModel : ObservableObject
     {
         using AppDbContext dbContext = new();
 
+        decimal usdRate = AppSettingsService.GetOrCreate().UsdToSypRate;
+
         List<AccountItemViewModel> accountItems = dbContext.Accounts
             .Include(a => a.Transactions)
             .ThenInclude(t => t.Category)
@@ -120,7 +122,8 @@ public partial class AccountsViewModel : ObservableObject
                 a.Name,
                 CalculateBalance(a.Transactions),
                 a.Group,
-                a.Currency))
+                a.Currency,
+                usdRate))
             .ToList();
 
         string[] groupOrder = ["Cash", "Savings"];
@@ -133,7 +136,7 @@ public partial class AccountsViewModel : ObservableObject
             .ToList();
 
         AccountGroups = new ObservableCollection<AccountGroupViewModel>(groups);
-        TotalAssets = accountItems.Sum(a => a.Balance);
+        TotalAssets = accountItems.Sum(a => a.BalanceInSyp);
     }
 
     private static decimal CalculateBalance(IEnumerable<Transaction> transactions)
@@ -155,25 +158,31 @@ public class AccountGroupViewModel
         GroupName = groupName;
         GroupDisplayName = groupDisplayName;
         Accounts = new ObservableCollection<AccountItemViewModel>(accounts);
-        GroupTotal = Accounts.Sum(a => a.Balance);
+        GroupTotal = Accounts.Sum(a => a.BalanceInSyp);
     }
 }
 
 public class AccountItemViewModel
 {
-    public AccountItemViewModel(string name, decimal balance, string group, string currency)
+    private readonly decimal _usdRate;
+
+    public AccountItemViewModel(string name, decimal balance, string group, string currency, decimal usdRate)
     {
         Name = name;
         Balance = balance;
         Group = group;
         Currency = currency;
+        _usdRate = usdRate;
     }
 
     public string Name { get; }
     public decimal Balance { get; }
     public string Group { get; }
     public string Currency { get; }
+
     public string CurrencySymbol => Currency == "USD" ? "$" : "ل.س";
+
+    public decimal BalanceInSyp => Currency == "USD" ? Balance * _usdRate : Balance;
 
     public string FormattedBalance =>
         $"{NumberFormatting.Format(Balance, "N2")} {CurrencySymbol}";

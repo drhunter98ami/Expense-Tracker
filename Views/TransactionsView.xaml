@@ -77,7 +77,7 @@
                                 </Style.Triggers>
                             </Style>
                         </Border.Style>
-                        <TextBlock Text="{Binding Amount, Converter={StaticResource EnglishNumberConverter}, ConverterParameter=N2}"
+                        <TextBlock Text="{Binding FormattedAmount}"
                                    FontSize="16"
                                    FontWeight="Bold">
                             <TextBlock.Style>

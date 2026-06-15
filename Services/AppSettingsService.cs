@@ -1,4 +1,5 @@
 using ExpenseTracker.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker.Services;
 
@@ -30,34 +31,32 @@ public static class AppSettingsService
     public static void SaveUsdToSypRate(decimal rate)
     {
         using AppDbContext dbContext = new();
-        AppSetting settings = FindOrInit(dbContext);
-        settings.UsdToSypRate = rate;
-        dbContext.SaveChanges();
+
+        int rows = dbContext.Database.ExecuteSqlRaw(
+            "UPDATE AppSettings SET UsdToSypRate = {0} WHERE Id = {1}",
+            rate, SettingsId);
+
+        if (rows == 0)
+        {
+            dbContext.Database.ExecuteSqlRaw(
+                "INSERT INTO AppSettings (Id, UsdToSypRate, CurrencyCode) VALUES ({0}, {1}, 'SYP')",
+                SettingsId, rate);
+        }
     }
 
     public static void SaveCurrencyCode(string code)
     {
         using AppDbContext dbContext = new();
-        AppSetting settings = FindOrInit(dbContext);
-        settings.CurrencyCode = code;
-        dbContext.SaveChanges();
-    }
 
-    private static AppSetting FindOrInit(AppDbContext dbContext)
-    {
-        AppSetting? settings = dbContext.AppSettings.Find(SettingsId);
+        int rows = dbContext.Database.ExecuteSqlRaw(
+            "UPDATE AppSettings SET CurrencyCode = {0} WHERE Id = {1}",
+            code, SettingsId);
 
-        if (settings is not null)
-            return settings;
-
-        settings = new AppSetting
+        if (rows == 0)
         {
-            Id = SettingsId,
-            UsdToSypRate = 15000,
-            CurrencyCode = "SYP"
-        };
-
-        dbContext.AppSettings.Add(settings);
-        return settings;
+            dbContext.Database.ExecuteSqlRaw(
+                "INSERT INTO AppSettings (Id, UsdToSypRate, CurrencyCode) VALUES ({0}, 15000, {1})",
+                SettingsId, code);
+        }
     }
 }

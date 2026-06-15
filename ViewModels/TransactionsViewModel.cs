@@ -82,6 +82,8 @@ public partial class TransactionsViewModel : ObservableObject
 
         using AppDbContext dbContext = new();
 
+        decimal usdRate = AppSettingsService.GetOrCreate().UsdToSypRate;
+
         List<Transaction> transactions = dbContext.Transactions
             .Include(t => t.Account)
             .Include(t => t.Category)
@@ -96,10 +98,14 @@ public partial class TransactionsViewModel : ObservableObject
             TransactionItemViewModel item = new(transaction);
             _items.Add(item);
 
+            decimal amountInSyp = transaction.Account?.Currency == "USD"
+                ? transaction.Amount * usdRate
+                : transaction.Amount;
+
             if (item.IsIncome)
-                income += transaction.Amount;
+                income += amountInSyp;
             else
-                expenses += transaction.Amount;
+                expenses += amountInSyp;
         }
 
         TotalIncome = income;
@@ -213,6 +219,12 @@ public partial class TransactionItemViewModel : ObservableObject
     public string AccountName =>
         transaction.Account?.Name ?? AppUiResources.GetString("NoAccountText");
 
+    public string AccountCurrencySymbol =>
+        transaction.Account?.Currency == "USD" ? "$" : "ل.س";
+
+    public string FormattedAmount =>
+        $"{NumberFormatting.Format(transaction.Amount, "N2")} {AccountCurrencySymbol}";
+
     public void RefreshLanguage()
     {
         OnPropertyChanged(nameof(Description));
@@ -224,5 +236,6 @@ public partial class TransactionItemViewModel : ObservableObject
     public void RefreshAmount()
     {
         OnPropertyChanged(nameof(Amount));
+        OnPropertyChanged(nameof(FormattedAmount));
     }
 }
