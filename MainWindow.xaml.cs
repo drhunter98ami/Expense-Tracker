@@ -13,6 +13,7 @@ public partial class MainWindow : Window
     private readonly StatsView _statsView = new();
     private readonly AccountsView _accountsView = new();
     private readonly SettingsView _settingsView = new();
+    public ClockViewModel ClockViewModel { get; } = new();
 
     public MainWindow()
     {

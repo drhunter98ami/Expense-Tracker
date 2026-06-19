@@ -1,6 +1,7 @@
 using System.Windows;
 using ExpenseTracker.Services;
 using ExpenseTracker.Models;
+using ExpenseTracker.Services;
 
 namespace ExpenseTracker.Views;
 
@@ -21,7 +22,7 @@ public partial class AddTransactionWindow : Window
         InitializeComponent();
         AppUiResources.ApplyToWindow(this);
         LoadLookups();
-        TransactionDatePicker.SelectedDate = DateTime.Today;
+        TransactionDatePicker.SelectedDate = TimeService.Today;
         AmountTextBox.TextChanged += AmountTextBox_TextChanged;
     }
 
@@ -128,7 +129,7 @@ public partial class AddTransactionWindow : Window
         }
 
         Amount = amount;
-        TransactionDate = selectedDate.Date.Add(DateTime.Now.TimeOfDay);
+        TransactionDate = selectedDate.Date.Add(TimeService.Now.TimeOfDay);
         Description = string.IsNullOrWhiteSpace(DescriptionTextBox.Text)
             ? null
             : DescriptionTextBox.Text.Trim();

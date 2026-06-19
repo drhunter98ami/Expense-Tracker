@@ -154,3 +154,5 @@ C:\Users\hp\Desktop\Folders\IT\ExpenseTracker\obj\Debug\net9.0-windows\Views\Add
 C:\Users\hp\Desktop\Folders\IT\ExpenseTracker\obj\Debug\net9.0-windows\Views\AddAccountWindow.g.cs
 C:\Users\hp\Desktop\Folders\IT\ExpenseTracker\obj\Debug\net9.0-windows\Views\SettingsView.g.cs
 C:\Users\hp\Desktop\Folders\IT\ExpenseTracker\obj\Debug\net9.0-windows\GeneratedInternalTypeHelper.g.cs
+C:\Users\hp\Desktop\Folders\IT\ExpenseTracker\obj\Debug\net9.0-windows\Views\SettingsView.baml
+C:\Users\hp\Desktop\Folders\IT\ExpenseTracker\obj\Debug\net9.0-windows\ExpenseTracker.sourcelink.json

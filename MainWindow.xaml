@@ -51,6 +51,21 @@
                                Foreground="{DynamicResource MutedTextBrush}"
                                FontSize="13"
                                Margin="0,6,0,26"/>
+                    
+                    <!-- Clock -->
+                    <Border Background="{DynamicResource SurfaceAltBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="14"
+                            Padding="14"
+                            Margin="0,0,0,26">
+                        <TextBlock Text="{Binding ClockViewModel.CurrentTime, RelativeSource={RelativeSource AncestorType=Window}}"
+                                   Foreground="{DynamicResource PrimaryBrush}"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"
+                                   FontFamily="Consolas"/>
+                    </Border>
                 </StackPanel>
 
                 <!-- Nav Buttons -->

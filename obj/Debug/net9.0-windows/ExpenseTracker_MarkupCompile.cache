@@ -12,9 +12,9 @@ TRACE;DEBUG;NET;NET9_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR
 C:\Users\hp\Desktop\Folders\IT\ExpenseTracker\App.xaml
 7-1225377053
 
-30-354353743
+312032480292
 219-909703452
 MainWindow.xaml;Views\AccountsView.xaml;Views\AddAccountWindow.xaml;Views\AddTransactionWindow.xaml;Views\SettingsView.xaml;Views\StatsView.xaml;Views\TransactionsView.xaml;
 
-True
+False
 

@@ -67,7 +67,7 @@ public partial class AccountsViewModel : ObservableObject
             account.Transactions.Add(new Transaction
             {
                 Amount = dialog.InitialBalance,
-                Date = DateTime.Now,
+                Date = TimeService.Now,
                 CategoryId = incomeCategory.Id,
                 Description = AppUiResources.GetString("InitialBalanceDescription")
             });

@@ -9,6 +9,7 @@ using ExpenseTracker.Models;
 using ExpenseTracker.Services;
 using ExpenseTracker.Views;
 using Microsoft.EntityFrameworkCore;
+using ExpenseTracker.Services;
 
 namespace ExpenseTracker.ViewModels;
 
@@ -31,7 +32,7 @@ public partial class TransactionsViewModel : ObservableObject
     private decimal netTotal;
 
     [ObservableProperty]
-    private DateTime? selectedCalendarDate = DateTime.Today;
+    private DateTime? selectedCalendarDate = TimeService.Today;
 
     public bool IsDailyTab => SelectedTab == 0;
     public bool IsCalendarTab => SelectedTab == 1;
@@ -119,7 +120,7 @@ public partial class TransactionsViewModel : ObservableObject
     {
         CalendarTransactions.Clear();
 
-        DateTime targetDate = SelectedCalendarDate?.Date ?? DateTime.Today;
+        DateTime targetDate = SelectedCalendarDate?.Date ?? TimeService.Today;
 
         foreach (TransactionItemViewModel item in _items)
         {
