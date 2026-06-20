@@ -186,8 +186,10 @@ public class AccountItemViewModel
         Group = group;
         Currency = currency;
 
-        GlobalSymbol = globalIsUsd ? "$" : "ل.س";
+        // Individual accounts always show their original balance in their own currency
+        LocalSymbol = currency == "USD" ? "$" : "ل.س";
 
+        // Calculate display balance for totals (converted to global currency)
         bool isUsdAccount = currency == "USD";
         if (isUsdAccount)
             DisplayBalance = globalIsUsd ? balance : balance * usdRate;
@@ -199,9 +201,9 @@ public class AccountItemViewModel
     public decimal Balance { get; }
     public string Group { get; }
     public string Currency { get; }
-    public string GlobalSymbol { get; }
+    public string LocalSymbol { get; }
     public decimal DisplayBalance { get; }
 
     public string FormattedBalance =>
-        $"{NumberFormatting.Format(DisplayBalance, "N2")} {GlobalSymbol}";
+        $"{NumberFormatting.Format(Balance, "N2")} {LocalSymbol}";
 }
