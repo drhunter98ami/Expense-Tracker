@@ -170,6 +170,12 @@
 
                                     </DataTrigger>
 
+                                    <DataTrigger Binding="{Binding IsTransfer}" Value="True">
+
+                                        <Setter Property="Background" Value="#F3F4F6"/>
+
+                                    </DataTrigger>
+
                                 </Style.Triggers>
 
                             </Style>
@@ -193,6 +199,12 @@
                                         <DataTrigger Binding="{Binding IsIncome}" Value="False">
 
                                             <Setter Property="Foreground" Value="#DC2626"/>
+
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding IsTransfer}" Value="True">
+
+                                            <Setter Property="Foreground" Value="#1F2937"/>
 
                                         </DataTrigger>
 

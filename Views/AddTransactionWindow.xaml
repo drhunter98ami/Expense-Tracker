@@ -48,7 +48,8 @@
                 BorderThickness="1"
                 CornerRadius="18"
                 Padding="24">
-            <Grid>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
@@ -174,6 +175,7 @@
                             Foreground="{DynamicResource TextBrush}"/>
                 </StackPanel>
             </Grid>
+            </ScrollViewer>
         </Border>
     </Border>
 </Window>

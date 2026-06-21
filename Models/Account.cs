@@ -10,5 +10,7 @@ public class Account
 
     public string Currency { get; set; } = "SYP";
 
+    public decimal Balance { get; set; } = 0;
+
     public ICollection<Transaction> Transactions { get; set; } = [];
 }

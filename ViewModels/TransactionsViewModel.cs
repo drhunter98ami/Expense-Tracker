@@ -316,7 +316,7 @@ public partial class TransactionsViewModel : ObservableObject
 
 
 
-        dbContext.Transactions.Add(new Transaction
+        Transaction transaction = new Transaction
 
         {
 
@@ -330,9 +330,66 @@ public partial class TransactionsViewModel : ObservableObject
             FromAccountId = dialog.FromAccountId,
             ToAccountId = dialog.ToAccountId
 
-        });
+        };
 
+        dbContext.Transactions.Add(transaction);
 
+        // Handle transfer: update account balances
+        if (dialog.TransactionType == TransactionType.Transfer && dialog.FromAccountId.HasValue && dialog.ToAccountId.HasValue)
+        {
+            Account? fromAccount = dbContext.Accounts.Find(dialog.FromAccountId.Value);
+            Account? toAccount = dbContext.Accounts.Find(dialog.ToAccountId.Value);
+
+            if (fromAccount != null && toAccount != null)
+            {
+                // Convert amount if currencies differ
+                decimal fromAmount = dialog.Amount;
+                decimal toAmount = dialog.Amount;
+
+                if (fromAccount.Currency != dialog.Currency)
+                {
+                    // Simple conversion: if account is SYP and transaction is USD, multiply by rate
+                    // If account is USD and transaction is SYP, divide by rate
+                    fromAmount = dialog.Currency == "USD" ? dialog.Amount * _usdRate : dialog.Amount / _usdRate;
+                }
+
+                if (toAccount.Currency != dialog.Currency)
+                {
+                    toAmount = dialog.Currency == "USD" ? dialog.Amount * _usdRate : dialog.Amount / _usdRate;
+                }
+
+                fromAccount.Balance -= fromAmount;
+                toAccount.Balance += toAmount;
+            }
+        }
+        else if (dialog.TransactionType == TransactionType.Income && dialog.AccountId.HasValue)
+        {
+            // Handle income: add to account balance
+            Account? account = dbContext.Accounts.Find(dialog.AccountId.Value);
+            if (account != null)
+            {
+                decimal amount = dialog.Amount;
+                if (account.Currency != dialog.Currency)
+                {
+                    amount = dialog.Currency == "USD" ? dialog.Amount * _usdRate : dialog.Amount / _usdRate;
+                }
+                account.Balance += amount;
+            }
+        }
+        else if (dialog.TransactionType == TransactionType.Expense && dialog.AccountId.HasValue)
+        {
+            // Handle expense: subtract from account balance
+            Account? account = dbContext.Accounts.Find(dialog.AccountId.Value);
+            if (account != null)
+            {
+                decimal amount = dialog.Amount;
+                if (account.Currency != dialog.Currency)
+                {
+                    amount = dialog.Currency == "USD" ? dialog.Amount * _usdRate : dialog.Amount / _usdRate;
+                }
+                account.Balance -= amount;
+            }
+        }
 
         dbContext.SaveChanges();
 
