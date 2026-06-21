@@ -15,6 +15,9 @@ public partial class StatsViewModel : ObservableObject
     private int selectedTab;
 
     [ObservableProperty]
+    private int selectedPeriod = 1; // 0=Weekly, 1=Monthly (default), 2=Annually, 3=Period
+
+    [ObservableProperty]
     private SeriesCollection? incomePieSeries;
 
     [ObservableProperty]
@@ -35,6 +38,11 @@ public partial class StatsViewModel : ObservableObject
     public bool IsIncomeTab => SelectedTab == 0;
     public bool IsExpenseTab => SelectedTab == 1;
 
+    public bool IsWeeklyPeriod => SelectedPeriod == 0;
+    public bool IsMonthlyPeriod => SelectedPeriod == 1;
+    public bool IsAnnuallyPeriod => SelectedPeriod == 2;
+    public bool IsPeriodPeriod => SelectedPeriod == 3;
+
     public StatsViewModel()
     {
         LoadStatistics();
@@ -46,11 +54,32 @@ public partial class StatsViewModel : ObservableObject
         OnPropertyChanged(nameof(IsExpenseTab));
     }
 
+    partial void OnSelectedPeriodChanged(int value)
+    {
+        OnPropertyChanged(nameof(IsWeeklyPeriod));
+        OnPropertyChanged(nameof(IsMonthlyPeriod));
+        OnPropertyChanged(nameof(IsAnnuallyPeriod));
+        OnPropertyChanged(nameof(IsPeriodPeriod));
+        LoadStatistics();
+    }
+
     [RelayCommand]
     private void SelectIncomeTab() => SelectedTab = 0;
 
     [RelayCommand]
     private void SelectExpenseTab() => SelectedTab = 1;
+
+    [RelayCommand]
+    private void SelectWeeklyPeriod() => SelectedPeriod = 0;
+
+    [RelayCommand]
+    private void SelectMonthlyPeriod() => SelectedPeriod = 1;
+
+    [RelayCommand]
+    private void SelectAnnuallyPeriod() => SelectedPeriod = 2;
+
+    [RelayCommand]
+    private void SelectPeriodPeriod() => SelectedPeriod = 3;
 
     private void LoadStatistics()
     {
@@ -58,10 +87,29 @@ public partial class StatsViewModel : ObservableObject
 
         var transactions = dbContext.Transactions
             .Include(t => t.Category)
-            .ToList();
+            .AsQueryable();
+
+        // Filter by selected period
+        DateTime now = DateTime.Now;
+        switch (SelectedPeriod)
+        {
+            case 0: // Weekly - last 7 days
+                transactions = transactions.Where(t => t.Date >= now.AddDays(-7));
+                break;
+            case 1: // Monthly - current month
+                transactions = transactions.Where(t => t.Date.Year == now.Year && t.Date.Month == now.Month);
+                break;
+            case 2: // Annually - current year
+                transactions = transactions.Where(t => t.Date.Year == now.Year);
+                break;
+            case 3: // Period - all time (no filter)
+                break;
+        }
+
+        var transactionList = transactions.ToList();
 
         // Load income data
-        var incomeByCategory = transactions
+        var incomeByCategory = transactionList
             .Where(t => t.Category?.Type == CategoryType.Income)
             .GroupBy(t => t.Category?.Name ?? "Uncategorized")
             .Select(g => new { Category = g.Key, Amount = g.Sum(t => t.Amount) })
@@ -86,7 +134,7 @@ public partial class StatsViewModel : ObservableObject
             string.Format(CultureInfo.CurrentCulture, "{0:N2}%", chartPoint.Participation * 100);
 
         // Load expense data
-        var expenseByCategory = transactions
+        var expenseByCategory = transactionList
             .Where(t => t.Category?.Type == CategoryType.Expense)
             .GroupBy(t => t.Category?.Name ?? "Uncategorized")
             .Select(g => new { Category = g.Key, Amount = g.Sum(t => t.Amount) })

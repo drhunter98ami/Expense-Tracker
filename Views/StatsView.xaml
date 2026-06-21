@@ -13,11 +13,72 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
+                <!-- Period Buttons -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,16">
+                    <Button Content="{DynamicResource WeeklyPeriodText}"
+                            Command="{Binding SelectWeeklyPeriodCommand}"
+                            Margin="0,0,4,0">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource TabPillButtonStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsWeeklyPeriod}" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button Content="{DynamicResource MonthlyPeriodText}"
+                            Command="{Binding SelectMonthlyPeriodCommand}"
+                            Margin="4,0">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource TabPillButtonStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMonthlyPeriod}" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button Content="{DynamicResource AnnuallyPeriodText}"
+                            Command="{Binding SelectAnnuallyPeriodCommand}"
+                            Margin="4,0">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource TabPillButtonStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsAnnuallyPeriod}" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button Content="{DynamicResource PeriodPeriodText}"
+                            Command="{Binding SelectPeriodPeriodCommand}"
+                            Margin="4,0,0,0">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource TabPillButtonStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsPeriodPeriod}" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+
                 <!-- Tab Buttons -->
-                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,24">
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,24">
                     <Button Content="{DynamicResource IncomeTabText}"
                             Command="{Binding SelectIncomeTabCommand}"
                             Margin="0,0,8,0">
@@ -49,7 +110,7 @@
                 </StackPanel>
 
                 <!-- Pie Chart -->
-                <Border Grid.Row="1"
+                <Border Grid.Row="2"
                         Background="{DynamicResource SurfaceAltBrush}"
                         BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"

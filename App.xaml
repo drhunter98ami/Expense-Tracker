@@ -82,6 +82,10 @@
         <sys:String x:Key="IncomeTabText">الدخل</sys:String>
         <sys:String x:Key="ExpenseTabText">المصروفات</sys:String>
         <sys:String x:Key="NoDataText">لا توجد بيانات</sys:String>
+        <sys:String x:Key="WeeklyPeriodText">أسبوعي</sys:String>
+        <sys:String x:Key="MonthlyPeriodText">شهري</sys:String>
+        <sys:String x:Key="AnnuallyPeriodText">سنوي</sys:String>
+        <sys:String x:Key="PeriodPeriodText">فترة</sys:String>
 
         <SolidColorBrush x:Key="AppBackgroundBrush" Color="#F8FAFC"/>
         <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF"/>
