@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\hp\\Desktop\\Folders\\IT\\ExpenseTracker\\ExpenseTracker.csproj": {}
+    "c:\\Users\\hp\\Desktop\\Folders\\IT\\ExpenseTracker\\ExpenseTracker.csproj": {}
   },
   "projects": {
-    "C:\\Users\\hp\\Desktop\\Folders\\IT\\ExpenseTracker\\ExpenseTracker.csproj": {
+    "c:\\Users\\hp\\Desktop\\Folders\\IT\\ExpenseTracker\\ExpenseTracker.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\hp\\Desktop\\Folders\\IT\\ExpenseTracker\\ExpenseTracker.csproj",
+        "projectUniqueName": "c:\\Users\\hp\\Desktop\\Folders\\IT\\ExpenseTracker\\ExpenseTracker.csproj",
         "projectName": "ExpenseTracker",
-        "projectPath": "C:\\Users\\hp\\Desktop\\Folders\\IT\\ExpenseTracker\\ExpenseTracker.csproj",
+        "projectPath": "c:\\Users\\hp\\Desktop\\Folders\\IT\\ExpenseTracker\\ExpenseTracker.csproj",
         "packagesPath": "C:\\Users\\hp\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\hp\\Desktop\\Folders\\IT\\ExpenseTracker\\obj\\",
+        "outputPath": "c:\\Users\\hp\\Desktop\\Folders\\IT\\ExpenseTracker\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
