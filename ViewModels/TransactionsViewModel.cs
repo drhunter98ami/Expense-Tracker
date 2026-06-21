@@ -186,6 +186,10 @@ public partial class TransactionsViewModel : ObservableObject
 
             .Include(t => t.Category)
 
+            .Include(t => t.FromAccount)
+
+            .Include(t => t.ToAccount)
+
             .OrderByDescending(t => t.Date)
 
             .ToList();
@@ -207,6 +211,12 @@ public partial class TransactionsViewModel : ObservableObject
             _items.Add(item);
 
 
+
+            if (transaction.Type == TransactionType.Transfer)
+            {
+                // Transfers don't affect income/expense totals
+                continue;
+            }
 
             if (item.IsIncome)
 
@@ -310,15 +320,15 @@ public partial class TransactionsViewModel : ObservableObject
 
         {
 
+            Type = dialog.TransactionType,
             Amount = dialog.Amount,
-
+            Currency = dialog.Currency,
             Date = dialog.TransactionDate,
-
             Description = dialog.Description,
-
             AccountId = dialog.AccountId,
-
-            CategoryId = dialog.CategoryId
+            CategoryId = dialog.CategoryId,
+            FromAccountId = dialog.FromAccountId,
+            ToAccountId = dialog.ToAccountId
 
         });
 
@@ -386,11 +396,11 @@ public partial class TransactionItemViewModel : ObservableObject
 
 
 
-        bool isUsdAccount = transaction.Account?.Currency == "USD";
+        bool isUsdTransaction = transaction.Currency == "USD";
 
 
 
-        if (isUsdAccount)
+        if (isUsdTransaction)
 
             DisplayAmount = globalIsUsd ? transaction.Amount : transaction.Amount * usdRate;
 
@@ -434,19 +444,21 @@ public partial class TransactionItemViewModel : ObservableObject
 
     public decimal Amount => transaction.Amount;
 
-    public bool IsIncome => transaction.Category?.Type == CategoryType.Income;
+    public bool IsIncome => transaction.Type == TransactionType.Income;
+
+    public bool IsTransfer => transaction.Type == TransactionType.Transfer;
 
 
 
     public string CategoryName =>
-
-        transaction.Category?.Name ?? AppUiResources.GetString("UncategorizedText");
-
-
+        transaction.Type == TransactionType.Transfer
+            ? "تحويل"
+            : transaction.Category?.Name ?? AppUiResources.GetString("UncategorizedText");
 
     public string AccountName =>
-
-        transaction.Account?.Name ?? AppUiResources.GetString("NoAccountText");
+        transaction.Type == TransactionType.Transfer
+            ? $"{transaction.FromAccount?.Name ?? "؟"} → {transaction.ToAccount?.Name ?? "؟"}"
+            : transaction.Account?.Name ?? AppUiResources.GetString("NoAccountText");
 
 
 

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="{DynamicResource AddTransactionDialogTitle}"
         Width="440"
-        Height="470"
+        Height="600"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         Background="{DynamicResource AppBackgroundBrush}"
@@ -75,36 +75,83 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <StackPanel>
-                        <TextBlock Text="{DynamicResource AmountLabel}" Style="{StaticResource DialogLabelStyle}"/>
-                        <TextBox x:Name="AmountTextBox" Style="{StaticResource NumberTextBoxStyle}"/>
+                        <TextBlock Text="نوع المعاملة" Style="{StaticResource DialogLabelStyle}"/>
+                        <ComboBox x:Name="TransactionTypeComboBox"
+                                  Style="{StaticResource DialogComboBoxStyle}"
+                                  SelectionChanged="TransactionTypeComboBox_SelectionChanged">
+                            <ComboBoxItem Content="دخل" Tag="Income"/>
+                            <ComboBoxItem Content="مصروف" Tag="Expense"/>
+                            <ComboBoxItem Content="تحويل" Tag="Transfer"/>
+                        </ComboBox>
                     </StackPanel>
 
                     <StackPanel Grid.Row="1" Margin="0,13,0,0">
-                        <TextBlock Text="{DynamicResource DateLabel}" Style="{StaticResource DialogLabelStyle}"/>
-                        <DatePicker x:Name="TransactionDatePicker" Style="{StaticResource DialogDatePickerStyle}"/>
+                        <TextBlock Text="التاريخ والوقت" Style="{StaticResource DialogLabelStyle}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <DatePicker x:Name="TransactionDatePicker" Style="{StaticResource DialogDatePickerStyle}" Width="200"/>
+                            <TextBox x:Name="TimeTextBox" 
+                                     Style="{StaticResource DialogTextBoxStyle}" 
+                                     Width="120" 
+                                     Margin="10,0,0,0"
+                                     Text="00:00"/>
+                        </StackPanel>
                     </StackPanel>
 
                     <StackPanel Grid.Row="2" Margin="0,13,0,0">
-                        <TextBlock Text="{DynamicResource AccountLabel}" Style="{StaticResource DialogLabelStyle}"/>
+                        <TextBlock Text="المبلغ" Style="{StaticResource DialogLabelStyle}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox x:Name="AmountTextBox" Style="{StaticResource NumberTextBoxStyle}" Width="200"/>
+                            <ComboBox x:Name="CurrencyComboBox" 
+                                      Style="{StaticResource DialogComboBoxStyle}" 
+                                      Width="120" 
+                                      Margin="10,0,0,0">
+                                <ComboBoxItem Content="ل.س" Tag="SYP"/>
+                                <ComboBoxItem Content="$" Tag="USD"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="3" Margin="0,13,0,0" x:Name="AccountCategoryPanel">
+                        <TextBlock Text="الحساب" Style="{StaticResource DialogLabelStyle}"/>
                         <ComboBox x:Name="AccountComboBox"
                                   DisplayMemberPath="Name"
                                   SelectedValuePath="Id"
                                   Style="{StaticResource DialogComboBoxStyle}"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="3" Margin="0,13,0,0">
-                        <TextBlock Text="{DynamicResource CategoryLabel}" Style="{StaticResource DialogLabelStyle}"/>
+                    <StackPanel Grid.Row="4" Margin="0,13,0,0" x:Name="CategoryPanel">
+                        <TextBlock Text="التصنيف" Style="{StaticResource DialogLabelStyle}"/>
                         <ComboBox x:Name="CategoryComboBox"
                                   DisplayMemberPath="Name"
                                   SelectedValuePath="Id"
                                   Style="{StaticResource DialogComboBoxStyle}"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="4" Margin="0,13,0,0">
-                        <TextBlock Text="{DynamicResource DescriptionLabel}" Style="{StaticResource DialogLabelStyle}"/>
+                    <StackPanel Grid.Row="5" Margin="0,13,0,0" x:Name="FromPanel" Visibility="Collapsed">
+                        <TextBlock Text="من" Style="{StaticResource DialogLabelStyle}"/>
+                        <ComboBox x:Name="FromComboBox"
+                                  DisplayMemberPath="Name"
+                                  SelectedValuePath="Id"
+                                  Style="{StaticResource DialogComboBoxStyle}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="6" Margin="0,13,0,0" x:Name="ToPanel" Visibility="Collapsed">
+                        <TextBlock Text="إلى" Style="{StaticResource DialogLabelStyle}"/>
+                        <ComboBox x:Name="ToComboBox"
+                                  DisplayMemberPath="Name"
+                                  SelectedValuePath="Id"
+                                  Style="{StaticResource DialogComboBoxStyle}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="7" Margin="0,13,0,0">
+                        <TextBlock Text="ملاحظة" Style="{StaticResource DialogLabelStyle}"/>
                         <TextBox x:Name="DescriptionTextBox" Style="{StaticResource DialogTextBoxStyle}"/>
                     </StackPanel>
                 </Grid>
