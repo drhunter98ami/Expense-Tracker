@@ -171,6 +171,9 @@ public static class AppUiResources
             ? "Exchange rate saved successfully."
             : "تم حفظ سعر الصرف بنجاح.";
         resources["SuccessTitle"] = isEnglish ? "Saved" : "تم الحفظ";
+        resources["CurrentText"] = isEnglish ? "Current" : "الحالي";
+        resources["FromText"] = isEnglish ? "From" : "من";
+        resources["ToText"] = isEnglish ? "To" : "إلى";
     }
 
     private static void ApplyModeLabels(bool isEnglish, bool isDarkMode)

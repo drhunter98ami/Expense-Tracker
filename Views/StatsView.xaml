@@ -14,6 +14,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -77,8 +78,43 @@
                     </Button>
                 </StackPanel>
 
+                <!-- Navigation Controls -->
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,16">
+                    <!-- Weekly Navigation -->
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding IsWeeklyPeriod, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,8,0">
+                        <Button Content="◀" Command="{Binding PreviousWeekCommand}" Width="32" Height="32" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding WeekRangeText}" VerticalAlignment="Center" Margin="0,0,8,0" FontSize="14"/>
+                        <Button Content="▶" Command="{Binding NextWeekCommand}" Width="32" Height="32" Margin="0,0,8,0"/>
+                        <Button Content="{DynamicResource CurrentText}" Command="{Binding GoToCurrentWeekCommand}" Margin="0,0,0,0"/>
+                    </StackPanel>
+
+                    <!-- Monthly Navigation -->
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding IsMonthlyPeriod, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,8,0">
+                        <Button Content="◀" Command="{Binding PreviousMonthCommand}" Width="32" Height="32" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding MonthYearText}" VerticalAlignment="Center" Margin="0,0,8,0" FontSize="14"/>
+                        <Button Content="▶" Command="{Binding NextMonthCommand}" Width="32" Height="32" Margin="0,0,8,0"/>
+                        <Button Content="{DynamicResource CurrentText}" Command="{Binding GoToCurrentMonthCommand}" Margin="0,0,0,0"/>
+                    </StackPanel>
+
+                    <!-- Yearly Navigation -->
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding IsAnnuallyPeriod, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,8,0">
+                        <Button Content="◀" Command="{Binding PreviousYearCommand}" Width="32" Height="32" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding YearText}" VerticalAlignment="Center" Margin="0,0,8,0" FontSize="14"/>
+                        <Button Content="▶" Command="{Binding NextYearCommand}" Width="32" Height="32" Margin="0,0,8,0"/>
+                        <Button Content="{DynamicResource CurrentText}" Command="{Binding GoToCurrentYearCommand}" Margin="0,0,0,0"/>
+                    </StackPanel>
+
+                    <!-- Period Navigation -->
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding IsPeriodPeriod, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <TextBlock Text="{DynamicResource FromText}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        <DatePicker SelectedDate="{Binding PeriodStartDate}" Width="120" Margin="0,0,8,0"/>
+                        <TextBlock Text="{DynamicResource ToText}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        <DatePicker SelectedDate="{Binding PeriodEndDate}" Width="120" Margin="0,0,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+
                 <!-- Tab Buttons -->
-                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,24">
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,24">
                     <Button Content="{DynamicResource IncomeTabText}"
                             Command="{Binding SelectIncomeTabCommand}"
                             Margin="0,0,8,0">
@@ -110,7 +146,7 @@
                 </StackPanel>
 
                 <!-- Pie Chart -->
-                <Border Grid.Row="2"
+                <Border Grid.Row="3"
                         Background="{DynamicResource SurfaceAltBrush}"
                         BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"

@@ -18,6 +18,24 @@ public partial class StatsViewModel : ObservableObject
     private int selectedPeriod = 1; // 0=Weekly, 1=Monthly (default), 2=Annually, 3=Period
 
     [ObservableProperty]
+    private DateTime currentWeekStart;
+
+    [ObservableProperty]
+    private DateTime currentWeekEnd;
+
+    [ObservableProperty]
+    private int currentMonth;
+
+    [ObservableProperty]
+    private int currentYear;
+
+    [ObservableProperty]
+    private DateTime? periodStartDate;
+
+    [ObservableProperty]
+    private DateTime? periodEndDate;
+
+    [ObservableProperty]
     private SeriesCollection? incomePieSeries;
 
     [ObservableProperty]
@@ -43,9 +61,32 @@ public partial class StatsViewModel : ObservableObject
     public bool IsAnnuallyPeriod => SelectedPeriod == 2;
     public bool IsPeriodPeriod => SelectedPeriod == 3;
 
+    public string WeekRangeText => $"{CurrentWeekStart:dd/MM/yyyy} - {CurrentWeekEnd:dd/MM/yyyy}";
+    public string MonthYearText => new DateTime(CurrentYear, CurrentMonth, 1).ToString("MMMM yyyy", CultureInfo.CurrentCulture);
+    public string YearText => CurrentYear.ToString();
+
     public StatsViewModel()
     {
+        InitializeCurrentDates();
         LoadStatistics();
+    }
+
+    private void InitializeCurrentDates()
+    {
+        DateTime now = DateTime.Now;
+        
+        // Initialize week (Saturday to Saturday)
+        int daysSinceSaturday = ((int)now.DayOfWeek - (int)DayOfWeek.Saturday + 7) % 7;
+        CurrentWeekStart = now.AddDays(-daysSinceSaturday).Date;
+        CurrentWeekEnd = CurrentWeekStart.AddDays(6).Date;
+        
+        // Initialize month and year
+        CurrentMonth = now.Month;
+        CurrentYear = now.Year;
+        
+        // Initialize period dates (current month by default)
+        PeriodStartDate = new DateTime(now.Year, now.Month, 1);
+        PeriodEndDate = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month));
     }
 
     partial void OnSelectedTabChanged(int value)
@@ -81,6 +122,113 @@ public partial class StatsViewModel : ObservableObject
     [RelayCommand]
     private void SelectPeriodPeriod() => SelectedPeriod = 3;
 
+    [RelayCommand]
+    private void PreviousWeek()
+    {
+        CurrentWeekStart = CurrentWeekStart.AddDays(-7);
+        CurrentWeekEnd = CurrentWeekEnd.AddDays(-7);
+        OnPropertyChanged(nameof(WeekRangeText));
+        LoadStatistics();
+    }
+
+    [RelayCommand]
+    private void NextWeek()
+    {
+        CurrentWeekStart = CurrentWeekStart.AddDays(7);
+        CurrentWeekEnd = CurrentWeekEnd.AddDays(7);
+        OnPropertyChanged(nameof(WeekRangeText));
+        LoadStatistics();
+    }
+
+    [RelayCommand]
+    private void GoToCurrentWeek()
+    {
+        DateTime now = DateTime.Now;
+        int daysSinceSaturday = ((int)now.DayOfWeek - (int)DayOfWeek.Saturday + 7) % 7;
+        CurrentWeekStart = now.AddDays(-daysSinceSaturday).Date;
+        CurrentWeekEnd = CurrentWeekStart.AddDays(6).Date;
+        OnPropertyChanged(nameof(WeekRangeText));
+        LoadStatistics();
+    }
+
+    [RelayCommand]
+    private void PreviousMonth()
+    {
+        CurrentMonth--;
+        if (CurrentMonth < 1)
+        {
+            CurrentMonth = 12;
+            CurrentYear--;
+        }
+        OnPropertyChanged(nameof(MonthYearText));
+        LoadStatistics();
+    }
+
+    [RelayCommand]
+    private void NextMonth()
+    {
+        CurrentMonth++;
+        if (CurrentMonth > 12)
+        {
+            CurrentMonth = 1;
+            CurrentYear++;
+        }
+        OnPropertyChanged(nameof(MonthYearText));
+        LoadStatistics();
+    }
+
+    [RelayCommand]
+    private void GoToCurrentMonth()
+    {
+        DateTime now = DateTime.Now;
+        CurrentMonth = now.Month;
+        CurrentYear = now.Year;
+        OnPropertyChanged(nameof(MonthYearText));
+        LoadStatistics();
+    }
+
+    [RelayCommand]
+    private void PreviousYear()
+    {
+        CurrentYear--;
+        OnPropertyChanged(nameof(YearText));
+        LoadStatistics();
+    }
+
+    [RelayCommand]
+    private void NextYear()
+    {
+        CurrentYear++;
+        OnPropertyChanged(nameof(YearText));
+        LoadStatistics();
+    }
+
+    [RelayCommand]
+    private void GoToCurrentYear()
+    {
+        CurrentYear = DateTime.Now.Year;
+        OnPropertyChanged(nameof(YearText));
+        LoadStatistics();
+    }
+
+    partial void OnPeriodStartDateChanged(DateTime? value)
+    {
+        if (value.HasValue && PeriodEndDate.HasValue && value > PeriodEndDate)
+        {
+            PeriodEndDate = value;
+        }
+        LoadStatistics();
+    }
+
+    partial void OnPeriodEndDateChanged(DateTime? value)
+    {
+        if (value.HasValue && PeriodStartDate.HasValue && value < PeriodStartDate)
+        {
+            PeriodStartDate = value;
+        }
+        LoadStatistics();
+    }
+
     private void LoadStatistics()
     {
         using AppDbContext dbContext = new();
@@ -90,19 +238,22 @@ public partial class StatsViewModel : ObservableObject
             .AsQueryable();
 
         // Filter by selected period
-        DateTime now = DateTime.Now;
         switch (SelectedPeriod)
         {
-            case 0: // Weekly - last 7 days
-                transactions = transactions.Where(t => t.Date >= now.AddDays(-7));
+            case 0: // Weekly - selected week
+                transactions = transactions.Where(t => t.Date >= CurrentWeekStart && t.Date <= CurrentWeekEnd);
                 break;
-            case 1: // Monthly - current month
-                transactions = transactions.Where(t => t.Date.Year == now.Year && t.Date.Month == now.Month);
+            case 1: // Monthly - selected month
+                transactions = transactions.Where(t => t.Date.Year == CurrentYear && t.Date.Month == CurrentMonth);
                 break;
-            case 2: // Annually - current year
-                transactions = transactions.Where(t => t.Date.Year == now.Year);
+            case 2: // Annually - selected year
+                transactions = transactions.Where(t => t.Date.Year == CurrentYear);
                 break;
-            case 3: // Period - all time (no filter)
+            case 3: // Period - custom date range
+                if (PeriodStartDate.HasValue && PeriodEndDate.HasValue)
+                {
+                    transactions = transactions.Where(t => t.Date >= PeriodStartDate.Value && t.Date <= PeriodEndDate.Value);
+                }
                 break;
         }
 
