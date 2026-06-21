@@ -82,33 +82,156 @@
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,16">
                     <!-- Weekly Navigation -->
                     <StackPanel Orientation="Horizontal" Visibility="{Binding IsWeeklyPeriod, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,8,0">
-                        <Button Content="◀" Command="{Binding PreviousWeekCommand}" Width="32" Height="32" Margin="0,0,8,0"/>
-                        <TextBlock Text="{Binding WeekRangeText}" VerticalAlignment="Center" Margin="0,0,8,0" FontSize="14"/>
-                        <Button Content="▶" Command="{Binding NextWeekCommand}" Width="32" Height="32" Margin="0,0,8,0"/>
-                        <Button Content="{DynamicResource CurrentText}" Command="{Binding GoToCurrentWeekCommand}" Margin="0,0,0,0"/>
+                        <Button Command="{Binding PreviousWeekCommand}" Width="36" Height="36" Margin="0,0,8,0" FontSize="18" FontWeight="Bold" Content="▶">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource TabPillButtonStyle}">
+                                    <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <TextBlock Text="{Binding WeekRangeText}" VerticalAlignment="Center" Margin="0,0,8,0" FontSize="14" FontWeight="Medium" Foreground="{DynamicResource TextBrush}"/>
+                        <Button Command="{Binding NextWeekCommand}" Width="36" Height="36" Margin="0,0,8,0" FontSize="18" FontWeight="Bold" Content="◀">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource TabPillButtonStyle}">
+                                    <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="{DynamicResource CurrentText}" Command="{Binding GoToCurrentWeekCommand}" Margin="0,0,0,0" Padding="12,6">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource TabPillButtonStyle}">
+                                    <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
                     </StackPanel>
 
                     <!-- Monthly Navigation -->
                     <StackPanel Orientation="Horizontal" Visibility="{Binding IsMonthlyPeriod, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,8,0">
-                        <Button Content="◀" Command="{Binding PreviousMonthCommand}" Width="32" Height="32" Margin="0,0,8,0"/>
-                        <TextBlock Text="{Binding MonthYearText}" VerticalAlignment="Center" Margin="0,0,8,0" FontSize="14"/>
-                        <Button Content="▶" Command="{Binding NextMonthCommand}" Width="32" Height="32" Margin="0,0,8,0"/>
-                        <Button Content="{DynamicResource CurrentText}" Command="{Binding GoToCurrentMonthCommand}" Margin="0,0,0,0"/>
+                        <Button Command="{Binding PreviousMonthCommand}" Width="36" Height="36" Margin="0,0,8,0" FontSize="18" FontWeight="Bold" Content="▶">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource TabPillButtonStyle}">
+                                    <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <TextBlock Text="{Binding MonthYearText}" VerticalAlignment="Center" Margin="0,0,8,0" FontSize="14" FontWeight="Medium" Foreground="{DynamicResource TextBrush}"/>
+                        <Button Command="{Binding NextMonthCommand}" Width="36" Height="36" Margin="0,0,8,0" FontSize="18" FontWeight="Bold" Content="◀">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource TabPillButtonStyle}">
+                                    <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="{DynamicResource CurrentText}" Command="{Binding GoToCurrentMonthCommand}" Margin="0,0,0,0" Padding="12,6">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource TabPillButtonStyle}">
+                                    <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
                     </StackPanel>
 
                     <!-- Yearly Navigation -->
                     <StackPanel Orientation="Horizontal" Visibility="{Binding IsAnnuallyPeriod, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,8,0">
-                        <Button Content="◀" Command="{Binding PreviousYearCommand}" Width="32" Height="32" Margin="0,0,8,0"/>
-                        <TextBlock Text="{Binding YearText}" VerticalAlignment="Center" Margin="0,0,8,0" FontSize="14"/>
-                        <Button Content="▶" Command="{Binding NextYearCommand}" Width="32" Height="32" Margin="0,0,8,0"/>
-                        <Button Content="{DynamicResource CurrentText}" Command="{Binding GoToCurrentYearCommand}" Margin="0,0,0,0"/>
+                        <Button Command="{Binding PreviousYearCommand}" Width="36" Height="36" Margin="0,0,8,0" FontSize="18" FontWeight="Bold" Content="▶">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource TabPillButtonStyle}">
+                                    <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <TextBlock Text="{Binding YearText}" VerticalAlignment="Center" Margin="0,0,8,0" FontSize="14" FontWeight="Medium" Foreground="{DynamicResource TextBrush}"/>
+                        <Button Command="{Binding NextYearCommand}" Width="36" Height="36" Margin="0,0,8,0" FontSize="18" FontWeight="Bold" Content="◀">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource TabPillButtonStyle}">
+                                    <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="{DynamicResource CurrentText}" Command="{Binding GoToCurrentYearCommand}" Margin="0,0,0,0" Padding="12,6">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource TabPillButtonStyle}">
+                                    <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
                     </StackPanel>
 
                     <!-- Period Navigation -->
                     <StackPanel Orientation="Horizontal" Visibility="{Binding IsPeriodPeriod, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <TextBlock Text="{DynamicResource FromText}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        <TextBlock Text="{DynamicResource FromText}" VerticalAlignment="Center" Margin="0,0,4,0" FontWeight="Medium" Foreground="{DynamicResource TextBrush}"/>
                         <DatePicker SelectedDate="{Binding PeriodStartDate}" Width="120" Margin="0,0,8,0"/>
-                        <TextBlock Text="{DynamicResource ToText}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        <TextBlock Text="{DynamicResource ToText}" VerticalAlignment="Center" Margin="0,0,4,0" FontWeight="Medium" Foreground="{DynamicResource TextBrush}"/>
                         <DatePicker SelectedDate="{Binding PeriodEndDate}" Width="120" Margin="0,0,0,0"/>
                     </StackPanel>
                 </StackPanel>
