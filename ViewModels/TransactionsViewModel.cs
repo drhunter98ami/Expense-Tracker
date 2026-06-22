@@ -328,7 +328,8 @@ public partial class TransactionsViewModel : ObservableObject
             AccountId = dialog.AccountId,
             CategoryId = dialog.CategoryId,
             FromAccountId = dialog.FromAccountId,
-            ToAccountId = dialog.ToAccountId
+            ToAccountId = dialog.ToAccountId,
+            ExchangeRate = _usdRate
 
         };
 
@@ -457,13 +458,16 @@ public partial class TransactionItemViewModel : ObservableObject
 
 
 
+        // Use the stored exchange rate from the transaction for historical accuracy
+        decimal storedRate = transaction.ExchangeRate > 0 ? transaction.ExchangeRate : 1;
+
         if (isUsdTransaction)
 
-            DisplayAmount = globalIsUsd ? transaction.Amount : transaction.Amount * usdRate;
+            DisplayAmount = globalIsUsd ? transaction.Amount : transaction.Amount * storedRate;
 
         else
 
-            DisplayAmount = globalIsUsd ? transaction.Amount / usdRate : transaction.Amount;
+            DisplayAmount = globalIsUsd ? transaction.Amount / storedRate : transaction.Amount;
 
     }
 

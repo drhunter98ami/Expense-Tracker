@@ -36,4 +36,6 @@ public class Transaction
     public int? ToAccountId { get; set; }
 
     public Account? ToAccount { get; set; }
+
+    public decimal ExchangeRate { get; set; } = 1;
 }

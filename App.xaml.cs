@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Threading;
 using System.Windows;
 using ExpenseTracker.Services;
+using ExpenseTracker.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker;
@@ -57,5 +58,8 @@ public partial class App : Application
                 """);
         }
         catch { }
+
+        // Initialize account balances from transaction history
+        AccountsViewModel.InitializeAccountBalances();
     }
 }

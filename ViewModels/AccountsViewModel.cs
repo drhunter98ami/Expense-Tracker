@@ -37,13 +37,17 @@ public partial class AccountsViewModel : ObservableObject
         if (dialog.ShowDialog() != true)
             return;
 
+        AppSetting settings = AppSettingsService.GetOrCreate();
+        decimal usdRate = settings.UsdToSypRate > 0 ? settings.UsdToSypRate : 1;
+
         using AppDbContext dbContext = new();
 
         Account account = new()
         {
             Name = dialog.AccountName,
             Group = dialog.AccountGroup,
-            Currency = dialog.AccountCurrency
+            Currency = dialog.AccountCurrency,
+            Balance = dialog.InitialBalance
         };
 
         if (dialog.InitialBalance > 0)
@@ -66,10 +70,13 @@ public partial class AccountsViewModel : ObservableObject
 
             account.Transactions.Add(new Transaction
             {
+                Type = TransactionType.Income,
                 Amount = dialog.InitialBalance,
+                Currency = dialog.AccountCurrency,
                 Date = TimeService.Now,
                 CategoryId = incomeCategory.Id,
-                Description = AppUiResources.GetString("InitialBalanceDescription")
+                Description = AppUiResources.GetString("InitialBalanceDescription"),
+                ExchangeRate = usdRate
             });
         }
 
@@ -119,14 +126,12 @@ public partial class AccountsViewModel : ObservableObject
         using AppDbContext dbContext = new();
 
         List<AccountItemViewModel> accountItems = dbContext.Accounts
-            .Include(a => a.Transactions)
-            .ThenInclude(t => t.Category)
             .OrderBy(a => a.Group)
             .ThenBy(a => a.Name)
             .AsEnumerable()
             .Select(a => new AccountItemViewModel(
                 a.Name,
-                CalculateBalance(a.Transactions),
+                a.Balance,
                 a.Group,
                 a.Currency,
                 usdRate,
@@ -151,6 +156,45 @@ public partial class AccountsViewModel : ObservableObject
     {
         return transactions.Sum(t =>
             t.Category.Type == CategoryType.Income ? t.Amount : -t.Amount);
+    }
+
+    public static void InitializeAccountBalances()
+    {
+        using AppDbContext dbContext = new();
+
+        List<Account> accounts = dbContext.Accounts
+            .Include(a => a.Transactions)
+            .ToList();
+
+        foreach (Account account in accounts)
+        {
+            decimal balance = 0;
+            foreach (Transaction transaction in account.Transactions)
+            {
+                if (transaction.Type == TransactionType.Income && transaction.AccountId == account.Id)
+                {
+                    balance += transaction.Amount;
+                }
+                else if (transaction.Type == TransactionType.Expense && transaction.AccountId == account.Id)
+                {
+                    balance -= transaction.Amount;
+                }
+                else if (transaction.Type == TransactionType.Transfer)
+                {
+                    if (transaction.FromAccountId == account.Id)
+                    {
+                        balance -= transaction.Amount;
+                    }
+                    else if (transaction.ToAccountId == account.Id)
+                    {
+                        balance += transaction.Amount;
+                    }
+                }
+            }
+            account.Balance = balance;
+        }
+
+        dbContext.SaveChanges();
     }
 }
 
