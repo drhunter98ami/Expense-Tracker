@@ -1,7 +1,7 @@
 using System.Windows;
 using ExpenseTracker.Services;
 using ExpenseTracker.Models;
-using ExpenseTracker.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker.Views;
 
@@ -20,6 +20,8 @@ public partial class AddTransactionWindow : Window
     public int? AccountId { get; private set; }
 
     public int? CategoryId { get; private set; }
+
+    public int? SubCategoryId { get; private set; }
 
     public int? FromAccountId { get; private set; }
 
@@ -61,11 +63,12 @@ public partial class AddTransactionWindow : Window
             .ToList();
 
         List<Category> categories = dbContext.Categories
+            .Include(c => c.SubCategories)
             .OrderBy(category => category.Name)
             .ToList();
 
         AccountComboBox.ItemsSource = accounts;
-        CategoryComboBox.ItemsSource = categories;
+        CategoryComboBox.ItemsSource = categories.Where(c => c.ParentCategoryId == null).ToList();
         FromComboBox.ItemsSource = accounts;
         ToComboBox.ItemsSource = accounts;
 
@@ -87,11 +90,12 @@ public partial class AddTransactionWindow : Window
         if (TransactionTypeComboBox.SelectedItem is System.Windows.Controls.ComboBoxItem selectedItem)
         {
             string tag = selectedItem.Tag?.ToString() ?? "Income";
-            
+
             if (tag == "Transfer")
             {
                 AccountCategoryPanel.Visibility = System.Windows.Visibility.Collapsed;
                 CategoryPanel.Visibility = System.Windows.Visibility.Collapsed;
+                SubCategoryPanel.Visibility = System.Windows.Visibility.Collapsed;
                 FromPanel.Visibility = System.Windows.Visibility.Visible;
                 ToPanel.Visibility = System.Windows.Visibility.Visible;
             }
@@ -99,9 +103,53 @@ public partial class AddTransactionWindow : Window
             {
                 AccountCategoryPanel.Visibility = System.Windows.Visibility.Visible;
                 CategoryPanel.Visibility = System.Windows.Visibility.Visible;
+                SubCategoryPanel.Visibility = System.Windows.Visibility.Visible;
                 FromPanel.Visibility = System.Windows.Visibility.Collapsed;
                 ToPanel.Visibility = System.Windows.Visibility.Collapsed;
+
+                FilterCategoriesByType(tag);
             }
+        }
+    }
+
+    private void FilterCategoriesByType(string typeTag)
+    {
+        using AppDbContext dbContext = new();
+
+        CategoryType categoryType = typeTag == "Income" ? CategoryType.Income : CategoryType.Expense;
+
+        List<Category> parentCategories = dbContext.Categories
+            .Include(c => c.SubCategories)
+            .Where(c => c.ParentCategoryId == null && c.Type == categoryType)
+            .OrderBy(c => c.Name)
+            .ToList();
+
+        CategoryComboBox.ItemsSource = parentCategories;
+
+        if (parentCategories.Count > 0)
+        {
+            CategoryComboBox.SelectedIndex = 0;
+        }
+        else
+        {
+            SubCategoryComboBox.ItemsSource = null;
+        }
+    }
+
+    private void CategoryComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    {
+        if (CategoryComboBox.SelectedItem is Category selectedCategory)
+        {
+            SubCategoryComboBox.ItemsSource = selectedCategory.SubCategories.OrderBy(c => c.Name).ToList();
+
+            if (selectedCategory.SubCategories.Count > 0)
+            {
+                SubCategoryComboBox.SelectedIndex = 0;
+            }
+        }
+        else
+        {
+            SubCategoryComboBox.ItemsSource = null;
         }
     }
 
@@ -230,6 +278,7 @@ public partial class AddTransactionWindow : Window
 
             AccountId = selectedAccountId;
             CategoryId = selectedCategoryId;
+            SubCategoryId = SubCategoryComboBox.SelectedValue as int?;
             FromAccountId = null;
             ToAccountId = null;
         }

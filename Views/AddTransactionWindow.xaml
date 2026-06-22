@@ -80,6 +80,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <StackPanel>
@@ -132,10 +133,19 @@
                         <ComboBox x:Name="CategoryComboBox"
                                   DisplayMemberPath="Name"
                                   SelectedValuePath="Id"
+                                  Style="{StaticResource DialogComboBoxStyle}"
+                                  SelectionChanged="CategoryComboBox_SelectionChanged"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="5" Margin="0,13,0,0" x:Name="SubCategoryPanel" Visibility="Collapsed">
+                        <TextBlock Text="التصنيف الفرعي" Style="{StaticResource DialogLabelStyle}"/>
+                        <ComboBox x:Name="SubCategoryComboBox"
+                                  DisplayMemberPath="Name"
+                                  SelectedValuePath="Id"
                                   Style="{StaticResource DialogComboBoxStyle}"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="5" Margin="0,13,0,0" x:Name="FromPanel" Visibility="Collapsed">
+                    <StackPanel Grid.Row="6" Margin="0,13,0,0" x:Name="FromPanel" Visibility="Collapsed">
                         <TextBlock Text="من" Style="{StaticResource DialogLabelStyle}"/>
                         <ComboBox x:Name="FromComboBox"
                                   DisplayMemberPath="Name"
@@ -143,7 +153,7 @@
                                   Style="{StaticResource DialogComboBoxStyle}"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="6" Margin="0,13,0,0" x:Name="ToPanel" Visibility="Collapsed">
+                    <StackPanel Grid.Row="7" Margin="0,13,0,0" x:Name="ToPanel" Visibility="Collapsed">
                         <TextBlock Text="إلى" Style="{StaticResource DialogLabelStyle}"/>
                         <ComboBox x:Name="ToComboBox"
                                   DisplayMemberPath="Name"
@@ -151,7 +161,7 @@
                                   Style="{StaticResource DialogComboBoxStyle}"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="7" Margin="0,13,0,0">
+                    <StackPanel Grid.Row="8" Margin="0,13,0,0">
                         <TextBlock Text="ملاحظة" Style="{StaticResource DialogLabelStyle}"/>
                         <TextBox x:Name="DescriptionTextBox" Style="{StaticResource DialogTextBoxStyle}"/>
                     </StackPanel>

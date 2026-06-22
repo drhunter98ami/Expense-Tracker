@@ -29,6 +29,10 @@ public class Transaction
 
     public Category? Category { get; set; }
 
+    public int? SubCategoryId { get; set; }
+
+    public Category? SubCategory { get; set; }
+
     public int? FromAccountId { get; set; }
 
     public Account? FromAccount { get; set; }

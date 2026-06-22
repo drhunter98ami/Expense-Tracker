@@ -15,6 +15,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <!-- Header -->
@@ -65,9 +66,28 @@
                                         CornerRadius="10"
                                         Padding="12,10"
                                         Margin="0,0,0,8">
-                                    <TextBlock Text="{Binding Name}"
-                                               Foreground="{DynamicResource TextBrush}"
-                                               FontSize="14"/>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}"
+                                                   Foreground="{DynamicResource TextBrush}"
+                                                   FontSize="14"
+                                                   FontWeight="SemiBold"/>
+                                        <ItemsControl ItemsSource="{Binding SubCategories}" Margin="0,8,0,0">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="{DynamicResource AppBackgroundBrush}"
+                                                            BorderBrush="{DynamicResource BorderBrush}"
+                                                            BorderThickness="1"
+                                                            CornerRadius="8"
+                                                            Padding="10,8"
+                                                            Margin="0,0,0,6">
+                                                        <TextBlock Text="{Binding Name}"
+                                                                   Foreground="{DynamicResource TextBrush}"
+                                                                   FontSize="13"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -113,9 +133,28 @@
                                         CornerRadius="10"
                                         Padding="12,10"
                                         Margin="0,0,0,8">
-                                    <TextBlock Text="{Binding Name}"
-                                               Foreground="{DynamicResource TextBrush}"
-                                               FontSize="14"/>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}"
+                                                   Foreground="{DynamicResource TextBrush}"
+                                                   FontSize="14"
+                                                   FontWeight="SemiBold"/>
+                                        <ItemsControl ItemsSource="{Binding SubCategories}" Margin="0,8,0,0">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="{DynamicResource AppBackgroundBrush}"
+                                                            BorderBrush="{DynamicResource BorderBrush}"
+                                                            BorderThickness="1"
+                                                            CornerRadius="8"
+                                                            Padding="10,8"
+                                                            Margin="0,0,0,6">
+                                                        <TextBlock Text="{Binding Name}"
+                                                                   Foreground="{DynamicResource TextBrush}"
+                                                                   FontSize="13"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -123,8 +162,56 @@
                 </StackPanel>
             </Border>
 
-            <!-- Currency -->
+            <!-- Add Sub Category -->
             <Border Grid.Row="3"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="16"
+                    Padding="20"
+                    Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="إضافة تصنيف فرعي"
+                               Foreground="{DynamicResource TextBrush}"
+                               FontSize="18" FontWeight="SemiBold"
+                               Margin="0,0,0,12"/>
+                    <Grid Margin="0,0,0,14">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox x:Name="ParentCategoryComboBox"
+                                  ItemsSource="{Binding AllParentCategories}"
+                                  DisplayMemberPath="Name"
+                                  SelectedValuePath="Id"
+                                  SelectedValue="{Binding SelectedParentCategoryId}"
+                                  Padding="11,9" FontSize="14"
+                                  Background="{DynamicResource SurfaceAltBrush}"
+                                  Foreground="{DynamicResource TextBrush}"
+                                  BorderBrush="{DynamicResource BorderBrush}"
+                                  Grid.Row="0"
+                                  Margin="0,0,0,10"/>
+                        <TextBox Text="{Binding NewSubCategoryName, UpdateSourceTrigger=PropertyChanged}"
+                                 Padding="11,9" FontSize="14"
+                                 Background="{DynamicResource SurfaceAltBrush}"
+                                 Foreground="{DynamicResource TextBrush}"
+                                 BorderBrush="{DynamicResource BorderBrush}"
+                                 Grid.Row="1"/>
+                        <Button Grid.Row="1" Grid.Column="1"
+                                Content="إضافة"
+                                Command="{Binding AddSubCategoryCommand}"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Margin="10,0,0,0"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Currency -->
+            <Border Grid.Row="4"
                     Background="{DynamicResource SurfaceBrush}"
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
@@ -228,7 +315,7 @@
             </Border>
 
             <!-- Exchange Rate -->
-            <Border Grid.Row="4"
+            <Border Grid.Row="5"
                     Background="{DynamicResource SurfaceBrush}"
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"

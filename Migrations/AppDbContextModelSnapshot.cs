@@ -71,10 +71,15 @@ namespace ExpenseTracker.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("ParentCategoryId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ParentCategoryId");
 
                     b.ToTable("Categories");
                 });
@@ -94,6 +99,9 @@ namespace ExpenseTracker.Migrations
                     b.Property<int?>("CategoryId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("CategoryId1")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Currency")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -110,6 +118,9 @@ namespace ExpenseTracker.Migrations
                     b.Property<int?>("FromAccountId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("SubCategoryId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int?>("ToAccountId")
                         .HasColumnType("INTEGER");
 
@@ -122,11 +133,25 @@ namespace ExpenseTracker.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("CategoryId1");
+
                     b.HasIndex("FromAccountId");
+
+                    b.HasIndex("SubCategoryId");
 
                     b.HasIndex("ToAccountId");
 
                     b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("ExpenseTracker.Models.Category", b =>
+                {
+                    b.HasOne("ExpenseTracker.Models.Category", "ParentCategory")
+                        .WithMany("SubCategories")
+                        .HasForeignKey("ParentCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ParentCategory");
                 });
 
             modelBuilder.Entity("ExpenseTracker.Models.Transaction", b =>
@@ -137,12 +162,22 @@ namespace ExpenseTracker.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ExpenseTracker.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ExpenseTracker.Models.Category", null)
                         .WithMany("Transactions")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId1");
 
                     b.HasOne("ExpenseTracker.Models.Account", "FromAccount")
                         .WithMany()
                         .HasForeignKey("FromAccountId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ExpenseTracker.Models.Category", "SubCategory")
+                        .WithMany()
+                        .HasForeignKey("SubCategoryId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ExpenseTracker.Models.Account", "ToAccount")
@@ -156,6 +191,8 @@ namespace ExpenseTracker.Migrations
 
                     b.Navigation("FromAccount");
 
+                    b.Navigation("SubCategory");
+
                     b.Navigation("ToAccount");
                 });
 
@@ -166,6 +203,8 @@ namespace ExpenseTracker.Migrations
 
             modelBuilder.Entity("ExpenseTracker.Models.Category", b =>
                 {
+                    b.Navigation("SubCategories");
+
                     b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618

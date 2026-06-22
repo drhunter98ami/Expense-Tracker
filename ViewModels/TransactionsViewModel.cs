@@ -186,6 +186,8 @@ public partial class TransactionsViewModel : ObservableObject
 
             .Include(t => t.Category)
 
+            .Include(t => t.SubCategory)
+
             .Include(t => t.FromAccount)
 
             .Include(t => t.ToAccount)
@@ -340,6 +342,7 @@ public partial class TransactionsViewModel : ObservableObject
             Description = dialog.Description,
             AccountId = dialog.AccountId,
             CategoryId = dialog.CategoryId,
+            SubCategoryId = dialog.SubCategoryId,
             FromAccountId = dialog.FromAccountId,
             ToAccountId = dialog.ToAccountId,
             ExchangeRate = _usdRate
@@ -513,7 +516,9 @@ public partial class TransactionItemViewModel : ObservableObject
     public string CategoryName =>
         transaction.Type == TransactionType.Transfer
             ? "تحويل"
-            : transaction.Category?.Name ?? AppUiResources.GetString("UncategorizedText");
+            : transaction.SubCategory != null
+                ? $"{transaction.Category?.Name ?? ""} - {transaction.SubCategory.Name}"
+                : transaction.Category?.Name ?? AppUiResources.GetString("UncategorizedText");
 
     public string AccountName =>
         transaction.Type == TransactionType.Transfer
