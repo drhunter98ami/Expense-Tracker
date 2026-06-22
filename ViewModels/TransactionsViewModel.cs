@@ -218,13 +218,26 @@ public partial class TransactionsViewModel : ObservableObject
                 continue;
             }
 
+            // Convert amount to global currency for totals calculation
+            decimal amountInGlobalCurrency = transaction.Amount;
+            decimal storedRate = transaction.ExchangeRate > 0 ? transaction.ExchangeRate : 1;
+
+            if (transaction.Currency == "USD")
+            {
+                amountInGlobalCurrency = _globalIsUsd ? transaction.Amount : transaction.Amount * storedRate;
+            }
+            else
+            {
+                amountInGlobalCurrency = _globalIsUsd ? transaction.Amount / storedRate : transaction.Amount;
+            }
+
             if (item.IsIncome)
 
-                income += item.DisplayAmount;
+                income += amountInGlobalCurrency;
 
             else
 
-                expenses += item.DisplayAmount;
+                expenses += amountInGlobalCurrency;
 
         }
 
@@ -452,22 +465,8 @@ public partial class TransactionItemViewModel : ObservableObject
 
         _globalIsUsd = globalIsUsd;
 
-
-
-        bool isUsdTransaction = transaction.Currency == "USD";
-
-
-
-        // Use the stored exchange rate from the transaction for historical accuracy
-        decimal storedRate = transaction.ExchangeRate > 0 ? transaction.ExchangeRate : 1;
-
-        if (isUsdTransaction)
-
-            DisplayAmount = globalIsUsd ? transaction.Amount : transaction.Amount * storedRate;
-
-        else
-
-            DisplayAmount = globalIsUsd ? transaction.Amount / storedRate : transaction.Amount;
+        // Display amount in the transaction's original currency
+        DisplayAmount = transaction.Amount;
 
     }
 
@@ -525,11 +524,11 @@ public partial class TransactionItemViewModel : ObservableObject
 
     public string GlobalSymbol => _globalIsUsd ? "$" : "ل.س";
 
-
+    public string TransactionSymbol => transaction.Currency == "USD" ? "$" : "ل.س";
 
     public string FormattedAmount =>
 
-        $"{NumberFormatting.Format(DisplayAmount, "N2")} {GlobalSymbol}";
+        $"{NumberFormatting.Format(DisplayAmount, "N2")} {TransactionSymbol}";
 
 
 

@@ -161,6 +161,8 @@ public partial class AccountsViewModel : ObservableObject
     public static void InitializeAccountBalances()
     {
         using AppDbContext dbContext = new();
+        AppSetting settings = AppSettingsService.GetOrCreate();
+        decimal usdRate = settings.UsdToSypRate > 0 ? settings.UsdToSypRate : 1;
 
         List<Account> accounts = dbContext.Accounts
             .Include(a => a.Transactions)
@@ -171,23 +173,38 @@ public partial class AccountsViewModel : ObservableObject
             decimal balance = 0;
             foreach (Transaction transaction in account.Transactions)
             {
+                decimal amount = transaction.Amount;
+
+                // Convert transaction amount to account's currency if they differ
+                if (transaction.Currency != account.Currency && transaction.ExchangeRate > 0)
+                {
+                    if (account.Currency == "USD" && transaction.Currency == "SYP")
+                    {
+                        amount = transaction.Amount / transaction.ExchangeRate;
+                    }
+                    else if (account.Currency == "SYP" && transaction.Currency == "USD")
+                    {
+                        amount = transaction.Amount * transaction.ExchangeRate;
+                    }
+                }
+
                 if (transaction.Type == TransactionType.Income && transaction.AccountId == account.Id)
                 {
-                    balance += transaction.Amount;
+                    balance += amount;
                 }
                 else if (transaction.Type == TransactionType.Expense && transaction.AccountId == account.Id)
                 {
-                    balance -= transaction.Amount;
+                    balance -= amount;
                 }
                 else if (transaction.Type == TransactionType.Transfer)
                 {
                     if (transaction.FromAccountId == account.Id)
                     {
-                        balance -= transaction.Amount;
+                        balance -= amount;
                     }
                     else if (transaction.ToAccountId == account.Id)
                     {
-                        balance += transaction.Amount;
+                        balance += amount;
                     }
                 }
             }
