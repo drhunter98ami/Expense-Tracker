@@ -299,15 +299,16 @@
                 <!-- Legend -->
                 <ItemsControl Grid.Row="4"
                               ItemsSource="{Binding CurrentLegendItems}"
-                              Margin="0,16,0,0">
+                              Margin="0,16,0,0"
+                              HorizontalAlignment="Center">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="0,4,0,4">
+                            <Grid Margin="0,4,0,4" MaxWidth="400">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="100"/>
                                 </Grid.ColumnDefinitions>
                                 
                                 <!-- Color Indicator -->
@@ -327,7 +328,8 @@
                                            Text="{Binding CategoryName}"
                                            VerticalAlignment="Center"
                                            FontSize="14"
-                                           Foreground="{DynamicResource TextBrush}"/>
+                                           Foreground="{DynamicResource TextBrush}"
+                                           TextTrimming="CharacterEllipsis"/>
                                 
                                 <!-- Percentage -->
                                 <TextBlock Grid.Column="2"
@@ -336,15 +338,16 @@
                                            FontSize="14"
                                            FontWeight="Medium"
                                            Foreground="{DynamicResource TextBrush}"
-                                           Margin="12,0,12,0"/>
+                                           HorizontalAlignment="Center"/>
                                 
                                 <!-- Total Amount -->
                                 <TextBlock Grid.Column="3"
-                                           Text="{Binding TotalAmount, StringFormat={}{0:N2}}"
+                                           Text="{Binding TotalAmount, StringFormat={}{0:N2} ل.س}"
                                            VerticalAlignment="Center"
                                            FontSize="14"
                                            FontWeight="Medium"
-                                           Foreground="{DynamicResource TextBrush}"/>
+                                           Foreground="{DynamicResource TextBrush}"
+                                           HorizontalAlignment="Right"/>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
