@@ -304,7 +304,7 @@ public partial class StatsViewModel : ObservableObject
         var incomeByCategory = transactionList
             .Where(t => t.Category?.Type == CategoryType.Income)
             .GroupBy(t => new { Name = t.Category?.Name ?? "Uncategorized", CategoryId = t.Category?.Id })
-            .Select(g => new { Category = g.Key.Name, CategoryId = g.Key.CategoryId, Amount = g.Sum(t => t.Amount) })
+            .Select(g => new { Category = g.Key.Name, CategoryId = g.Key.CategoryId, Amount = g.Sum(t => t.Currency == "USD" ? t.Amount * t.ExchangeRate : t.Amount) })
             .ToList();
 
         IncomePieSeries = new SeriesCollection();
@@ -347,7 +347,7 @@ public partial class StatsViewModel : ObservableObject
         var expenseByCategory = transactionList
             .Where(t => t.Category?.Type == CategoryType.Expense)
             .GroupBy(t => new { Name = t.Category?.Name ?? "Uncategorized", CategoryId = t.Category?.Id })
-            .Select(g => new { Category = g.Key.Name, CategoryId = g.Key.CategoryId, Amount = g.Sum(t => t.Amount) })
+            .Select(g => new { Category = g.Key.Name, CategoryId = g.Key.CategoryId, Amount = g.Sum(t => t.Currency == "USD" ? t.Amount * t.ExchangeRate : t.Amount) })
             .ToList();
 
         ExpensePieSeries = new SeriesCollection();

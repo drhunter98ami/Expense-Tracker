@@ -68,7 +68,7 @@ namespace ExpenseTracker.Views {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/ExpenseTracker;V1.0.0.0;component/views/statsview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/ExpenseTracker;component/views/statsview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Views\StatsView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
