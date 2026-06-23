@@ -2,6 +2,30 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf">
+    <UserControl.Resources>
+        <Style x:Key="TransparentButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid Background="{DynamicResource AppBackgroundBrush}">
         <Border Background="{DynamicResource SurfaceBrush}"
                 BorderBrush="{DynamicResource BorderBrush}"
@@ -303,52 +327,58 @@
                               HorizontalAlignment="Center">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="0,4,0,4" MaxWidth="400">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="120"/>
-                                    <ColumnDefinition Width="80"/>
-                                    <ColumnDefinition Width="100"/>
-                                </Grid.ColumnDefinitions>
-                                
-                                <!-- Color Indicator -->
-                                <Border Grid.Column="0"
-                                        Width="16"
-                                        Height="16"
-                                        Margin="0,0,12,0"
-                                        VerticalAlignment="Center"
-                                        CornerRadius="4">
-                                    <Border.Background>
-                                        <SolidColorBrush Color="{Binding Color}"/>
-                                    </Border.Background>
-                                </Border>
-                                
-                                <!-- Category Name -->
-                                <TextBlock Grid.Column="1"
-                                           Text="{Binding CategoryName}"
-                                           VerticalAlignment="Center"
-                                           FontSize="14"
-                                           Foreground="{DynamicResource TextBrush}"
-                                           TextTrimming="CharacterEllipsis"/>
-                                
-                                <!-- Percentage -->
-                                <TextBlock Grid.Column="2"
-                                           Text="{Binding Percentage, StringFormat={}{0:N2}%}"
-                                           VerticalAlignment="Center"
-                                           FontSize="14"
-                                           FontWeight="Medium"
-                                           Foreground="{DynamicResource TextBrush}"
-                                           HorizontalAlignment="Center"/>
-                                
-                                <!-- Total Amount -->
-                                <TextBlock Grid.Column="3"
-                                           Text="{Binding TotalAmount, StringFormat={}{0:N2} ل.س}"
-                                           VerticalAlignment="Center"
-                                           FontSize="14"
-                                           FontWeight="Medium"
-                                           Foreground="{DynamicResource TextBrush}"
-                                           HorizontalAlignment="Right"/>
-                            </Grid>
+                            <Button Margin="0,4,0,4" 
+                                    MaxWidth="400"
+                                    Command="{Binding DataContext.ShowCategoryDetailsCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}"
+                                    Style="{StaticResource TransparentButtonStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="80"/>
+                                        <ColumnDefinition Width="100"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <!-- Color Indicator -->
+                                    <Border Grid.Column="0"
+                                            Width="16"
+                                            Height="16"
+                                            Margin="0,0,12,0"
+                                            VerticalAlignment="Center"
+                                            CornerRadius="4">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="{Binding Color}"/>
+                                        </Border.Background>
+                                    </Border>
+                                    
+                                    <!-- Category Name -->
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding CategoryName}"
+                                               VerticalAlignment="Center"
+                                               FontSize="14"
+                                               Foreground="{DynamicResource TextBrush}"
+                                               TextTrimming="CharacterEllipsis"/>
+                                    
+                                    <!-- Percentage -->
+                                    <TextBlock Grid.Column="2"
+                                               Text="{Binding Percentage, StringFormat={}{0:N2}%}"
+                                               VerticalAlignment="Center"
+                                               FontSize="14"
+                                               FontWeight="Medium"
+                                               Foreground="{DynamicResource TextBrush}"
+                                               HorizontalAlignment="Center"/>
+                                    
+                                    <!-- Total Amount -->
+                                    <TextBlock Grid.Column="3"
+                                               Text="{Binding TotalAmount, StringFormat={}{0:N2} ل.س}"
+                                               VerticalAlignment="Center"
+                                               FontSize="14"
+                                               FontWeight="Medium"
+                                               Foreground="{DynamicResource TextBrush}"
+                                               HorizontalAlignment="Right"/>
+                                </Grid>
+                            </Button>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

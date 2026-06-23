@@ -1,20 +1,20 @@
 ﻿ExpenseTracker
-
+1.0.0.0
 
 winexe
 C#
 .cs
-C:\Users\hp\Desktop\Folders\IT\ExpenseTracker\obj\Debug\net9.0-windows\
+c:\Users\hp\Desktop\Folders\IT\ExpenseTracker\obj\Debug\net9.0-windows\
 ExpenseTracker
 none
 false
 TRACE;DEBUG;NET;NET9_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NET9_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
-C:\Users\hp\Desktop\Folders\IT\ExpenseTracker\App.xaml
-7-1225377053
+c:\Users\hp\Desktop\Folders\IT\ExpenseTracker\App.xaml
+82142946049
 
-44248593765
+49-456312242
 221976007714
-MainWindow.xaml;Views\AccountsView.xaml;Views\AddAccountWindow.xaml;Views\AddTransactionWindow.xaml;Views\SettingsView.xaml;Views\StatsView.xaml;Views\TransactionsView.xaml;
+MainWindow.xaml;Views\AccountsView.xaml;Views\AddAccountWindow.xaml;Views\AddTransactionWindow.xaml;Views\CategoryTransactionsWindow.xaml;Views\SettingsView.xaml;Views\StatsView.xaml;Views\TransactionsView.xaml;
 
-False
+True
 

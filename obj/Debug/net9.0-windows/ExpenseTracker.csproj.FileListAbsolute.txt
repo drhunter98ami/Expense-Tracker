@@ -158,3 +158,5 @@ C:\Users\hp\Desktop\Folders\IT\ExpenseTracker\obj\Debug\net9.0-windows\ExpenseTr
 C:\Users\hp\Desktop\Folders\IT\ExpenseTracker\obj\Debug\net9.0-windows\ExpenseT.567C5DF3.Up2Date
 C:\Users\hp\Desktop\Folders\IT\ExpenseTracker\obj\Debug\net9.0-windows\ExpenseTracker.genruntimeconfig.cache
 C:\Users\hp\Desktop\Folders\IT\ExpenseTracker\obj\Debug\net9.0-windows\ref\ExpenseTracker.dll
+c:\Users\hp\Desktop\Folders\IT\ExpenseTracker\obj\Debug\net9.0-windows\Views\CategoryTransactionsWindow.g.cs
+c:\Users\hp\Desktop\Folders\IT\ExpenseTracker\obj\Debug\net9.0-windows\Views\CategoryTransactionsWindow.baml

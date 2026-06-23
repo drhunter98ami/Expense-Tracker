@@ -1,9 +1,11 @@
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ExpenseTracker.Models;
+using ExpenseTracker.Views;
 using LiveCharts;
 using LiveCharts.Wpf;
 using Microsoft.EntityFrameworkCore;
@@ -134,6 +136,32 @@ public partial class StatsViewModel : ObservableObject
 
     [RelayCommand]
     private void SelectPeriodPeriod() => SelectedPeriod = 3;
+
+    [RelayCommand]
+    private void ShowCategoryDetails(CategoryLegendItem item)
+    {
+        if (item == null || !item.CategoryId.HasValue)
+            return;
+
+        var window = new CategoryTransactionsWindow
+        {
+            CategoryId = item.CategoryId.Value,
+            CategoryName = item.CategoryName,
+            CategoryType = IsIncomeTab ? CategoryType.Income : CategoryType.Expense,
+            Period = SelectedPeriod,
+            CurrentWeekStart = CurrentWeekStart,
+            CurrentWeekEnd = CurrentWeekEnd,
+            CurrentMonth = CurrentMonth,
+            CurrentYear = CurrentYear,
+            PeriodStartDate = PeriodStartDate,
+            PeriodEndDate = PeriodEndDate
+        };
+
+        if (Application.Current.MainWindow is Window owner)
+            window.Owner = owner;
+
+        window.ShowDialog();
+    }
 
     [RelayCommand]
     private void PreviousWeek()
@@ -275,8 +303,8 @@ public partial class StatsViewModel : ObservableObject
         // Load income data
         var incomeByCategory = transactionList
             .Where(t => t.Category?.Type == CategoryType.Income)
-            .GroupBy(t => t.Category?.Name ?? "Uncategorized")
-            .Select(g => new { Category = g.Key, Amount = g.Sum(t => t.Amount) })
+            .GroupBy(t => new { Name = t.Category?.Name ?? "Uncategorized", CategoryId = t.Category?.Id })
+            .Select(g => new { Category = g.Key.Name, CategoryId = g.Key.CategoryId, Amount = g.Sum(t => t.Amount) })
             .ToList();
 
         IncomePieSeries = new SeriesCollection();
@@ -303,7 +331,8 @@ public partial class StatsViewModel : ObservableObject
                 CategoryName = item.Category,
                 Color = color,
                 Percentage = percentage,
-                TotalAmount = item.Amount
+                TotalAmount = item.Amount,
+                CategoryId = item.CategoryId
             });
         }
 
@@ -317,8 +346,8 @@ public partial class StatsViewModel : ObservableObject
         // Load expense data
         var expenseByCategory = transactionList
             .Where(t => t.Category?.Type == CategoryType.Expense)
-            .GroupBy(t => t.Category?.Name ?? "Uncategorized")
-            .Select(g => new { Category = g.Key, Amount = g.Sum(t => t.Amount) })
+            .GroupBy(t => new { Name = t.Category?.Name ?? "Uncategorized", CategoryId = t.Category?.Id })
+            .Select(g => new { Category = g.Key.Name, CategoryId = g.Key.CategoryId, Amount = g.Sum(t => t.Amount) })
             .ToList();
 
         ExpensePieSeries = new SeriesCollection();
@@ -345,7 +374,8 @@ public partial class StatsViewModel : ObservableObject
                 CategoryName = item.Category,
                 Color = color,
                 Percentage = percentage,
-                TotalAmount = item.Amount
+                TotalAmount = item.Amount,
+                CategoryId = item.CategoryId
             });
         }
 

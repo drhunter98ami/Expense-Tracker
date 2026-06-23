@@ -8,4 +8,5 @@ public class CategoryLegendItem
     public Color Color { get; set; }
     public double Percentage { get; set; }
     public decimal TotalAmount { get; set; }
+    public int? CategoryId { get; set; }
 }
