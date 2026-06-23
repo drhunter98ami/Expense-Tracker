@@ -277,19 +277,9 @@
                         Padding="24">
                     <Grid>
                         <lvc:PieChart LegendLocation="Bottom"
-                                      Series="{Binding IncomePieSeries}"
-                                      x:Name="IncomeChart"
+                                      Series="{Binding CurrentPieSeries}"
+                                      x:Name="PieChart"
                                       Margin="0,0,0,20">
-                            <lvc:PieChart.DataTooltip>
-                                <lvc:DefaultTooltip SelectionMode="OnlySender"/>
-                            </lvc:PieChart.DataTooltip>
-                        </lvc:PieChart>
-
-                        <lvc:PieChart LegendLocation="Bottom"
-                                      Series="{Binding ExpensePieSeries}"
-                                      x:Name="ExpenseChart"
-                                      Margin="0,0,0,20"
-                                      Visibility="Collapsed">
                             <lvc:PieChart.DataTooltip>
                                 <lvc:DefaultTooltip SelectionMode="OnlySender"/>
                             </lvc:PieChart.DataTooltip>

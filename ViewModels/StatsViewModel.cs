@@ -56,6 +56,8 @@ public partial class StatsViewModel : ObservableObject
     public bool IsIncomeTab => SelectedTab == 0;
     public bool IsExpenseTab => SelectedTab == 1;
 
+    public SeriesCollection? CurrentPieSeries => IsIncomeTab ? IncomePieSeries : ExpensePieSeries;
+
     public bool IsWeeklyPeriod => SelectedPeriod == 0;
     public bool IsMonthlyPeriod => SelectedPeriod == 1;
     public bool IsAnnuallyPeriod => SelectedPeriod == 2;
@@ -93,6 +95,7 @@ public partial class StatsViewModel : ObservableObject
     {
         OnPropertyChanged(nameof(IsIncomeTab));
         OnPropertyChanged(nameof(IsExpenseTab));
+        OnPropertyChanged(nameof(CurrentPieSeries));
     }
 
     partial void OnSelectedPeriodChanged(int value)
