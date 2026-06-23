@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ExpenseTracker.Models;
@@ -53,10 +54,18 @@ public partial class StatsViewModel : ObservableObject
     [ObservableProperty]
     private Func<ChartPoint, string>? expenseTooltip;
 
+    [ObservableProperty]
+    private ObservableCollection<CategoryLegendItem>? incomeLegendItems;
+
+    [ObservableProperty]
+    private ObservableCollection<CategoryLegendItem>? expenseLegendItems;
+
     public bool IsIncomeTab => SelectedTab == 0;
     public bool IsExpenseTab => SelectedTab == 1;
 
     public SeriesCollection? CurrentPieSeries => IsIncomeTab ? IncomePieSeries : ExpensePieSeries;
+
+    public ObservableCollection<CategoryLegendItem>? CurrentLegendItems => IsIncomeTab ? IncomeLegendItems : ExpenseLegendItems;
 
     public bool IsWeeklyPeriod => SelectedPeriod == 0;
     public bool IsMonthlyPeriod => SelectedPeriod == 1;
@@ -96,6 +105,7 @@ public partial class StatsViewModel : ObservableObject
         OnPropertyChanged(nameof(IsIncomeTab));
         OnPropertyChanged(nameof(IsExpenseTab));
         OnPropertyChanged(nameof(CurrentPieSeries));
+        OnPropertyChanged(nameof(CurrentLegendItems));
     }
 
     partial void OnSelectedPeriodChanged(int value)
@@ -271,21 +281,38 @@ public partial class StatsViewModel : ObservableObject
 
         IncomePieSeries = new SeriesCollection();
         var incomeLabelsList = new List<string>();
+        var incomeLegendItemsList = new List<CategoryLegendItem>();
+        
+        decimal incomeTotal = incomeByCategory.Sum(x => x.Amount);
 
         foreach (var item in incomeByCategory)
         {
+            var color = GetPieColor(incomeByCategory.IndexOf(item));
             IncomePieSeries.Add(new PieSeries
             {
                 Title = item.Category,
                 Values = new ChartValues<decimal> { item.Amount },
-                DataLabels = true
+                DataLabels = true,
+                Fill = new SolidColorBrush(color)
             });
             incomeLabelsList.Add(item.Category);
+            
+            double percentage = incomeTotal > 0 ? (double)(item.Amount / incomeTotal) * 100 : 0;
+            incomeLegendItemsList.Add(new CategoryLegendItem
+            {
+                CategoryName = item.Category,
+                Color = color,
+                Percentage = percentage,
+                TotalAmount = item.Amount
+            });
         }
 
         IncomeLabels = incomeLabelsList.ToArray();
         IncomeTooltip = chartPoint => 
             string.Format(CultureInfo.CurrentCulture, "{0:N2}%", chartPoint.Participation * 100);
+        
+        IncomeLegendItems = new ObservableCollection<CategoryLegendItem>(
+            incomeLegendItemsList.OrderByDescending(x => x.Percentage));
 
         // Load expense data
         var expenseByCategory = transactionList
@@ -296,25 +323,63 @@ public partial class StatsViewModel : ObservableObject
 
         ExpensePieSeries = new SeriesCollection();
         var expenseLabelsList = new List<string>();
+        var expenseLegendItemsList = new List<CategoryLegendItem>();
+        
+        decimal expenseTotal = expenseByCategory.Sum(x => x.Amount);
 
         foreach (var item in expenseByCategory)
         {
+            var color = GetPieColor(expenseByCategory.IndexOf(item));
             ExpensePieSeries.Add(new PieSeries
             {
                 Title = item.Category,
                 Values = new ChartValues<decimal> { item.Amount },
-                DataLabels = true
+                DataLabels = true,
+                Fill = new SolidColorBrush(color)
             });
             expenseLabelsList.Add(item.Category);
+            
+            double percentage = expenseTotal > 0 ? (double)(item.Amount / expenseTotal) * 100 : 0;
+            expenseLegendItemsList.Add(new CategoryLegendItem
+            {
+                CategoryName = item.Category,
+                Color = color,
+                Percentage = percentage,
+                TotalAmount = item.Amount
+            });
         }
 
         ExpenseLabels = expenseLabelsList.ToArray();
         ExpenseTooltip = chartPoint => 
             string.Format(CultureInfo.CurrentCulture, "{0:N2}%", chartPoint.Participation * 100);
+        
+        ExpenseLegendItems = new ObservableCollection<CategoryLegendItem>(
+            expenseLegendItemsList.OrderByDescending(x => x.Percentage));
     }
 
     public void Refresh()
     {
         LoadStatistics();
+    }
+
+    private Color GetPieColor(int index)
+    {
+        Color[] colors = new[]
+        {
+            Color.FromRgb(59, 130, 246),   // Blue
+            Color.FromRgb(239, 68, 68),    // Red
+            Color.FromRgb(16, 185, 129),   // Green
+            Color.FromRgb(245, 158, 11),   // Yellow/Orange
+            Color.FromRgb(139, 92, 246),   // Purple
+            Color.FromRgb(236, 72, 153),   // Pink
+            Color.FromRgb(6, 182, 212),    // Cyan
+            Color.FromRgb(249, 115, 22),   // Orange
+            Color.FromRgb(99, 102, 241),   // Indigo
+            Color.FromRgb(34, 197, 94),    // Emerald
+            Color.FromRgb(168, 85, 247),   // Violet
+            Color.FromRgb(20, 184, 166),   // Teal
+        };
+        
+        return colors[index % colors.Length];
     }
 }

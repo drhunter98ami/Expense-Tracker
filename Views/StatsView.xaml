@@ -16,6 +16,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <!-- Period Buttons -->
@@ -276,7 +277,7 @@
                         CornerRadius="14"
                         Padding="24">
                     <Grid>
-                        <lvc:PieChart LegendLocation="Bottom"
+                        <lvc:PieChart LegendLocation="None"
                                       Series="{Binding CurrentPieSeries}"
                                       x:Name="PieChart"
                                       Margin="0,0,0,20">
@@ -294,6 +295,60 @@
                                    Visibility="Collapsed"/>
                     </Grid>
                 </Border>
+
+                <!-- Legend -->
+                <ItemsControl Grid.Row="4"
+                              ItemsSource="{Binding CurrentLegendItems}"
+                              Margin="0,16,0,0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,4,0,4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <!-- Color Indicator -->
+                                <Border Grid.Column="0"
+                                        Width="16"
+                                        Height="16"
+                                        Margin="0,0,12,0"
+                                        VerticalAlignment="Center"
+                                        CornerRadius="4">
+                                    <Border.Background>
+                                        <SolidColorBrush Color="{Binding Color}"/>
+                                    </Border.Background>
+                                </Border>
+                                
+                                <!-- Category Name -->
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding CategoryName}"
+                                           VerticalAlignment="Center"
+                                           FontSize="14"
+                                           Foreground="{DynamicResource TextBrush}"/>
+                                
+                                <!-- Percentage -->
+                                <TextBlock Grid.Column="2"
+                                           Text="{Binding Percentage, StringFormat={}{0:N2}%}"
+                                           VerticalAlignment="Center"
+                                           FontSize="14"
+                                           FontWeight="Medium"
+                                           Foreground="{DynamicResource TextBrush}"
+                                           Margin="12,0,12,0"/>
+                                
+                                <!-- Total Amount -->
+                                <TextBlock Grid.Column="3"
+                                           Text="{Binding TotalAmount, StringFormat={}{0:N2}}"
+                                           VerticalAlignment="Center"
+                                           FontSize="14"
+                                           FontWeight="Medium"
+                                           Foreground="{DynamicResource TextBrush}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </Grid>
         </Border>
     </Grid>
