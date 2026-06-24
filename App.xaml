@@ -88,19 +88,19 @@
         <sys:String x:Key="AnnuallyPeriodText">سنوي</sys:String>
         <sys:String x:Key="PeriodPeriodText">فترة</sys:String>
 
-        <SolidColorBrush x:Key="AppBackgroundBrush" Color="#F8FAFC"/>
+        <SolidColorBrush x:Key="AppBackgroundBrush" Color="#F0F4F8"/>
         <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF"/>
-        <SolidColorBrush x:Key="SurfaceAltBrush" Color="#F1F5F9"/>
-        <SolidColorBrush x:Key="BorderBrush" Color="#DDE5F0"/>
-        <SolidColorBrush x:Key="TextBrush" Color="#0F172A"/>
+        <SolidColorBrush x:Key="SurfaceAltBrush" Color="#F8FAFC"/>
+        <SolidColorBrush x:Key="BorderBrush" Color="#E2E8F0"/>
+        <SolidColorBrush x:Key="TextBrush" Color="#1E293B"/>
         <SolidColorBrush x:Key="MutedTextBrush" Color="#64748B"/>
-        <SolidColorBrush x:Key="PrimaryBrush" Color="#2563EB"/>
-        <SolidColorBrush x:Key="PrimaryHoverBrush" Color="#1D4ED8"/>
-        <SolidColorBrush x:Key="ActiveBrush" Color="#DBEAFE"/>
-        <SolidColorBrush x:Key="GroupHeaderBrush" Color="#E0F2FE"/>
-        <SolidColorBrush x:Key="SuccessBrush" Color="#0F766E"/>
+        <SolidColorBrush x:Key="PrimaryBrush" Color="#6366F1"/>
+        <SolidColorBrush x:Key="PrimaryHoverBrush" Color="#4F46E5"/>
+        <SolidColorBrush x:Key="ActiveBrush" Color="#EEF2FF"/>
+        <SolidColorBrush x:Key="GroupHeaderBrush" Color="#E0E7FF"/>
+        <SolidColorBrush x:Key="SuccessBrush" Color="#10B981"/>
         <SolidColorBrush x:Key="OnPrimaryBrush" Color="#FFFFFF"/>
-        <SolidColorBrush x:Key="ShadowBrush" Color="#0F172A"/>
+        <SolidColorBrush x:Key="ShadowBrush" Color="#1E293B"/>
 
         <Style x:Key="NavButtonStyle" TargetType="Button">
             <Setter Property="Padding" Value="14,12"/>
@@ -171,18 +171,43 @@
         </Style>
 
         <Style x:Key="PrimaryButtonStyle" TargetType="Button">
-            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="Padding" Value="24,14"/>
             <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
             <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="15"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource PrimaryHoverBrush}"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PrimaryHoverBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#1E40AF"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#1E40AF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <Style x:Key="NumberTextBoxStyle" TargetType="TextBox">
-            <Setter Property="Padding" Value="11,9"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="14,12"/>
+            <Setter Property="FontSize" Value="15"/>
             <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
             <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
@@ -190,6 +215,30 @@
             <Setter Property="Language" Value="en-US"/>
             <Setter Property="FlowDirection" Value="LeftToRight"/>
             <Setter Property="TextAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12"
+                                Padding="{TemplateBinding Padding}">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                                <Setter TargetName="Border" Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#94A3B8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <Style x:Key="TabPillButtonStyle" TargetType="Button">

@@ -4,6 +4,13 @@
              xmlns:converters="clr-namespace:ExpenseTracker.Converters">
     <UserControl.Resources>
         <converters:EnglishNumberConverter x:Key="EnglishNumberConverter"/>
+        
+        <!-- Drop Shadow Effect -->
+        <DropShadowEffect x:Key="CardShadow" 
+                          Color="#000000" 
+                          Opacity="0.08" 
+                          BlurRadius="16" 
+                          ShadowDepth="0"/>
     </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto"
@@ -19,13 +26,13 @@
             </Grid.RowDefinitions>
 
             <!-- Header -->
-            <StackPanel Margin="0,0,0,22">
+            <StackPanel Margin="0,0,0,32">
                 <TextBlock Text="{DynamicResource SettingsTitle}"
                            Foreground="{DynamicResource TextBrush}"
-                           FontSize="28" FontWeight="Bold"/>
+                           FontSize="32" FontWeight="Bold"/>
                 <TextBlock Text="{DynamicResource SettingsSubtitle}"
                            Foreground="{DynamicResource MutedTextBrush}"
-                           FontSize="14" Margin="0,6,0,0"/>
+                           FontSize="15" Margin="0,8,0,0"/>
             </StackPanel>
 
             <!-- Income Categories -->
@@ -33,56 +40,86 @@
                     Background="{DynamicResource SurfaceBrush}"
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
-                    CornerRadius="16"
-                    Padding="20"
-                    Margin="0,0,0,16">
+                    CornerRadius="20"
+                    Padding="24"
+                    Margin="0,0,0,20"
+                    Effect="{StaticResource CardShadow}">
                 <StackPanel>
                     <TextBlock Text="{DynamicResource IncomeCategoriesTitle}"
                                Foreground="{DynamicResource TextBrush}"
-                               FontSize="18" FontWeight="SemiBold"
-                               Margin="0,0,0,12"/>
-                    <Grid Margin="0,0,0,14">
+                               FontSize="20" FontWeight="SemiBold"
+                               Margin="0,0,0,16"/>
+                    <Grid Margin="0,0,0,18">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBox Text="{Binding NewIncomeCategoryName, UpdateSourceTrigger=PropertyChanged}"
-                                 Padding="11,9" FontSize="14"
+                                 Padding="14,12" FontSize="15"
                                  Background="{DynamicResource SurfaceAltBrush}"
                                  Foreground="{DynamicResource TextBrush}"
-                                 BorderBrush="{DynamicResource BorderBrush}"/>
+                                 BorderBrush="{DynamicResource BorderBrush}"
+                                 BorderThickness="1">
+                            <TextBox.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="12"/>
+                                </Style>
+                            </TextBox.Resources>
+                        </TextBox>
                         <Button Grid.Column="1"
                                 Content="{DynamicResource AddCategoryText}"
                                 Command="{Binding AddIncomeCategoryCommand}"
                                 Style="{StaticResource PrimaryButtonStyle}"
-                                Margin="10,0,0,0"/>
+                                Margin="12,0,0,0"
+                                Padding="24,12"/>
                     </Grid>
                     <ItemsControl ItemsSource="{Binding IncomeCategories}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Background="{DynamicResource SurfaceAltBrush}"
+                                <Border Background="{DynamicResource SurfaceBrush}"
                                         BorderBrush="{DynamicResource BorderBrush}"
                                         BorderThickness="1"
-                                        CornerRadius="10"
-                                        Padding="12,10"
-                                        Margin="0,0,0,8">
+                                        CornerRadius="16"
+                                        Padding="20,16"
+                                        Margin="0,0,0,12"
+                                        Effect="{StaticResource CardShadow}">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="2"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
                                     <StackPanel>
                                         <TextBlock Text="{Binding Name}"
                                                    Foreground="{DynamicResource TextBrush}"
-                                                   FontSize="14"
+                                                   FontSize="16"
                                                    FontWeight="SemiBold"/>
-                                        <ItemsControl ItemsSource="{Binding SubCategories}" Margin="0,8,0,0">
+                                        <ItemsControl ItemsSource="{Binding SubCategories}" Margin="0,12,0,0">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Border Background="{DynamicResource AppBackgroundBrush}"
+                                                    <Border Background="{DynamicResource SurfaceAltBrush}"
                                                             BorderBrush="{DynamicResource BorderBrush}"
                                                             BorderThickness="1"
-                                                            CornerRadius="8"
-                                                            Padding="10,8"
-                                                            Margin="0,0,0,6">
+                                                            CornerRadius="12"
+                                                            Padding="14,12"
+                                                            Margin="0,0,0,8">
+                                                        <Border.Style>
+                                                            <Style TargetType="Border">
+                                                                <Style.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter Property="Background" Value="#E8F0FE"/>
+                                                                    </Trigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Border.Style>
                                                         <TextBlock Text="{Binding Name}"
                                                                    Foreground="{DynamicResource TextBrush}"
-                                                                   FontSize="13"/>
+                                                                   FontSize="14"/>
                                                     </Border>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
@@ -100,56 +137,86 @@
                     Background="{DynamicResource SurfaceBrush}"
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
-                    CornerRadius="16"
-                    Padding="20"
-                    Margin="0,0,0,16">
+                    CornerRadius="20"
+                    Padding="24"
+                    Margin="0,0,0,20"
+                    Effect="{StaticResource CardShadow}">
                 <StackPanel>
                     <TextBlock Text="{DynamicResource ExpenseCategoriesTitle}"
                                Foreground="{DynamicResource TextBrush}"
-                               FontSize="18" FontWeight="SemiBold"
-                               Margin="0,0,0,12"/>
-                    <Grid Margin="0,0,0,14">
+                               FontSize="20" FontWeight="SemiBold"
+                               Margin="0,0,0,16"/>
+                    <Grid Margin="0,0,0,18">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBox Text="{Binding NewExpenseCategoryName, UpdateSourceTrigger=PropertyChanged}"
-                                 Padding="11,9" FontSize="14"
+                                 Padding="14,12" FontSize="15"
                                  Background="{DynamicResource SurfaceAltBrush}"
                                  Foreground="{DynamicResource TextBrush}"
-                                 BorderBrush="{DynamicResource BorderBrush}"/>
+                                 BorderBrush="{DynamicResource BorderBrush}"
+                                 BorderThickness="1">
+                            <TextBox.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="12"/>
+                                </Style>
+                            </TextBox.Resources>
+                        </TextBox>
                         <Button Grid.Column="1"
                                 Content="{DynamicResource AddCategoryText}"
                                 Command="{Binding AddExpenseCategoryCommand}"
                                 Style="{StaticResource PrimaryButtonStyle}"
-                                Margin="10,0,0,0"/>
+                                Margin="12,0,0,0"
+                                Padding="24,12"/>
                     </Grid>
                     <ItemsControl ItemsSource="{Binding ExpenseCategories}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Background="{DynamicResource SurfaceAltBrush}"
+                                <Border Background="{DynamicResource SurfaceBrush}"
                                         BorderBrush="{DynamicResource BorderBrush}"
                                         BorderThickness="1"
-                                        CornerRadius="10"
-                                        Padding="12,10"
-                                        Margin="0,0,0,8">
+                                        CornerRadius="16"
+                                        Padding="20,16"
+                                        Margin="0,0,0,12"
+                                        Effect="{StaticResource CardShadow}">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="2"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
                                     <StackPanel>
                                         <TextBlock Text="{Binding Name}"
                                                    Foreground="{DynamicResource TextBrush}"
-                                                   FontSize="14"
+                                                   FontSize="16"
                                                    FontWeight="SemiBold"/>
-                                        <ItemsControl ItemsSource="{Binding SubCategories}" Margin="0,8,0,0">
+                                        <ItemsControl ItemsSource="{Binding SubCategories}" Margin="0,12,0,0">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Border Background="{DynamicResource AppBackgroundBrush}"
+                                                    <Border Background="{DynamicResource SurfaceAltBrush}"
                                                             BorderBrush="{DynamicResource BorderBrush}"
                                                             BorderThickness="1"
-                                                            CornerRadius="8"
-                                                            Padding="10,8"
-                                                            Margin="0,0,0,6">
+                                                            CornerRadius="12"
+                                                            Padding="14,12"
+                                                            Margin="0,0,0,8">
+                                                        <Border.Style>
+                                                            <Style TargetType="Border">
+                                                                <Style.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter Property="Background" Value="#E8F0FE"/>
+                                                                    </Trigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Border.Style>
                                                         <TextBlock Text="{Binding Name}"
                                                                    Foreground="{DynamicResource TextBrush}"
-                                                                   FontSize="13"/>
+                                                                   FontSize="14"/>
                                                     </Border>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
@@ -167,15 +234,16 @@
                     Background="{DynamicResource SurfaceBrush}"
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
-                    CornerRadius="16"
-                    Padding="20"
-                    Margin="0,0,0,16">
+                    CornerRadius="20"
+                    Padding="24"
+                    Margin="0,0,0,20"
+                    Effect="{StaticResource CardShadow}">
                 <StackPanel>
                     <TextBlock Text="إضافة تصنيف فرعي"
                                Foreground="{DynamicResource TextBrush}"
-                               FontSize="18" FontWeight="SemiBold"
-                               Margin="0,0,0,12"/>
-                    <Grid Margin="0,0,0,14">
+                               FontSize="20" FontWeight="SemiBold"
+                               Margin="0,0,0,16"/>
+                    <Grid Margin="0,0,0,18">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
@@ -189,23 +257,38 @@
                                   DisplayMemberPath="Name"
                                   SelectedValuePath="Id"
                                   SelectedValue="{Binding SelectedParentCategoryId}"
-                                  Padding="11,9" FontSize="14"
+                                  Padding="14,12" FontSize="15"
                                   Background="{DynamicResource SurfaceAltBrush}"
                                   Foreground="{DynamicResource TextBrush}"
                                   BorderBrush="{DynamicResource BorderBrush}"
+                                  BorderThickness="1"
                                   Grid.Row="0"
-                                  Margin="0,0,0,10"/>
+                                  Margin="0,0,0,12">
+                            <ComboBox.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="12"/>
+                                </Style>
+                            </ComboBox.Resources>
+                        </ComboBox>
                         <TextBox Text="{Binding NewSubCategoryName, UpdateSourceTrigger=PropertyChanged}"
-                                 Padding="11,9" FontSize="14"
+                                 Padding="14,12" FontSize="15"
                                  Background="{DynamicResource SurfaceAltBrush}"
                                  Foreground="{DynamicResource TextBrush}"
                                  BorderBrush="{DynamicResource BorderBrush}"
-                                 Grid.Row="1"/>
+                                 BorderThickness="1"
+                                 Grid.Row="1">
+                            <TextBox.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="12"/>
+                                </Style>
+                            </TextBox.Resources>
+                        </TextBox>
                         <Button Grid.Row="1" Grid.Column="1"
                                 Content="إضافة"
                                 Command="{Binding AddSubCategoryCommand}"
                                 Style="{StaticResource PrimaryButtonStyle}"
-                                Margin="10,0,0,0"/>
+                                Margin="12,0,0,0"
+                                Padding="24,12"/>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -215,25 +298,26 @@
                     Background="{DynamicResource SurfaceBrush}"
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
-                    CornerRadius="16"
-                    Padding="20"
-                    Margin="0,0,0,16">
+                    CornerRadius="20"
+                    Padding="24"
+                    Margin="0,0,0,20"
+                    Effect="{StaticResource CardShadow}">
                 <StackPanel>
                     <TextBlock Text="{DynamicResource CurrencySectionTitle}"
                                Foreground="{DynamicResource TextBrush}"
-                               FontSize="18" FontWeight="SemiBold"
-                               Margin="0,0,0,6"/>
+                               FontSize="20" FontWeight="SemiBold"
+                               Margin="0,0,0,8"/>
                     <TextBlock Text="{DynamicResource CurrencySectionSubtitle}"
                                Foreground="{DynamicResource MutedTextBrush}"
-                               FontSize="13" TextWrapping="Wrap"
-                               Margin="0,0,0,16"/>
+                               FontSize="14" TextWrapping="Wrap"
+                               Margin="0,0,0,20"/>
 
                     <!-- SYP / USD pill toggle -->
                     <Border Background="{DynamicResource SurfaceAltBrush}"
                             BorderBrush="{DynamicResource BorderBrush}"
                             BorderThickness="1"
-                            CornerRadius="14"
-                            Padding="5">
+                            CornerRadius="16"
+                            Padding="6">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -244,13 +328,13 @@
                             <Button Grid.Column="0"
                                     Content="{DynamicResource SypCurrencyLabel}"
                                     Command="{Binding SelectSypCommand}"
-                                    FontSize="14" FontWeight="SemiBold"
-                                    Padding="0,10"
+                                    FontSize="15" FontWeight="SemiBold"
+                                    Padding="0,14"
                                     BorderThickness="0"
                                     Cursor="Hand">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
-                                        <Border x:Name="Bg" CornerRadius="10" Padding="{TemplateBinding Padding}"
+                                        <Border x:Name="Bg" CornerRadius="12" Padding="{TemplateBinding Padding}"
                                                 Background="Transparent">
                                             <ContentPresenter HorizontalAlignment="Center"
                                                               VerticalAlignment="Center"/>
@@ -279,13 +363,13 @@
                             <Button Grid.Column="1"
                                     Content="{DynamicResource UsdCurrencyLabel}"
                                     Command="{Binding SelectUsdCommand}"
-                                    FontSize="14" FontWeight="SemiBold"
-                                    Padding="0,10"
+                                    FontSize="15" FontWeight="SemiBold"
+                                    Padding="0,14"
                                     BorderThickness="0"
                                     Cursor="Hand">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
-                                        <Border x:Name="Bg" CornerRadius="10" Padding="{TemplateBinding Padding}"
+                                        <Border x:Name="Bg" CornerRadius="12" Padding="{TemplateBinding Padding}"
                                                 Background="Transparent">
                                             <ContentPresenter HorizontalAlignment="Center"
                                                               VerticalAlignment="Center"/>
@@ -319,33 +403,49 @@
                     Background="{DynamicResource SurfaceBrush}"
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
-                    CornerRadius="16"
-                    Padding="20">
+                    CornerRadius="20"
+                    Padding="24"
+                    Effect="{StaticResource CardShadow}">
                 <StackPanel>
                     <TextBlock Text="{DynamicResource ExchangeRateTitle}"
                                Foreground="{DynamicResource TextBrush}"
-                               FontSize="18" FontWeight="SemiBold"
-                               Margin="0,0,0,6"/>
+                               FontSize="20" FontWeight="SemiBold"
+                               Margin="0,0,0,8"/>
                     <TextBlock Text="{DynamicResource ExchangeRateSubtitle}"
                                Foreground="{DynamicResource MutedTextBrush}"
-                               FontSize="13" TextWrapping="Wrap"
-                               Margin="0,0,0,14"/>
+                               FontSize="14" TextWrapping="Wrap"
+                               Margin="0,0,0,18"/>
                     <TextBlock Text="{DynamicResource UsdToSypRateLabel}"
                                Foreground="{DynamicResource TextBrush}"
                                FontWeight="SemiBold"
-                               Margin="0,0,0,6"/>
+                               FontSize="15"
+                               Margin="0,0,0,12"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBox Text="{Binding UsdToSypRateText, UpdateSourceTrigger=PropertyChanged}"
-                                 Style="{StaticResource NumberTextBoxStyle}"/>
+                                 Padding="14,12" FontSize="15"
+                                 Background="{DynamicResource SurfaceBrush}"
+                                 Foreground="{DynamicResource TextBrush}"
+                                 BorderBrush="{DynamicResource BorderBrush}"
+                                 BorderThickness="1"
+                                 Language="en-US"
+                                 FlowDirection="LeftToRight"
+                                 TextAlignment="Left">
+                            <TextBox.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="12"/>
+                                </Style>
+                            </TextBox.Resources>
+                        </TextBox>
                         <Button Grid.Column="1"
                                 Content="{DynamicResource SaveText}"
                                 Command="{Binding SaveExchangeRateCommand}"
                                 Style="{StaticResource PrimaryButtonStyle}"
-                                Margin="10,0,0,0"/>
+                                Margin="12,0,0,0"
+                                Padding="24,12"/>
                     </Grid>
                 </StackPanel>
             </Border>
