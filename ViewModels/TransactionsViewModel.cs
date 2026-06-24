@@ -499,7 +499,7 @@ public partial class TransactionItemViewModel : ObservableObject
 
         string.IsNullOrWhiteSpace(transaction.Description)
 
-            ? AppUiResources.GetString("NoDescriptionText")
+            ? ""
 
             : transaction.Description;
 
@@ -516,9 +516,10 @@ public partial class TransactionItemViewModel : ObservableObject
     public string CategoryName =>
         transaction.Type == TransactionType.Transfer
             ? "تحويل"
-            : transaction.SubCategory != null
-                ? $"{transaction.Category?.Name ?? ""} - {transaction.SubCategory.Name}"
-                : transaction.Category?.Name ?? AppUiResources.GetString("UncategorizedText");
+            : transaction.Category?.Name ?? AppUiResources.GetString("UncategorizedText");
+
+    public string SubCategoryName =>
+        transaction.SubCategory?.Name ?? "";
 
     public string AccountName =>
         transaction.Type == TransactionType.Transfer
@@ -544,6 +545,8 @@ public partial class TransactionItemViewModel : ObservableObject
         OnPropertyChanged(nameof(Description));
 
         OnPropertyChanged(nameof(CategoryName));
+
+        OnPropertyChanged(nameof(SubCategoryName));
 
         OnPropertyChanged(nameof(AccountName));
 
