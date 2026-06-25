@@ -66,17 +66,17 @@
 
                     BorderThickness="1"
 
-                    CornerRadius="14"
+                    CornerRadius="16"
 
-                    Padding="16"
+                    Padding="18"
 
-                    Margin="0,0,0,8">
+                    Margin="0,0,0,10">
 
                 <Border.Effect>
 
-                    <DropShadowEffect BlurRadius="14" Direction="270" Opacity="0.07"
+                    <DropShadowEffect BlurRadius="18" Direction="270" Opacity="0.1"
 
-                                      ShadowDepth="2" Color="#0F172A"/>
+                                      ShadowDepth="3" Color="#1F2937"/>
 
                 </Border.Effect>
 
@@ -356,7 +356,7 @@
 
                     <ControlTemplate TargetType="{x:Type GroupItem}">
 
-                        <StackPanel Margin="0,0,0,16">
+                        <StackPanel Margin="0,0,0,18">
 
                             <Border Background="{DynamicResource GroupHeaderBrush}"
 
@@ -364,17 +364,17 @@
 
                                     BorderThickness="1"
 
-                                    CornerRadius="10"
+                                    CornerRadius="12"
 
-                                    Padding="14,8"
+                                    Padding="16,10"
 
-                                    Margin="0,0,0,8">
+                                    Margin="0,0,0,10">
 
                                 <TextBlock Text="{Binding Name}"
 
                                            Foreground="{DynamicResource PrimaryBrush}"
 
-                                           FontSize="14"
+                                           FontSize="15"
 
                                            FontWeight="SemiBold"/>
 
@@ -402,7 +402,7 @@
 
                     <ControlTemplate TargetType="{x:Type GroupItem}">
 
-                        <StackPanel Margin="0,0,0,16">
+                        <StackPanel Margin="0,0,0,18">
 
                             <Border Background="{DynamicResource GroupHeaderBrush}"
 
@@ -410,17 +410,17 @@
 
                                     BorderThickness="1"
 
-                                    CornerRadius="10"
+                                    CornerRadius="12"
 
-                                    Padding="14,8"
+                                    Padding="16,10"
 
-                                    Margin="0,0,0,8">
+                                    Margin="0,0,0,10">
 
                                 <TextBlock Text="{Binding Name, Converter={StaticResource GregorianDateConverter}, ConverterParameter='dddd, dd MMMM yyyy'}"
 
                                            Foreground="{DynamicResource PrimaryBrush}"
 
-                                           FontSize="14"
+                                           FontSize="15"
 
                                            FontWeight="SemiBold"/>
 
@@ -512,31 +512,35 @@
 
                     BorderThickness="1"
 
-                    CornerRadius="12"
+                    CornerRadius="16"
 
-                    Padding="14,12">
+                    Padding="18,14">
 
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="12" Direction="270" Opacity="0.08"
+                                      ShadowDepth="2" Color="#16A34A"/>
+                </Border.Effect>
                 <StackPanel>
 
                     <TextBlock Text="{DynamicResource IncomeLabel}"
 
                                Foreground="#16A34A"
 
-                               FontSize="12"
+                               FontSize="13"
 
                                FontWeight="SemiBold"
 
-                               Opacity="0.8"/>
+                               Opacity="0.85"/>
 
                     <TextBlock Text="{Binding TotalIncome, Converter={StaticResource EnglishNumberConverter}, ConverterParameter=N2}"
 
                                Foreground="#16A34A"
 
-                               FontSize="18"
+                               FontSize="20"
 
                                FontWeight="Bold"
 
-                               Margin="0,4,0,0"/>
+                               Margin="0,6,0,0"/>
 
                 </StackPanel>
 
@@ -554,31 +558,35 @@
 
                     BorderThickness="1"
 
-                    CornerRadius="12"
+                    CornerRadius="16"
 
-                    Padding="14,12">
+                    Padding="18,14">
 
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="12" Direction="270" Opacity="0.08"
+                                      ShadowDepth="2" Color="#DC2626"/>
+                </Border.Effect>
                 <StackPanel>
 
                     <TextBlock Text="{DynamicResource ExpensesLabel}"
 
                                Foreground="#DC2626"
 
-                               FontSize="12"
+                               FontSize="13"
 
                                FontWeight="SemiBold"
 
-                               Opacity="0.8"/>
+                               Opacity="0.85"/>
 
                     <TextBlock Text="{Binding TotalExpenses, Converter={StaticResource EnglishNumberConverter}, ConverterParameter=N2}"
 
                                Foreground="#DC2626"
 
-                               FontSize="18"
+                               FontSize="20"
 
                                FontWeight="Bold"
 
-                               Margin="0,4,0,0"/>
+                               Margin="0,6,0,0"/>
 
                 </StackPanel>
 
@@ -596,31 +604,35 @@
 
                     BorderThickness="1"
 
-                    CornerRadius="12"
+                    CornerRadius="16"
 
-                    Padding="14,12">
+                    Padding="18,14">
 
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="12" Direction="270" Opacity="0.08"
+                                      ShadowDepth="2" Color="#7C3AED"/>
+                </Border.Effect>
                 <StackPanel>
 
                     <TextBlock Text="{DynamicResource NetLabel}"
 
                                Foreground="{DynamicResource PrimaryBrush}"
 
-                               FontSize="12"
+                               FontSize="13"
 
                                FontWeight="SemiBold"
 
-                               Opacity="0.8"/>
+                               Opacity="0.85"/>
 
                     <TextBlock Text="{Binding NetTotal, Converter={StaticResource EnglishNumberConverter}, ConverterParameter=N2}"
 
                                Foreground="{DynamicResource PrimaryBrush}"
 
-                               FontSize="18"
+                               FontSize="20"
 
                                FontWeight="Bold"
 
-                               Margin="0,4,0,0"/>
+                               Margin="0,6,0,0"/>
 
                 </StackPanel>
 
@@ -640,11 +652,11 @@
 
                 BorderThickness="1"
 
-                CornerRadius="24"
+                CornerRadius="28"
 
-                Padding="4"
+                Padding="5"
 
-                Margin="0,0,0,14">
+                Margin="0,0,0,16">
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 

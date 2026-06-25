@@ -88,19 +88,19 @@
         <sys:String x:Key="AnnuallyPeriodText">سنوي</sys:String>
         <sys:String x:Key="PeriodPeriodText">فترة</sys:String>
 
-        <SolidColorBrush x:Key="AppBackgroundBrush" Color="#F0F4F8"/>
+        <SolidColorBrush x:Key="AppBackgroundBrush" Color="#FAFAFA"/>
         <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF"/>
-        <SolidColorBrush x:Key="SurfaceAltBrush" Color="#F8FAFC"/>
-        <SolidColorBrush x:Key="BorderBrush" Color="#E2E8F0"/>
-        <SolidColorBrush x:Key="TextBrush" Color="#1E293B"/>
-        <SolidColorBrush x:Key="MutedTextBrush" Color="#64748B"/>
-        <SolidColorBrush x:Key="PrimaryBrush" Color="#6366F1"/>
-        <SolidColorBrush x:Key="PrimaryHoverBrush" Color="#4F46E5"/>
-        <SolidColorBrush x:Key="ActiveBrush" Color="#EEF2FF"/>
-        <SolidColorBrush x:Key="GroupHeaderBrush" Color="#E0E7FF"/>
-        <SolidColorBrush x:Key="SuccessBrush" Color="#10B981"/>
+        <SolidColorBrush x:Key="SurfaceAltBrush" Color="#F3F4F6"/>
+        <SolidColorBrush x:Key="BorderBrush" Color="#E5E7EB"/>
+        <SolidColorBrush x:Key="TextBrush" Color="#111827"/>
+        <SolidColorBrush x:Key="MutedTextBrush" Color="#6B7280"/>
+        <SolidColorBrush x:Key="PrimaryBrush" Color="#7C3AED"/>
+        <SolidColorBrush x:Key="PrimaryHoverBrush" Color="#6D28D9"/>
+        <SolidColorBrush x:Key="ActiveBrush" Color="#F5F3FF"/>
+        <SolidColorBrush x:Key="GroupHeaderBrush" Color="#EDE9FE"/>
+        <SolidColorBrush x:Key="SuccessBrush" Color="#059669"/>
         <SolidColorBrush x:Key="OnPrimaryBrush" Color="#FFFFFF"/>
-        <SolidColorBrush x:Key="ShadowBrush" Color="#1E293B"/>
+        <SolidColorBrush x:Key="ShadowBrush" Color="#1F2937"/>
 
         <Style x:Key="NavButtonStyle" TargetType="Button">
             <Setter Property="Padding" Value="14,12"/>
@@ -187,6 +187,10 @@
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="12"
                                 Padding="{TemplateBinding Padding}">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="12" Direction="270" Opacity="0.3"
+                                                  ShadowDepth="4" Color="#7C3AED"/>
+                            </Border.Effect>
                             <ContentPresenter HorizontalAlignment="Center" 
                                               VerticalAlignment="Center"/>
                         </Border>
@@ -196,8 +200,8 @@
                                 <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PrimaryHoverBrush}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="#1E40AF"/>
-                                <Setter TargetName="Border" Property="BorderBrush" Value="#1E40AF"/>
+                                <Setter TargetName="Border" Property="Background" Value="#5B21B6"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#5B21B6"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
