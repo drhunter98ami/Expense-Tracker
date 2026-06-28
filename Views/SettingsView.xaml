@@ -112,7 +112,7 @@
                                                             <Style TargetType="Border">
                                                                 <Style.Triggers>
                                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                                        <Setter Property="Background" Value="#E8F0FE"/>
+                                                                        <Setter Property="Background" Value="#2D3A4E"/>
                                                                     </Trigger>
                                                                 </Style.Triggers>
                                                             </Style>
@@ -209,7 +209,7 @@
                                                             <Style TargetType="Border">
                                                                 <Style.Triggers>
                                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                                        <Setter Property="Background" Value="#E8F0FE"/>
+                                                                        <Setter Property="Background" Value="#2D3A4E"/>
                                                                     </Trigger>
                                                                 </Style.Triggers>
                                                             </Style>

@@ -163,8 +163,8 @@
                             FontWeight="SemiBold"
                             Padding="16,12"
                             BorderThickness="0"
-                            Background="#FEE2E2"
-                            Foreground="#DC2626">
+                            Background="#3D1A1A"
+                            Foreground="#EF4444">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border Background="{TemplateBinding Background}"
@@ -175,7 +175,7 @@
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#FECACA"/>
+                                        <Setter Property="Background" Value="#4D2A2A"/>
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>

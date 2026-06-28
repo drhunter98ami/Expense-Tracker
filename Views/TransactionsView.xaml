@@ -232,19 +232,19 @@
 
                             <Style TargetType="Border">
 
-                                <Setter Property="Background" Value="#F0FDF4"/>
+                                <Setter Property="Background" Value="#1A2E1A"/>
 
                                 <Style.Triggers>
 
                                     <DataTrigger Binding="{Binding IsIncome}" Value="False">
 
-                                        <Setter Property="Background" Value="#FEF2F2"/>
+                                        <Setter Property="Background" Value="#2E1A1A"/>
 
                                     </DataTrigger>
 
                                     <DataTrigger Binding="{Binding IsTransfer}" Value="True">
 
-                                        <Setter Property="Background" Value="#F3F4F6"/>
+                                        <Setter Property="Background" Value="#1A1A1A"/>
 
                                     </DataTrigger>
 
@@ -264,19 +264,19 @@
 
                                 <Style TargetType="TextBlock">
 
-                                    <Setter Property="Foreground" Value="#16A34A"/>
+                                    <Setter Property="Foreground" Value="#10B981"/>
 
                                     <Style.Triggers>
 
                                         <DataTrigger Binding="{Binding IsIncome}" Value="False">
 
-                                            <Setter Property="Foreground" Value="#DC2626"/>
+                                            <Setter Property="Foreground" Value="#EF4444"/>
 
                                         </DataTrigger>
 
                                         <DataTrigger Binding="{Binding IsTransfer}" Value="True">
 
-                                            <Setter Property="Foreground" Value="#1F2937"/>
+                                            <Setter Property="Foreground" Value="#F5F5F5"/>
 
                                         </DataTrigger>
 
@@ -506,9 +506,9 @@
 
             <Border Grid.Column="0"
 
-                    Background="#F0FDF4"
+                    Background="#1A2E1A"
 
-                    BorderBrush="#BBF7D0"
+                    BorderBrush="#2D4A2D"
 
                     BorderThickness="1"
 
@@ -517,14 +517,14 @@
                     Padding="18,14">
 
                 <Border.Effect>
-                    <DropShadowEffect BlurRadius="12" Direction="270" Opacity="0.08"
-                                      ShadowDepth="2" Color="#16A34A"/>
+                    <DropShadowEffect BlurRadius="12" Direction="270" Opacity="0.15"
+                                      ShadowDepth="2" Color="#10B981"/>
                 </Border.Effect>
                 <StackPanel>
 
                     <TextBlock Text="{DynamicResource IncomeLabel}"
 
-                               Foreground="#16A34A"
+                               Foreground="#10B981"
 
                                FontSize="13"
 
@@ -534,7 +534,7 @@
 
                     <TextBlock Text="{Binding TotalIncome, Converter={StaticResource EnglishNumberConverter}, ConverterParameter=N2}"
 
-                               Foreground="#16A34A"
+                               Foreground="#10B981"
 
                                FontSize="20"
 
@@ -552,9 +552,9 @@
 
             <Border Grid.Column="2"
 
-                    Background="#FEF2F2"
+                    Background="#2E1A1A"
 
-                    BorderBrush="#FECACA"
+                    BorderBrush="#4A2D2D"
 
                     BorderThickness="1"
 
@@ -563,14 +563,14 @@
                     Padding="18,14">
 
                 <Border.Effect>
-                    <DropShadowEffect BlurRadius="12" Direction="270" Opacity="0.08"
-                                      ShadowDepth="2" Color="#DC2626"/>
+                    <DropShadowEffect BlurRadius="12" Direction="270" Opacity="0.15"
+                                      ShadowDepth="2" Color="#EF4444"/>
                 </Border.Effect>
                 <StackPanel>
 
                     <TextBlock Text="{DynamicResource ExpensesLabel}"
 
-                               Foreground="#DC2626"
+                               Foreground="#EF4444"
 
                                FontSize="13"
 
@@ -580,7 +580,7 @@
 
                     <TextBlock Text="{Binding TotalExpenses, Converter={StaticResource EnglishNumberConverter}, ConverterParameter=N2}"
 
-                               Foreground="#DC2626"
+                               Foreground="#EF4444"
 
                                FontSize="20"
 

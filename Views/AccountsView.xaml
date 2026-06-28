@@ -148,7 +148,7 @@
                                                         VerticalAlignment="Center">
                                                     <Border.Style>
                                                         <Style TargetType="Border">
-                                                            <Setter Property="Background" Value="#F0FDF4"/>
+                                                            <Setter Property="Background" Value="#1A2E1A"/>
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding Balance}" Value="0">
                                                                     <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
@@ -160,7 +160,7 @@
                                                                FontSize="17" FontWeight="Bold">
                                                         <TextBlock.Style>
                                                             <Style TargetType="TextBlock">
-                                                                <Setter Property="Foreground" Value="#16A34A"/>
+                                                                <Setter Property="Foreground" Value="#10B981"/>
                                                                 <Style.Triggers>
                                                                     <DataTrigger Binding="{Binding Balance}" Value="0">
                                                                         <Setter Property="Foreground" Value="{DynamicResource MutedTextBrush}"/>
