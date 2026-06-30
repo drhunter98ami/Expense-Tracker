@@ -17,6 +17,7 @@ public static class TimeService
 public class ClockViewModel : INotifyPropertyChanged
 {
     private string _currentTime = string.Empty;
+    private string _currentDate = string.Empty;
     
     public string CurrentTime
     {
@@ -26,6 +27,19 @@ public class ClockViewModel : INotifyPropertyChanged
             if (_currentTime != value)
             {
                 _currentTime = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public string CurrentDate
+    {
+        get => _currentDate;
+        private set
+        {
+            if (_currentDate != value)
+            {
+                _currentDate = value;
                 OnPropertyChanged();
             }
         }
@@ -41,6 +55,7 @@ public class ClockViewModel : INotifyPropertyChanged
     {
         DateTime adjustedTime = TimeService.Now;
         CurrentTime = adjustedTime.ToString("hh:mm:ss tt");
+        CurrentDate = adjustedTime.ToString("dddd, dd/MM/yyyy");
     }
 
     private void StartClock()

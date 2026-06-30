@@ -66,12 +66,21 @@
                             CornerRadius="16"
                             Padding="16"
                             Margin="0,0,0,28">
-                        <TextBlock Text="{Binding ClockViewModel.CurrentTime, RelativeSource={RelativeSource AncestorType=Window}}"
-                                   Foreground="{DynamicResource PrimaryBrush}"
-                                   FontSize="19"
-                                   FontWeight="SemiBold"
-                                   HorizontalAlignment="Center"
-                                   FontFamily="Consolas"/>
+                        <StackPanel>
+                            <TextBlock Text="{Binding ClockViewModel.CurrentTime, RelativeSource={RelativeSource AncestorType=Window}}"
+                                       Foreground="{DynamicResource PrimaryBrush}"
+                                       FontSize="19"
+                                       FontWeight="SemiBold"
+                                       HorizontalAlignment="Center"
+                                       FontFamily="Consolas"
+                                       Margin="0,0,0,4"/>
+                            <TextBlock Text="{Binding ClockViewModel.CurrentDate, RelativeSource={RelativeSource AncestorType=Window}}"
+                                       Foreground="{DynamicResource MutedTextBrush}"
+                                       FontSize="12"
+                                       FontWeight="Medium"
+                                       HorizontalAlignment="Center"
+                                       FontFamily="Segoe UI"/>
+                        </StackPanel>
                     </Border>
                 </StackPanel>
 
