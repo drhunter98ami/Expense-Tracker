@@ -20,12 +20,46 @@ public static class AppSettingsService
         {
             Id = SettingsId,
             UsdToSypRate = 15000,
-            CurrencyCode = "SYP"
+            CurrencyCode = "SYP",
+            IsDarkMode = true,
+            IsEnglish = false
         };
 
         dbContext.AppSettings.Add(settings);
         dbContext.SaveChanges();
         return settings;
+    }
+
+    public static void SaveTheme(bool isDarkMode)
+    {
+        using AppDbContext dbContext = new();
+
+        int rows = dbContext.Database.ExecuteSqlRaw(
+            "UPDATE AppSettings SET IsDarkMode = {0} WHERE Id = {1}",
+            isDarkMode, SettingsId);
+
+        if (rows == 0)
+        {
+            dbContext.Database.ExecuteSqlRaw(
+                "INSERT INTO AppSettings (Id, UsdToSypRate, CurrencyCode, IsDarkMode, IsEnglish) VALUES ({0}, 15000, 'SYP', {1}, 0)",
+                SettingsId, isDarkMode);
+        }
+    }
+
+    public static void SaveLanguage(bool isEnglish)
+    {
+        using AppDbContext dbContext = new();
+
+        int rows = dbContext.Database.ExecuteSqlRaw(
+            "UPDATE AppSettings SET IsEnglish = {0} WHERE Id = {1}",
+            isEnglish, SettingsId);
+
+        if (rows == 0)
+        {
+            dbContext.Database.ExecuteSqlRaw(
+                "INSERT INTO AppSettings (Id, UsdToSypRate, CurrencyCode, IsDarkMode, IsEnglish) VALUES ({0}, 15000, 'SYP', 1, {1})",
+                SettingsId, isEnglish);
+        }
     }
 
     public static void SaveUsdToSypRate(decimal rate)

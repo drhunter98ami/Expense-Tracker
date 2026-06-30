@@ -18,6 +18,11 @@ public partial class MainViewModel : ObservableObject
     public MainViewModel()
     {
         AppUiResources.CurrencySymbolChanged += RefreshCurrentViewModelAmounts;
+
+        var settings = AppSettingsService.GetOrCreate();
+        isEnglish = settings.IsEnglish;
+        isDarkMode = settings.IsDarkMode;
+
         AppUiResources.Apply(isEnglish, isDarkMode);
         currentViewModel = new TransactionsViewModel();
     }
@@ -26,11 +31,13 @@ public partial class MainViewModel : ObservableObject
     {
         AppUiResources.Apply(value, IsDarkMode);
         RefreshCurrentViewModelLanguage();
+        AppSettingsService.SaveLanguage(value);
     }
 
     partial void OnIsDarkModeChanged(bool value)
     {
         AppUiResources.Apply(IsEnglish, value);
+        AppSettingsService.SaveTheme(value);
     }
 
     [RelayCommand]
